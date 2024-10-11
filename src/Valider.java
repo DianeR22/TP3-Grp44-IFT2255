@@ -12,7 +12,7 @@ public class Valider {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     private static Pattern PASSWORD = Pattern.compile("^(?=.*[0-9])"
             + "(?=.*[a-z])(?=.*[A-Z])"
-            + "(?=.*[@#$%^&+=])"
+            + "(?=.*[@#$%^&+=?~!*()_\\-\\{\\}|\\[\\]\\\\:\"/'])" 
             + "(?=\\S+$).{8,20}$");
 
     private static final Pattern IDENTIFIANT = Pattern.compile("\\d{8}");

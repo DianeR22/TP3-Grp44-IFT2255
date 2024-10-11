@@ -140,14 +140,15 @@ public class Resident extends Utilisateur {
         System.out.println("Vous êtes connecté!");
 
         System.out.println("\nMenu Résident :");
-        System.out.println("1. Consulter les travaux en cours ou à venir");
-        System.out.println("2. Rechercher des travaux");
-        System.out.println("3. Notifications");
-        System.out.println("4. Permettre une planification participative");
-        System.out.println("5. Soumettre une requête de travail");
-        System.out.println("6. Signaler un problème à la ville");
-        System.out.println("7. Laisser un avis");
-        System.out.println("8. Retourner au menu principal");
+        System.out.println("1. Modifier son profil");
+        System.out.println("2. Consulter les travaux en cours ou à venir");
+        System.out.println("3. Rechercher des travaux");
+        System.out.println("4. Notifications");
+        System.out.println("5. Permettre une planification participative");
+        System.out.println("6. Soumettre une requête de travail");
+        System.out.println("7. Signaler un problème à la ville");
+        System.out.println("8. Laisser un avis");
+        System.out.println("9. Retourner au menu principal");
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();

@@ -962,15 +962,16 @@
                             <strong>CU:</strong> Faire le suivi d'une requête de travail
                         </h4>
                         <p class="cu-goal">
-                            <strong>Objectif:</strong> Un résident souhaite faire le suivi sur une requête de travail qu'il a déposée
+                            <strong>Objectif:</strong> Un résident souhaite faire le suivi sur une requête de travail 
                         </p>
-                        
+                        <p class="cu-goal">qu'il a déposée</p>
+                            
                         <hr>
 
                         <div class="cu-part">
                             <h5 class="cu-part-title">Acteurs</h5>
                             <ul class="bare-list cu-actors">
-                                <li class="cu-actor">Résident (Principal)</li>
+                                <li class="cu-actor">Résident (Principal) et Intervenant (Secondaire) </li>
                             </ul>
                         </div>
                         
@@ -991,29 +992,29 @@
                     <div class="scenario-main">
                         <h5 class="scenario-main-title">Scénario principal</h5>
                         <ol class="scenario-main-steps">
-                            <li class="scenario-main-step">Le résident a accès au menu principal et choisit l'option Soumettre une requête.</li>
-                            <li class="scenario-main-step">Le résident fournit les informations nécessaires à sa requête (titre, description, type, date de début souhaité).</li>
-                            <li class="scenario-main-step">Le système valide les informations.</li>
-                            <li class="scenario-main-step">Le système confirme la reception de la requête.</li>
+                            <li class="scenario-main-step">Le résident selectionne la requête qu'il veut consulter.</li>
+                            <li class="scenario-main-step">Le système affiche la candidature de l'intervenant.</li>
+                            <li class="scenario-main-step">Le résident accepte la candidature pour la requête de travail.</li>
+                            <li class="scenario-main-step">L'intervenant sera notifié de l'acceptation de candidature.</li>
+                            <li class="scenario-main-step">Plannification de début de projet.</li>
+                            <li class="scenario-main-step">Début de projet.</li>
                         </ol>
 
                         <div class="scenario-alt">
                             <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
                             <ol class="bare-list scenario-alt-steps">
-                                <li class="scenario-alt-step" value="3">
-                                    Information manquante dans un champ
+                                <li class="scenario-alt-step" value="2">
+                                    Aucune candidature n'a été déposée 
                                     <ol class="bare-list">
-                                        <li value="3">Le système affiche Veuillez remplir ce champ manquant.</li>
-                                        <li value="3">Le résident fournit l'information manquante.</li>
-                                        <li value="3">Le scénario reprend à l'étape 3.</li>
+                                        <li value="2">Le système affiche Aucune candidature n'a été déposée.</li>
                                     </ol>
                                 </li>
                             
                                 <li class="scenario-alt-step" value="3">
-                                    Le type du projet est invalide
+                                    Le résident refuse la candidature de l'intervenant
                                     <ol class="bare-list">
-                                        <li value="3"> Le système affiche Type invalide.</li>
-                                        <li value="3"> Le scénario reprend à l'étape 3.</li>
+                                        <li value="3"> L'intervenant sera notifié du refus de sa candidature.</li>
+                                        <li value="3"> La requête de travail redeviendra disponible aux autres intervenants.</li>
                                     </ol>
                                 </li>
                             </ol>
@@ -1084,11 +1085,11 @@
                     </div>
                 </div>
                        
-                <!--CU: Recevoir des notifications personnalisées -->
+                <!--CU: Consulter les notifications -->
                 <div class="scenario" id="cu-1">
                     <div class="scenario-meta">
                         <h4 class="cu-name">
-                            <strong>CU:</strong> Recevoir des notifications personnalisées 
+                            <strong>CU:</strong> Consulter les notifications
                         </h4>
                         <p class="cu-goal">
                             <strong>Objectif:</strong> Un résident est notifié de mises à jour d'informations concernant 
@@ -1109,8 +1110,7 @@
                         <div class="cu-part">
                             <h5 class="cu-part-title">Préconditions</h5>
                             <ul class="bare-list cu-conditions">
-                                <li class="dash">Le résident est inscrit sur Maville.</li>
-                                <li class="dash">Le résident peut choisir de s'abonner aux notifications de projets hors son quartier.</li>
+                                <li class="dash">Le résident est connecté.</li>
                                 
                             </ul>
                         </div>
@@ -1128,25 +1128,79 @@
                     <div class="scenario-main">
                         <h5 class="scenario-main-title">Scénario principal</h5>
                         <ol class="scenario-main-steps">
-                            <li class="scenario-main-step">Le résident a accès au menu principal et choisit l'option Permettre une planification participative.</li>
-                            <li class="scenario-main-step">Le résident choisit l'option Choisir votre préférence de plages horaires. </li>
-                            <li class="scenario-main-step">Le résident choisit et enregistre ses préférences de plages horaires. </li>
-                            <li class="scenario-main-step">Le système met à jour les informations sur les préférences.</li>
-                            <li class="scenario-main-step">Le système rend disponible les informations sur les préférences aux autres utilisateurs.</li>
+                            <li class="scenario-main-step"> Le résident ouvre la zone Notifications au dessus du menu.</li>
+                            <li class="scenario-main-step"> Si une notification est présente, le résident la voit.</li>
                         </ol>
 
                         <div class="scenario-alt">
                             <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
                             <ol class="bare-list scenario-alt-steps">
-                                <li class="scenario-alt-step" value="3">
-                                    La plage horaire inscrite n'est pas disponible.
+                                <li class="scenario-alt-step" value="2">
+                                    Aucune notification n'est présente
                                     <ol class="bare-list">
-                                        <li value="3">Le système affiche Plage horaire choisie n'est pas disponible.</li>
-                                        <li value="3">Le scénario se termine.</li>
+                                        <li value="2">Le système affiche Aucune nouvelle notification.</li>
+                                        <li value="2">Le scénario se termine.</li>
                                     </ol>
                                 </li>
                             </ol>
-                            
+                        </div>
+                    </div>
+                </div>
+
+                 <!--CU: Personnaliser les notifications -->
+                 <div class="scenario" id="cu-1">
+                    <div class="scenario-meta">
+                        <h4 class="cu-name">
+                            <strong>CU:</strong> Personnaliser les notifications
+                        </h4>
+                        <p class="cu-goal">
+                            <strong>Objectif:</strong> Un résident est notifié de mises à jour d'informations concernant 
+                        </p>
+                        <p class="cu-goal">
+                            un projet de son quartier ou un projet auquel il a choisi d'être abonné
+                        </p>
+                        
+                        <hr>
+
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Acteurs</h5>
+                            <ul class="bare-list cu-actors">
+                                <li class="cu-actor">Résident (Principal)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Préconditions</h5>
+                            <ul class="bare-list cu-conditions">
+                                <li class="dash">Le résident est connecté.</li>
+                                <li class="dash">Le résident veut choisir de s'abonner aux notifications de projets hors son quartier.</li>
+                                
+                            </ul>
+                        </div>
+                        
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Postconditions</h5>
+                            <ul class="bare-list cu-conditions">
+                                <li class="dash">À la modification d'informations concernant un projet du quartier ou un projet</li>
+                                <li> auquel le résident a choisi d'être abonné, une notification lui sera envoyée</li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="scenario-main">
+                        <h5 class="scenario-main-title">Scénario principal</h5>
+                        <ol class="scenario-main-steps">
+                            <li class="scenario-main-step"> Le résident ouvre la zone Notifications au dessus du menu.</li>
+                            <li class="scenario-main-step"> Le résident sélectionne l'option Personnaliser ses notifications.</li>
+                            <li class="scenario-main-step"> La liste de quartiers s'affiche.</li>
+                            <li class="scenario-main-step"> Le résident sélectionne le ou les quartiers voulus.</li>
+                            <li class="scenario-main-step"> Le système enregistre le choix du résident.</li>
+                        </ol>
+
+                        <div class="scenario-alt">
+                            <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
+                            Aucun. 
                         </div>
                     </div>
                 </div>
@@ -1399,6 +1453,68 @@
                     </div>
                 </div>
 
+                <!-- Soumettre un nouveau projet de travail-->
+                <div class="scenario" id="cu-10">
+                    <div class="scenario-meta">
+                        <h4 class="cu-name"><strong>CU:</strong> Soumettre un nouveau projet de travail
+                        </h4>
+                        <p class="cu-goal">
+                            <strong>Objectif:</strong> Un intervenant souhaite soumettre un nouveau projet de travail
+                        </p>
+                        
+                        <hr>
+
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Acteurs</h5>
+                            <ul class="bare-list cu-actors">
+                                <li class="cu-actor">Intervenant (principal)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Préconditions</h5>
+                            <ul class="bare-list cu-conditions">
+                                <li class="dash">L'intervenant est connecté.</li>
+                                <li class="dash"> L'intervenant a consulté les préférences d'horaires des résidents</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Postconditions</h5>
+                            <ul class="bare-list cu-conditions">
+                                <li class="dash"> Le projet sera sous le statut Prévu</li>
+                                <li class="dash">Les résidents du quartier où le projet sera entrepris seront notifiés.</li>
+                                <li class="dash"> Le projet sera entrepris à une date ultérieure prévue</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="scenario-main">
+                        <h5 class="scenario-main-title">Scénario principal</h5>
+                        <ol class="scenario-main-steps">
+                            <li class="scenario-main-step">L'intervenant a accès au menu principal et choisit l'option Soumettre un nouveau projet.</li>
+                            <li class="scenario-main-step">L’intervenant fournit les informations nécessaires concernant le projet (titre, description, type, quartiers et rue affectés, date de début/fin, horaire).</li>
+                            <li class="scenario-main-step">Le système valide les informations.</li>
+                            <li class="scenario-main-step">Le système confirme la soumission du projet.</li>
+                            <li class="scenario-main-step">Le statut du projet est mis à Prévu. </li>
+                        </ol>
+
+                        <div class="scenario-alt">
+                            <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
+                            <ol class="bare-list scenario-alt-steps">
+                                <li class="scenario-alt-step" value="2">
+                                    Information manquante dans un champ 
+                                    <ol class="bare-list">
+                                        <li value="2">Le système affiche Veuillez remplir ce champ mannquant.</li>
+                                        <li value="2">L'intervenant fournit l'information manquante.</li>
+                                        <li value="2">Le scénario reprend à l'étape 2.</li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Scénarios concernant tous les utilisateurs -->
                 <h3> Scénarios concernant tous les utilisateurs </h3>
                 <div class="scenario" id="cu-3">
@@ -1564,36 +1680,64 @@
                 <div>
                     <h3 class="subsection-title">Risques</h3>
                     <ol class="risks">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                        <li><b>Risque de performance et scalabilité:</b> 
+                            Le système doit pouvoir gérer une grande quantité de données liées aux travaux en cours et à venir. Si la scalabilité n’est pas anticipée, l’application pourrait devenir lente à mesure que le volume de données et le nombre d’utilisateurs augmentent, impactant l’expérience utilisateur.
+                            </li>
+                        <li><b>Risque de sécurité des données:</b>
+                            L’application traite des données personnelles sensibles (courriels, adresses, localisation des résidents). Si ces données ne sont pas correctement sécurisées, cela pourrait entraîner des violations de données, exposant ainsi l’application à des risques légaux et de perte de confiance des utilisateurs.
+                        </li>
+                        <li><b>Risque de surcharge des serveurs lors des pics de trafic:</b>
+                            Lors de périodes d’activité intense, par exemple à la suite de la publication d’importants travaux routiers ou de perturbations majeures, il est possible que les serveurs soient submergés. Si l’infrastructure n’est pas correctement configurée pour gérer ces pics, cela pourrait entraîner des interruptions de service.
+                            </li>
+                        <li><b>Risque de manque d’engagement des utilisateurs:</b>
+                            Même si l’application est techniquement fonctionnelle, il est crucial d’assurer l’engagement des résidents. Si l’interface utilisateur n’est pas intuitive ou que les notifications sont mal gérées, les utilisateurs risquent d’abandonner l’application, réduisant ainsi son utilité.
+                            </li>
+                        <li><b>Risque d’intégration avec les systèmes existants:</b>
+                            L’application devra s’intégrer aux systèmes existants de la ville et des partenaires privés. Des incompatibilités techniques ou des retards dans les intégrations pourraient affecter la qualité et la disponibilité des informations affichées aux résidents, réduisant ainsi la fiabilité du service.
+                            </li>
                     </ol>
                 </div>
 
                 <div>
                     <h3 class="subsection-title">Besoins non-fonctionnelles</h3>
                     <ol class="nf-requirements">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                        <li><b>Performance:</b>
+                            L’application doit être capable de répondre rapidement aux requêtes des utilisateurs, notamment lors de la consultation ou de la recherche des travaux. Des temps de réponse rapides sont essentiels pour garantir une expérience utilisateur fluide, même en cas de forte utilisation.</li>
+
+                        <li><b>Sécurité:</b>
+                            Les données personnelles des utilisateurs doivent être protégées de manière rigoureuse, avec un chiffrement fort et des mécanismes d’authentification sécurisée. La sécurité est cruciale pour éviter tout risque de fuite ou de violation de données sensibles.
+                            </li>
+                        <li><b>Compatibilité multiplateforme:</b>
+                            L’application doit être accessible depuis une variété de dispositifs (iOS, Android, navigateurs web), avec une interface adaptable à différentes tailles d’écran. Cette compatibilité est essentielle pour toucher un large public de résidents, indépendamment de leur appareil.</li>
+                            
+                        <li><b>Facilité de maintenance:</b>
+                            Le code doit être bien structuré et documenté afin de faciliter l’ajout de nouvelles fonctionnalités, la correction de bugs et la gestion des mises à jour. Une bonne maintenabilité garantit que l’application pourra évoluer efficacement à long terme.</li>
+
+                        <li><b>Disponibilité:</b> L’application doit être accessible à tout moment, avec un taux de disponibilité élevé (99,5 % ou plus). Les interruptions de service doivent être minimisées, surtout lors des moments critiques, pour assurer que les résidents puissent toujours consulter les informations.
+                        </li>
                     </ol>
                 </div>
                 
                 <div>
                     <h3 class="subsection-title">Besoins matériels</h3>
                     <p>
-                        <em>Description et justification des ressourcs nécessaires pour le projet...</em>
+                        <em><b>1. Serveurs cloud </b>
+
+                            <br>Nous aurons besoin de serveurs hébergés sur des services cloud (comme AWS, Azure ou Google Cloud) pour héberger l’application et la base de données. Cela nous permet de bénéficier d’une haute disponibilité et d’une mise à l’échelle facile en fonction du nombre d’utilisateurs.
+                            
+                            <b>2. Base de données relationnelle</b>
+                            
+                            <br>Une base de données relationnelle, telle que PostgreSQL ou MySQL, est nécessaire pour stocker les informations structurées comme les utilisateurs, les travaux et les notifications. Ces bases sont robustes et assurent l’intégrité des données.
+                            </em>
                     </p>
                 </div>
 
                 <div>
                     <h3 class="subsection-title">Solution de stockage</h3>
                     <p>
-                        <em>Description de votre solution de stockage...</em>
+                        <em>Nous allons utiliser une base de données relationnelle simple comme MySQL ou PostgreSQL pour stocker toutes les informations de l’application.
+                            
+                                •Utilisation : Toutes les données comme les informations des utilisateurs (nom, courriel), les détails des travaux (type de travaux, adresse, dates), et les notifications seront stockées dans des tableaux organisés de manière structurée.</em>
                     </p>
                 </div>
 
@@ -1601,7 +1745,7 @@
                     <h3 class="subsection-title">Solution d'intégration</h3>
 
                     <p>
-                        <em>Description de votre solution d'intégration...</em>
+                        <em>Pour l’intégration de l’application MaVille avec les systèmes existants, comme Info-Entraves et les services de la ville concernant les travaux, nous opterons pour l’utilisation d’API REST. Cela permettra de récupérer en temps réel toutes les informations nécessaires sur les travaux en cours ou à venir. L’enjeu principal sera de garantir que les données fournies par ces API soient fiables, bien structurées et facilement intégrables à notre base de données. Nous devrons nous assurer de la compatibilité des formats utilisés, comme le JSON ou XML, pour faciliter l’échange de données. Il faudra également prévoir des tests réguliers pour s’assurer que l’intégration se fait sans accroc et que les informations affichées aux utilisateurs sont toujours à jour. En parallèle, nous devrons anticiper les cas d’indisponibilité des systèmes externes en mettant en place des mécanismes de gestion des erreurs, afin que l’application puisse continuer à fonctionner de manière fluide malgré tout.</em>
                     </p>
                 </div>
             </section>
@@ -1624,5 +1768,4 @@
         </p>
     </footer>
 </body>
-
 </html>

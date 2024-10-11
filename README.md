@@ -10,7 +10,7 @@ offrira comme expérience utilisateur.
 Au niveau de la structure du rapport où tous les éléments décrits plus hauts sont
 présents, vous trouverez en premier lieu la présentation de notre équipe ensuite 
 au niveau du cadre du projet: une introduction du projet, l'échéancier de notre 
-distribution de tâches, les exigences avec le glossaire, le diagramme de cas 
+distribution de tâches, les hypothèses faites, les exigences avec le glossaire, le diagramme de cas 
 d'utilisation, les scénarios puis les diagrammes d'activités.
 
 Pour ensuite trouver la partie analyse comportant tout ce qui est risques, besoins fonctionnels et non-fonctionnels, solution de stockage et d'intégration.

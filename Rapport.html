@@ -668,7 +668,7 @@
 
                 <h3 class="subsection-title">Scénarios</h3>
                 <h3>Scénarios concernant le résident</h3>
-
+                
                                         <!-- CUS POUR LE RÉSIDENT -->
 
                 <!-- CU : inscription à MaVille en tant que résident -->
@@ -729,11 +729,11 @@
                                 <li class="scenario-alt-step" value="3">
                                     Le champ est vide.
                                     <ol class="bare-list">
-                                        <li value="3">Le système affiche un message d'erreur si l'utilisateur n'entre pas une information obligatoire : Veuillez rempli le champ.
+                                        <li value="3">Le système affiche un message d'erreur si l'utilisateur n'entre pas une information obligatoire : Veuillez remplir le champ.
                                         </li>
                                         <li value="3">L'utilisateur entre l'information demandée.</li>
                 
-                                        <li value="3">Le scénario reprend à l'étape 4.</li>
+                                        <li value="3">Le scénario reprend à l'étape 3.</li>
                                     </ol>
                                 </li>
                             
@@ -744,7 +744,7 @@
                                         </li>
                                         <li value="3">L'utilisateur entre l'information conforme aux validations.</li>
                 
-                                        <li value="3">Le scénario reprend à l'étape 4.</li>
+                                        <li value="3">Le scénario reprend à l'étape 3.</li>
                                     </ol>
                                 </li>
                             </ol>
@@ -796,19 +796,12 @@
                             <li class="scenario-main-step">Le résident choisit l'option Consulter les travaux en cours ou à venir dans le menu principal.</li>
                             <li class="scenario-main-step">Le système affiche la liste des travaux en cours.</li>
                             
-                            <li class="scenario-main-step">Le résident choisit de filtrer ou non la liste des travaux.</li>
-                            <ul>
-                                <li class="scenario-main-step">3.1 Le résident choisit de filtrer la liste des travaux.</li>
-                                <ul>
-                                    <li class="scenario-main-step">3.1.1 Le résident choisit les filtres voulus.</li>
-                                    <li class="scenario-main-step">3.1.2 Le système affiche la liste des travaux en fonction des filtres.</li>
-                                </ul>
+                                <li class="scenario-main-step">Le résident choisit de filtrer la liste des travaux.</li>
                                 
-                                <li class="scenario-main-step">3.2 Le résident choisit de ne pas filtrer la liste des travaux.</li>
-                                <ul>
-                                    <li class="scenario-main-step">3.2.1 Le système affiche la liste des travaux en cours.</li>
-                                </ul>
-                            </ul>
+                                    <li class="scenario-main-step">Le résident choisit les filtres voulus.</li>
+                                    <li class="scenario-main-step">Le système affiche la liste des travaux en fonction des filtres.</li>
+                                
+                            
                         
                             <li class="scenario-main-step"> Le résident parcourt la liste des travaux.</li>
                         </ol>
@@ -816,14 +809,27 @@
                         <div class="scenario-alt">
                             <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
                             <ol class="bare-list scenario-alt-steps">
-                                <li class="scenario-alt-step" value="3.1">
-                                    L'utilisateur choisit un filtre non existant.
+
+
+  
+                                <li class="scenario-alt-step" value="3">
+                                    L'utilisateur choisist de ne pas filtrer sa consultation
                                     <ol class="bare-list">
-                                        <li value="3">Le système affiche Filtre invalide.</li>
-                                        <li value="3">Le résident choisit de corriger le filtre ou de revenir à la liste des travaux.</li>
-                                        <li value="3">Le scénario reprend à l'étape 3.1.</li>
+                                        <li value="3">Le système affiche la liste des travaux en cours.</li>
+                                        <li value="3">Le scénario se termine.</li>
                                     </ol>
                                 </li>
+
+
+
+                                <li class="scenario-alt-step" value="4">
+                                    L'utilisateur choisit un filtre inexistant.
+                                    <ol class="bare-list">
+                                        <li value="4">Le système affiche Filtre invalide.</li>
+                                        <li value="4">Le résident choisit de corriger le filtre ou de revenir à la liste des travaux.</li>
+                                        <li value="4">Le scénario reprend à l'étape 4.</li>
+
+
                             </ol>
                         </div>
                     </div>
@@ -1200,7 +1206,7 @@
 
                         <div class="scenario-alt">
                             <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
-                            Aucun. 
+                            <p>Aucun.</p> 
                         </div>
                     </div>
                 </div>
@@ -1383,6 +1389,30 @@
                                     <ol class="bare-list">
                                         <li value="2">Le système affiche Utilisateur non éligible.</li>
                                         <li value="2">Le scénario se termine.</li>
+
+
+                                        <li class="scenario-alt-step" value="3">
+                                            Le champ est vide.
+                                            <ol class="bare-list">
+                                                <li value="3">Le système affiche un message d'erreur si l'utilisateur n'entre pas une information obligatoire : Veuillez remplir le champ.
+                                                </li>
+                                                <li value="3">L'utilisateur entre l'information demandée.</li>
+                        
+                                                <li value="3">Le scénario reprend à l'étape 3.</li>
+                                            </ol>
+                                        </li>
+                                    
+                                        <li class="scenario-alt-step" value="3">
+                                            L'information n'est pas valide.
+                                            <ol class="bare-list">
+                                                <li value="3">Le système affiche un message d'erreur si l'utilisateur entre une information invalide : L'information ne peut pas être validée.
+                                                </li>
+                                                <li value="3">Le système propose à l'utilisateur d'entrer l'information de nouveau..</li>
+                                                <li value="3">L'utilisateur entre l'information de nouveau.</li>
+                        
+                                                <li value="3">Le scénario reprend à l'étape 3.</li>
+
+
                                     </ol>
                                 </li>
                             </ol>
@@ -1631,7 +1661,7 @@
                                 <li class="scenario-alt-step" value="3">
                                     La saisie est vide
                                     <ol class="bare-list">
-                                        <li value="3">Le système affiche un message d'erreur si l'utilisateur n'entre pas d'informations : Veuillez rempli le champ.
+                                        <li value="3">Le système affiche un message d'erreur si l'utilisateur n'entre pas d'informations : Veuillez remplir le champ.
                                         </li>
                                         <li value="3">L'utilisateur entre l'information demandée.</li>
                 
@@ -1662,6 +1692,8 @@
                         </div>
                     </div>
                 </div>
+
+                                     
 
                 <h3 class="subsection-title">Diagramme d'activités</h3>
                 <div class="activity">
@@ -1762,13 +1794,13 @@
                         <li>Compte résident:
                             <ul>
                                 <li>Adresse courriel : bob.dupont@gmail.com</li>
-                                <li>Mot de passe : M0tdepasse24$</li>
+                                <li>Mot de passe : M0tdepasse2024$</li>
                             </ul>
                         </li>
                         <li>Compte intervenant:
                             <ul>
                                 <li>Adresse courriel : marie.habib@gmail.com</li>
-                                <li>Mot de passe : Securit3%</li>
+                                <li>Mot de passe : Securit31%</li>
                             </ul>
                         </li>
                     </ol>

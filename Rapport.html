@@ -511,7 +511,7 @@
                     fonctionnels et les risques de l’application est présentée. Enfin, des indications sur l’utilisation
                     d’un prototype sont offertes à la fin et ce, dans le but d’avoir une idée de ce que Ma Ville 
                     offrira comme expérience utilisateur.
-
+                    Pour la bonne visualisation facilitée de tous les diagrammes, veuillez réduire le zoom à 50%.
                 </p>
             </div>
 
@@ -573,6 +573,7 @@
                         <ul class="bare-list nav-item-details">
                             <li class="dash">Introduction</li>
                             <li class="dash">Échéancier</li>
+                            <li class="dash">Hypothèses</li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -637,6 +638,20 @@
                                                              ####################################### (Implémentation et tests)
                                                                   ######      ###   ###   ##   ##   ## (Documentation)
                             </pre>  
+                </p>
+
+                <h3 class="subsection-title">Hypothèses</h3>
+                <p>
+                    <em>Présentation des hypothèses faites dans l'élaboration des exigences et l'analyse : <br>
+                    <li> Pour la recherche des travaux, le résident peut avoir accès aux travaux terminés donc peut consulter l'historique des travaux finis d'où le choix 
+                d'isoler le CU recherche des travaux avec le CU consulter les travaux </li>
+                    <li> Avant de soumettre un nouveau projet ou sa candidature l‘intervenant check forcément les préférences de plages horaires 
+                        des résidents car c’est bien le but de l’application et de la plannification participative. D'où le choix des relations include</li>  
+                    <li> Quand les intervenants veulent soumettre un nouveau projet: les résidents n’ont pas vraiment leur mot à dire à part préciser à l’avance leur préférence d’horaires
+                        pour que les intervenants puisse s'y adapter au meilleur des cas
+                    </li>
+                    <li> Le résident a accès à la liste de requêtes de travail qu’il a déposé et que les autres résidents de son quartier ont déposé aussi pour éviter de poser la même 
+                        requête 2 fois dans le même quartier  </li></em>
                 </p>
             </section>
 
@@ -719,8 +734,8 @@
                     <p class="use-case-notes">
                         <em>
                             Notes à propos du diagramme <br>
-                            - choix des acteurs <br>
-                            - choix des relations
+                            - choix des acteurs: Résident et Intervenant en tant qu'acteurs pricipaux et service des infrastructures comme secondaire<br>
+                            - choix des relations: utilisation d'include et extends 
                         </em>
                     </p>
                 </div>
@@ -1300,11 +1315,7 @@
                                 <li class="dash">Le problème signalé est enregistré dans la base de donnée du système.</li>
                             </ul>
                         </div>
-                        
-                        <div class="cu-part cu-part--notes">
-                            <h5 class="cu-part-title">Notes</h5>
-                            <p class="cu-notes">Notes additionnelles et hypothèses</p>
-                        </div>
+                       
                     </div>
                     <div class="scenario-main">
                         <h5 class="scenario-main-title">Scénario principal</h5>
@@ -1363,10 +1374,6 @@
                             </ul>
                         </div>
                         
-                        <div class="cu-part cu-part--notes">
-                            <h5 class="cu-part-title">Notes</h5>
-                            <p class="cu-notes">Notes additionnelles et hypothèses</p>
-                        </div>
                     </div>
                     <div class="scenario-main">
                         <h5 class="scenario-main-title">Scénario principal</h5>
@@ -1954,15 +1961,42 @@
                 </div>
 
                                      
-
                 <h3 class="subsection-title">Diagramme d'activités</h3>
                 <div class="activity">
-                    <h4>Titre du diagramme 1</h4>
-                    <img class="activity-diagram" src="images/activity_diagram.svg" alt="Diagramme d'activités">
+                    <h4>Diagramme Principal du Menu Principal et Authentification</h4>
+                    <img class="activity-diagram" src="diagrammes/diagramme_principal.svg" alt="Diagramme d'activités">
                 </div>
                 <div class="activity">
-                    <h4>Titre du diagramme 2</h4>
-                    <img class="activity-diagram" src="images/activity_diagram.svg" alt="Diagramme d'activités">
+                    <h4>Diagramme d'activité: Recherche des travaux</h4>
+                    <img class="activity-diagram" src="diagrammes/recherche_travaux.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Consulter les travaux en cours ou à venir</h4>
+                    <img class="activity-diagram" src="diagrammes/consulter_liste.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Soumettre une requête de travail</h4>
+                    <img class="activity-diagram" src="diagrammes/soumettre_requete.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Faire le suivi d'une reqûete de travail</h4>
+                    <img class="activity-diagram" src="diagrammes/suivi_requete.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Fournir des préférences de plages horaires</h4>
+                    <img class="activity-diagram" src="diagrammes/plannification.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Partager un avis sur les travaux ou un intervenant</h4>
+                    <img class="activity-diagram" src="diagrammes/partager_avis.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Consulter et personnaliser les notifications</h4>
+                    <img class="activity-diagram" src="diagrammes/notifications.svg" alt="Diagramme d'activités">
+                </div>
+                <div class="activity">
+                    <h4>Diagramme d'activité: Signaler un problème à la ville</h4>
+                    <img class="activity-diagram" src="diagrammes/signalement.svg" alt="Diagramme d'activités">
                 </div>
             </section>
 

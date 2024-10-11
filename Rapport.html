@@ -813,7 +813,7 @@
 
   
                                 <li class="scenario-alt-step" value="3">
-                                    L'utilisateur choisist de ne pas filtrer sa consultation
+                                    L'utilisateur choisit de ne pas filtrer sa consultation
                                     <ol class="bare-list">
                                         <li value="3">Le système affiche la liste des travaux en cours.</li>
                                         <li value="3">Le scénario se termine.</li>
@@ -826,7 +826,7 @@
                                     L'utilisateur choisit un filtre inexistant.
                                     <ol class="bare-list">
                                         <li value="4">Le système affiche Filtre invalide.</li>
-                                        <li value="4">Le résident choisit de corriger le filtre ou de revenir à la liste des travaux.</li>
+                                        <li value="4">Le résident corrige le filtre.</li>
                                         <li value="4">Le scénario reprend à l'étape 4.</li>
 
 
@@ -1530,18 +1530,221 @@
                         <div class="scenario-alt">
                             <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
                             <ol class="bare-list scenario-alt-steps">
-                                <li class="scenario-alt-step" value="2">
+                                <li class="scenario-alt-step" value="3">
                                     Information manquante dans un champ 
                                     <ol class="bare-list">
-                                        <li value="2">Le système affiche Veuillez remplir ce champ manquant.</li>
-                                        <li value="2">L'intervenant fournit l'information manquante.</li>
-                                        <li value="2">Le scénario reprend à l'étape 2.</li>
+                                        <li value="3">Le système affiche Veuillez remplir ce champ manquant.</li>
+                                        <li value="3">L'intervenant fournit l'information manquante.</li>
+                                        <li value="3">Le scénario reprend à l'étape 2.</li>
                                     </ol>
                                 </li>
                             </ol>
                         </div>
                     </div>
                 </div>
+
+                <!-- Consulter la liste des requêtes -->
+                     <div class="scenario" id="cu-10">
+                        <div class="scenario-meta">
+                            <h4 class="cu-name"><strong>CU:</strong> Consulter la liste des requête
+                            </h4>
+                            <p class="cu-goal">
+                                <strong>Objectif:</strong> Un intervenant souhaite consulter la liste des requête
+                            </p>
+                            
+                            <hr>
+    
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Acteurs</h5>
+                                <ul class="bare-list cu-actors">
+                                    <li class="cu-actor">Intervenant</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Préconditions</h5>
+                                <ul class="bare-list cu-conditions">
+                                    <li class="dash">L'utilisateur est connecté.</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Postconditions</h5>
+                                <ul class="bare-list cu-conditions">
+                                    <li class="dash">Aucun</li>
+                                </ul>
+                            </div>
+                        </div>
+    
+                        <div class="scenario-main">
+                            <h5 class="scenario-main-title">Scénario principal</h5>
+                            <ol class="scenario-main-steps">
+                                <li class="scenario-main-step">L'intervenant choisit l'option Consulter la liste des requêtes de travail dans le menu principal des intervenants.</li>
+                                <li class="scenario-main-step">Le système affiche la liste des requêtes de travail .</li>
+
+                                <li class="scenario-main-step">L'intervenant choisit de filtrer la liste des requêtes.</li>
+                                
+                                    <li class="scenario-main-step">L'intervenant choisit les filtres voulus (type, quartier, par date de début.).</li>
+                                    <li class="scenario-main-step">Le système affiche la liste des requêtes en fonction des filtres.</li>
+                                    <li class="scenario-main-step"> L'intervenant parcourt la liste des requête.</li>
+                            </ol>
+    
+                            <div class="scenario-alt">
+                                <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
+                                <ol class="bare-list scenario-alt-steps">
+                                    <li class="scenario-alt-step" value="3">
+                                        L'utilisateur choisit de ne pas filtrer sa consultation
+                                        <ol class="bare-list">
+                                            <li value="3">Le système affiche la liste des travaux en cours.</li>
+                                            <li value="3">Le scénario se termine.</li>
+                                        </ol>
+                                    </li>
+    
+    
+    
+                                    <li class="scenario-alt-step" value="4">
+                                        L'utilisateur choisit un filtre inexistant.
+                                        <ol class="bare-list">
+                                            <li value="4">Le système affiche Filtre invalide.</li>
+                                            <li value="4">L'intervenant corrige le filtre.</li>
+                                            <li value="4">Le scénario reprend à l'étape 4.</li>
+
+                                </ol>
+                            </div>
+                        </div>
+                    </div>     
+
+                <!-- Soumettre sa candidature pour une rêquete de travail -->
+                    <div class="scenario" id="cu-10">
+                        <div class="scenario-meta">
+                            <h4 class="cu-name"><strong>CU:</strong> Soumettre sa candidature pour une rêquete de travail
+                            </h4>
+                            <p class="cu-goal">
+                                <strong>Objectif:</strong> Un intervenant souhaite soumettre sa candidature pour une rêquete de travail
+                            </p>
+                            
+                            <hr>
+    
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Acteurs</h5>
+                                <ul class="bare-list cu-actors">
+                                    <li class="cu-actor">Intervenant</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Préconditions</h5>
+                                <ul class="bare-list cu-conditions">
+                                    <li class="dash">L'utilisateur est connecté.</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Postconditions</h5>
+                                <ul class="bare-list cu-conditions">
+                                    <li class="dash"> La candidature pour une rêquete de travail est enregistré dans le système. </li>
+                                </ul>
+                            </div>
+                        </div>
+    
+                        <div class="scenario-main">
+                            <h5 class="scenario-main-title">Scénario principal</h5>
+                            <ol class="scenario-main-steps">
+                                <li class="scenario-main-step">L'intervenant choisit l'option Consulter la liste des requêtes de travail dans le menu principal des intervenants.</li>
+                                <li class="scenario-main-step">Le système affiche la liste des requêtes de travail .</li>
+                                <li class="scenario-main-step">L'intervenant sélectionne une rêquete.</li>
+                                <li class="scenario-main-step">Le système affiche en bas de la rêquete Souhaitez-vous soumettre une candidature .</li>
+                                    <li class="scenario-main-step">L'intervenant choisit de soumettre sa candidature.</li>
+                                    <li class="scenario-main-step">Le système demande la date de début et de fin prévues.</li>
+                                    <li class="scenario-main-step"> L'intervenant entre l'information demandée.</li>
+                                    <li class="scenario-main-step">Le système enregistre la candidature et envoie un message de confirmation.</li>
+                            </ol>
+    
+                            <div class="scenario-alt">
+                                <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
+                                <ol class="bare-list scenario-alt-steps">
+                                    <li class="scenario-alt-step" value="7">
+                                        L'intervenant n'entre pas d'information.
+                                        <ol class="bare-list">
+                                            <li value="7">Le système affiche Veuillez remplir le champ manquant.</li>
+                                            <li value="7">Le résident fournit l'information manquante.</li>
+                                            <li value="7">Le scénario reprend à l'étape 7.</li>
+                                        </ol>
+                                    </li>  
+
+                                </ol>
+                            </div>
+                        </div>
+                    </div>    
+
+
+                
+                    <!-- Consulter les préférences des résidents -->
+                    <div class="scenario" id="cu-10">
+                        <div class="scenario-meta">
+                            <h4 class="cu-name"><strong>CU:</strong> Consulter les préférences des résidents
+                            </h4>
+                            <p class="cu-goal">
+                                <strong>Objectif:</strong> Un intervenant souhaite Consulter les préférences des candidats en matière de rêquetes
+                            </p>
+                            
+                            <hr>
+    
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Acteurs</h5>
+                                <ul class="bare-list cu-actors">
+                                    <li class="cu-actor">Intervenant</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Préconditions</h5>
+                                <ul class="bare-list cu-conditions">
+                                    <li class="dash">L'utilisateur est connecté.</li>
+                                   
+                                </ul>
+                            </div>
+                            
+                            <div class="cu-part">
+                                <h5 class="cu-part-title">Postconditions</h5>
+                                <ul class="bare-list cu-conditions">
+                                    <li class="dash"> Aucun. </li>
+                                </ul>
+                            </div>
+                        </div>
+    
+                        <div class="scenario-main">
+                            <h5 class="scenario-main-title">Scénario principal</h5>
+                            <ol class="scenario-main-steps">
+                                <li class="scenario-main-step">L'intervenant choisit l'option Consulter la liste des rêquetes de travail ou Soumettre un nouveau projet de travaux dans le menu principal des intervenants.</li>
+                                 <li class="scenario-main-step">Quelle que soit l'option choisie, la question : Souhaitez-vous consulter les préférences des résidents? est affichée par le système.</li>
+                                <li class="scenario-main-step">L'intervenant entre dans un champ prévu à cet effet: Oui .</li>
+
+                                <li class="scenario-main-step">Le système affiche les préférences des résidents en ce qui concerne la date de début.</li>
+                                
+                              
+                            </ol>
+    
+                            <div class="scenario-alt">
+                                <h5 class="scenario-alt-title">Scénarios alternatifs</h5>
+                                <ol class="bare-list scenario-alt-steps">
+                                    <li class="scenario-alt-step" value="4">
+                                        Aucune préférence de la part des résidents
+                                        <ol class="bare-list">
+                                            <li value="4">Le système affiche Aucune préférence.</li>
+                                        
+                                            <li value="4">Le scénario se termine.</li>
+                                        </ol>
+                                    </li>
+    
+                            
+
+                                </ol>
+                            </div>
+                        </div>
+                    </div>   
+
+
 
                 <!-- Scénarios concernant tous les utilisateurs -->
                 <h3> Scénarios concernant tous les utilisateurs </h3>

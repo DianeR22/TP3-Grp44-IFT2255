@@ -113,10 +113,11 @@ public class Intervenant extends Utilisateur {
         System.out.println("Vous êtes connecté!");
 
         System.out.println("\nMenu Intervenant :");
-        System.out.println("1. Consulter la liste des requêtes de travail");
-        System.out.println("2. Soumettre un nouveau projet de travaux");
-        System.out.println("3. Mettre à jour les informations d'un chantier");
-        System.out.println("4. Retourner au menu principal");
+        System.out.println("1. Modifier son profil");
+        System.out.println("2. Consulter la liste des requêtes de travail");
+        System.out.println("3. Soumettre un nouveau projet de travaux");
+        System.out.println("4. Mettre à jour les informations d'un chantier");
+        System.out.println("5. Retourner au menu principal");
 
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();

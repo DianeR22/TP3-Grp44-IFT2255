@@ -14,13 +14,13 @@ Disclaimer : Tout ce qui est mentionné dans le feedback sont les points et les 
 ## Scénarios
 
 - Lorsqu'un CU (1) est désigné comme un <<include>> à un autre CU (2), alors le CU (1) doit être la première étape du scénario du CU (2), pas une précondition. Donc la connexion à un compte résident/intervenant doit être la première étape de tous les autres scénarios.
-- Il faut un noeud de fusion après le choix de se connecter en tant que résident ou en tant qu'intervenant, ou s'inscrire.
 - Dans "Faire le suivi d'une requête de travail", "Planification de début de projet" et "Début de projet" sont des étapes invalides, car non seulement c'est l'intervenant qui s'en charge, mais ça sort également du cadre du cas d'utilisation.
 
 ## Diagramme d'activités
 
-Bien!
-
+- Il faut un noeud de fusion après le choix de se connecter en tant que résident ou en tant qu'intervenant, ou s'inscrire.
+- Il y a des noeuds de décision qui créent des boucles potentiellement infinies. Il faut éviter ça.
+  
 ## Analyse
 
 ### Risques

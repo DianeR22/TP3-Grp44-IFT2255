@@ -11,8 +11,6 @@ public class ConnexionView {
     // Affichage du menu principal à l'utilisateur
     public static void afficherMenuPrincipal() {
 
-        Scanner scanner = new Scanner(System.in);
-
         System.out.println("Bienvenue sur l'application MaVille !");
         System.out.println("\nMenu principal:");
         System.out.println("1. Se connecter en tant que résident");
@@ -26,7 +24,11 @@ public class ConnexionView {
         // Création d'une instance d'intervenant avec le constructeur sans argument
         Intervenant intervenant = new Intervenant();
 
+        Scanner scanner = new Scanner(System.in);
+        // Choix de l'utilisateur
         String choix = scanner.nextLine();
+
+        // Traiter le choix de l'utilisateur
         ConnexionController.traiterChoix(choix, resident, intervenant);
 
     }

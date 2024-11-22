@@ -1,26 +1,24 @@
 import Controller.ConnexionController;
+import Model.GestionCandidatures;
 import Model.GestionIntervenants;
 import Model.GestionRequete;
 import Model.GestionResidents;
+import View.RequeteView;
 
 public class MaVilleApp {
     public static void main(String[] args) {
 
-        // Initialiser les requêtes
-        GestionRequete.initialiserRequetes();
-        // Initiliser les residents
-        GestionResidents.initialiserResidents();
-        // Initialiser les intervenants
-        GestionIntervenants.initialiserIntervenants();
+        // Charger les requêtes, les intervenants et les résidents initialisés
+        GestionRequete.chargeRequetes();
+        GestionResidents.chargeResidents();
+        GestionIntervenants.chargeIntervenants();
 
+        // Aucune candidature pour le moment
+        GestionCandidatures.chargeCandidatures();
 
-        // Afficher le menu et obtenir le input de l'utilisateur nécessaires
+        // Afficher le menu et obtenir le input de l'utilisateur nécessaire
         while (true) {
             ConnexionController.afficherMenuPrincipal();
-
-
         }
-
-
-
-}}
+    }
+}

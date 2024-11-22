@@ -1,24 +1,18 @@
 package Model;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
-class RequeteTest {
-
-
-    @BeforeEach
-    public void setup() {
-        // Réinitialiser l'état avant chaque test en vidant la liste
-        GestionRequete.viderListe();
-    }
+public class RequeteTest {
 
     @Test
-    void soumettreRequete() {
+    public void soumettreRequete() {
+        // Réinitialiser l'état avant chaque test en vidant la liste
+        GestionRequete.viderListe();
 
         // Créer une requête avec des caractéristiques données
-        Requete.soumettreRequete("Réparation de route", "Routes endommagées à cause de nids de poules", "Entretien de route", "02/01/2025");
+        GestionRequete.soumettreRequete("Réparation de route", "Routes endommagées à cause de nids de poules", "Entretien de route", "02/01/2025");
 
         // La liste, qui a été vidée, doit avoir une size de 1 après l'ajout d'une requête
         assertEquals(1, GestionRequete.getListeRequetes().size());
@@ -28,6 +22,8 @@ class RequeteTest {
 
         // Tester les caractéristiques attendues de la requête
         assertEquals("Réparation de route", requete.getTitreTravail());
+        assertEquals("Routes endommagées à cause de nids de poules", requete.getDescription());
+        assertEquals("Entretien de route", requete.getTypeTravaux());
         assertEquals("02/01/2025", requete.getDebut());
     }
 

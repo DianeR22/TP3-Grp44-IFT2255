@@ -6,8 +6,8 @@ import Model.Resident;
 import View.ConnexionView;
 public class ConnexionController {
 
-    // Faire appel à afficherMenuPrincipal pour mettre de la vue connexion
-    // (ConnexionView) pour afficher le menu principal la connexion
+    // Faire appel à afficherMenuPrincipal pour mettre la vue connexion
+    // (ConnexionView) afin d'afficher le menu principal la connexion
     public static void afficherMenuPrincipal(){
         ConnexionView.afficherMenuPrincipal();
     }

@@ -1,4 +1,5 @@
 package Controller;
+import Model.Resident;
 import View.ResidentView;
 
 public class ResidentController {

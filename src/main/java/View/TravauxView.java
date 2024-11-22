@@ -12,7 +12,7 @@ public class TravauxView {
     public static void afficherMenu(Scanner scanner) {
 
         while (true) {
-            // Menu principal pour consulter les travaux
+            // Menu principal pour consulter les travaux pour le résident
             System.out.println("---- Menu des Travaux en Cours ou à Venir ----");
             System.out.println("1. Filtrer par quartier");
             System.out.println("2. Filtrer par type de travaux");
@@ -45,6 +45,7 @@ public class TravauxView {
         }
     }
 
+    // Afficher par quartier
     public static void afficherTravauxParQuartier(Scanner scanner){
         System.out.println("Veuillez entrer le quartier souhaité: ");
         String filtre = scanner.nextLine();
@@ -52,6 +53,7 @@ public class TravauxView {
 
     }
 
+    // Afficher par type
     public static void afficherTravauxParType(Scanner scanner){
         System.out.println("Veuillez entrer le type souhaité:");
         String filtre = scanner.nextLine();
@@ -59,13 +61,14 @@ public class TravauxView {
 
     }
 
-    // Afficher tous les travaux
+    // Aucun filtrage
     public static void afficherTousLesTravaux(Scanner scanner) {
         System.out.println("Voici la liste de tous les travaux en cours ou a venir: ");
         serviceAPI.recupererTravaux(0, null);  // 0 pour afficher tous les travaux
 
     }
 
+    // Permet à l'utilisateur de revenir en arrière au besoin
     private static void retour(Scanner scanner){
         System.out.println("Voulez-vous revenir au menu des travaux en cours (1) ou retourner au menu des résidents (2)?. Veuillez repondre par 1 ou par 2.");
         String reponse = scanner.nextLine();

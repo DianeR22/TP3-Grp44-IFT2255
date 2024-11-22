@@ -4,12 +4,13 @@ import Controller.ConnexionController;
 import Controller.EntraveController;
 import Controller.RequeteController;
 import Controller.TravauxController;
+import Model.Resident;
 
 import java.util.Scanner;
 
 public class ResidentView {
 
-    // Méthode qui n'a pas de valeur de retour et qui affiche le menu d'un résident
+    // Méthode qui affiche le menu d'un résident
     public static void afficherMenuResident() {
         System.out.println("Vous êtes connecté!");
 
@@ -34,7 +35,8 @@ public class ResidentView {
         switch (input) {
             case "1":
                 // Modifier le profil (non définie ici)
-                System.out.println("Modifier votre profil...");
+                System.out.println("Option non implémentée");
+                retour(scanner);
                 break;
             case "2":
                 // Option pour consulter les travaux en cours ou à venir
@@ -43,15 +45,18 @@ public class ResidentView {
                 break;
             case "3":
                 // Option pour rechercher des travaux (non définie ici)
-                System.out.println("Recherche des travaux...");
+                System.out.println("Option non implémentée");
+                retour(scanner);
                 break;
             case "4":
                 // Notifications (non définie ici)
-                System.out.println("Consulter vos notifications...");
+                System.out.println("Option non implémentée");
+                retour(scanner);
                 break;
             case "5":
                 // Permettre une planification participative (non définie ici)
-                System.out.println("Planification participative...");
+                System.out.println("Option non implémentée");
+                retour(scanner);
                 break;
             case "6":
                 // Soumettre une requête de travail
@@ -60,11 +65,13 @@ public class ResidentView {
                 break;
             case "7":
                 // Signaler un problème (non définie ici)
-                System.out.println("Signaler un problème à la ville...");
+                System.out.println("Option non implémentée");
+                retour(scanner);
                 break;
             case "8":
                 // Laisser un avis (non définie ici)
-                System.out.println("Laisser un avis...");
+                System.out.println("Option non implémentée");
+                retour(scanner);
                 break;
 
             case "9":
@@ -73,11 +80,9 @@ public class ResidentView {
                 retour(scanner);
                 break;
             case "10":
-                // Retourner au menu principal
                 ConnexionController.afficherMenuPrincipal();
                 break;
             default:
-                // Si l'option est invalide
                 System.out.println("Option invalide. Veuillez essayer à nouveau.");
         }
         }

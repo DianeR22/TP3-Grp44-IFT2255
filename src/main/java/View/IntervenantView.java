@@ -1,12 +1,14 @@
 package View;
 
 import Controller.ConnexionController;
+import Controller.IntervenantController;
 import Controller.RequeteController;
 
 import java.util.Scanner;
 
 public class IntervenantView {
     public static void afficherMenuIntervenant() {
+
         while(true){
         System.out.println("Vous êtes connecté!");
 
@@ -30,7 +32,7 @@ public class IntervenantView {
                 break;
             case "2":
                 // Option pour consulter la liste des requêtes de travail
-                RequeteController.afficherRequetes();
+                IntervenantController.afficherMenuRequete();
                 retour(scanner);
                 break;
             case "3":

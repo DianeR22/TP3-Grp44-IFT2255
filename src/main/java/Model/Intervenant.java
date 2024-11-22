@@ -8,6 +8,9 @@ public class Intervenant extends Utilisateur {
     private String identifiantVille;
     private Intervenant intervenant;
 
+    // Variable statique pour l'intervenant connecté
+    private static Intervenant intervenantConnecte;
+
     // Constructeur avec arguments, certains sont hérités de la classe utilisateur
     public Intervenant(String nom, String prenom, String adresseCourriel, String motDePasse, String type, String identifiantVille) {
         super(nom, prenom, motDePasse, adresseCourriel);
@@ -21,6 +24,7 @@ public class Intervenant extends Utilisateur {
     }
 
     // Getter et setter
+
     public String getType() {
         return type;
     }
@@ -37,6 +41,21 @@ public class Intervenant extends Utilisateur {
         this.identifiantVille = identifiantVille;
     }
 
+    public Intervenant getIntervenant() {
+        return intervenant;
+    }
+
+    public void setIntervenant(Intervenant intervenant) {
+        this.intervenant = intervenant;
+    }
+
+    public static Intervenant getIntervenantConnecte() {
+        return intervenantConnecte;
+    }
+
+    public static void setIntervenantConnecte(Intervenant intervenant) {
+        Intervenant.intervenantConnecte = intervenant;
+    }
 
     // Méthode inscription qui collecte les informations nécessaires à l'inscription de l'intervenant
     @Override
@@ -61,6 +80,8 @@ public class Intervenant extends Utilisateur {
         // L'identifiant de la ville de l'intervenant est entré puis validé
         identifiantVille = obtenirIdentifiantVille();
 
+        // Ajouter le résident à la liste et sauvegarder
+        GestionIntervenants.ajouterIntervenant(this);
 
         System.out.println("Vous êtes inscrit!");
         afficherInformations();
@@ -153,28 +174,5 @@ public class Intervenant extends Utilisateur {
             System.exit(0);
         }
     }
-
-    // Méthode qui permet à l'intervenant de soumettre une candidature. Elle prend
-    // en paramètres la requête à laquelle postule l'intervenant et l'intervenant lui-même
-    // et n'a pas de valeur de retour
-    public static void soumettreCandidature(Requete requete, Intervenant intervenant){
-
-        // Récupérer le input de l'utilisateur
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Entrez la requête pour laquelle vous soumettez votre candidature: ");
-        String requeteChoisie = scanner.nextLine();
-
-        System.out.println("Entrez la date de début : ");
-        String dateDebut = scanner.nextLine();
-
-        System.out.println("Entrez le type de fin : ");
-        String dateFin = scanner.nextLine();
-
-        // Associer l'intervenant à la requête
-        requete.setIntervenant(intervenant);
-        System.out.println("Votre candidature a été soumise avec succès pour la requête: " + requete.getTitreTravail());
-    }
-
 
 }

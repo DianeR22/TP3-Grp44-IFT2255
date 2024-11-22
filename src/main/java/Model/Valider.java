@@ -19,12 +19,12 @@ public class Valider {
 
     private static final Pattern IDENTIFIANT = Pattern.compile("\\d{8}");
 
-    // Model.Valider le numéro de téléphone entré, il peut y avoir des tiret ou des espaces entre les blocs de numéros
+    // Valider le numéro de téléphone entré, il peut y avoir des tiret ou des espaces entre les blocs de numéros
     public static boolean validerTel(String numTel) {
         return PHONE_PATTERN.matcher(numTel).matches();
     }
 
-    // Model.Valider la date en format JJ/MM/AAAA
+    // Valider la date en format JJ/MM/AAAA
     public static boolean validerDate(String dateNaissance) {
         return DATE_PATTERN.matcher(dateNaissance).matches();
     }
@@ -54,16 +54,16 @@ public class Valider {
         return period.getYears();
     }
 
-    // Model.Valider le courriel en format local-part@domain
+    // Valider le courriel en format local-part@domain
     public static boolean validerEmail(String adresseCourriel) {
         return EMAIL_PATTERN.matcher(adresseCourriel).matches();
     }
-    // Model.Valider le mot de passe: min 8 caractères et max 20, une majuscule, un caractère spécial et un chiffre
+    // Valider le mot de passe: min 8 caractères et max 20, une majuscule, un caractère spécial et un chiffre
     public static boolean validerMDP(String motDePasse) {
         return PASSWORD.matcher(motDePasse).matches();
     }
 
-    // Model.Valider l'identifier qui doit avoir 8 chiffres
+    // Valider l'identifier qui doit avoir 8 chiffres
     public static boolean validerIdentifiantVille(String identifiant) {
         return IDENTIFIANT.matcher(identifiant).matches();
     }

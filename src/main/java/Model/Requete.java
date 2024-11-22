@@ -19,6 +19,10 @@ public class Requete {
         this.debut = debut;
     }
 
+    // Constructeur sans argument
+    public Requete() {
+    }
+
     // Getter et setter
     public String getTitreTravail() {
         return titreTravail;
@@ -68,19 +72,4 @@ public class Requete {
         this.resident = resident;
     }
 
-
-    @Override
-    public String toString(){
-        return String.format(
-                "Requête de travail : %s\nDescription : %s\nType de travail : %s\nDate de début : %s",
-                titreTravail, description, typeTravaux, debut
-        );
-    }
-
-    // SoumettreRequete permet de créer une requête et de l'ajouter à la liste des requêtes
-    // Elle prend en paramètres toutes les caractéristiques d'une requête en String
-    public static void soumettreRequete(String titreTravail,String description, String typeTravail, String dateDebut){
-        Requete requete = new Requete(titreTravail, description, typeTravail, dateDebut);
-        GestionRequete.ajouterRequete(requete);
-    }
 }

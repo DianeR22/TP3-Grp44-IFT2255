@@ -8,6 +8,11 @@ public class Resident extends Utilisateur {
     private String telephone;
     private String adresse;
 
+    private Scanner scanner;
+    private Resident resident;
+    private Resident residentConnecte;
+
+
     // Constructeur avec arguments, certains sont hérités de la classe utilisateur
     public Resident(String nom, String prenom, String adresseCourriel, String motDePasse, String dateNaissance, String telephone, String adresse) {
         super(nom, prenom, motDePasse, adresseCourriel);
@@ -46,6 +51,26 @@ public class Resident extends Utilisateur {
         this.adresse = adresse;
     }
 
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    public Resident getResident() {
+        return resident;
+    }
+
+    public void setResident(Resident resident) {
+        this.resident = resident;
+    }
+
+    public Resident getResidentConnecte() {
+        return residentConnecte;
+    }
+
+    public void setResidentConnecte(Resident residentConnecte) {
+        this.residentConnecte = residentConnecte;
+    }
+
     // Méthode inscription qui collecte les informations nécessaires à l'inscription du résident
     @Override
     public void inscription() {
@@ -72,12 +97,14 @@ public class Resident extends Utilisateur {
         // L'adresse du résident est entrée et permet de l'associer à un quartier de Montréal.
         adresse = obtenirAdresse();
 
+        // Ajouter le résident à la liste et sauvegarder
+        GestionResidents.ajouterResident(this);
+
         System.out.println("Vous êtes inscrit!");
         afficherInformations();
 
         // Demander au résident s'il souhaite se connecter
         demanderConnexion(scanner);
-        System.out.println("Vous êtes inscrit!");
 
     }
 
@@ -181,11 +208,6 @@ public class Resident extends Utilisateur {
             System.exit(0);
         }
     }
-
-
-
-
-
 
 
 }

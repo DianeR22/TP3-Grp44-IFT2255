@@ -9,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 // Classe qui permet l'utilisation des API pour les travaux et entraves routières
+// Les méthodes suivantes permettent d'afficher les travaux et les entraves (en faisant usage
+// de filtres au besoin)
 public class ServiceAPI {
 
 
@@ -62,7 +64,7 @@ public class ServiceAPI {
                             (typeFiltre == 1 && quartier.equalsIgnoreCase(filtre)) || // Par quartier
                             (typeFiltre == 2 && type.equalsIgnoreCase(filtre))) {  // Par type
 
-                        // Afficher chaque travail de manière lisible et formatée
+                        // Afficher chaque travail
                         System.out.println("\n***********************************");
                         System.out.println("Travail ID : " + travail.getString("id"));
                         System.out.println("Arrondissement : " + quartier);
@@ -145,11 +147,11 @@ public class ServiceAPI {
                             (typeFiltre == 2 && rue.equalsIgnoreCase(filtre))) {  // Par type
 
                         // Afficher chaque entraves de manière lisible et formatée
-                        System.out.println("\n====================================");
+                        System.out.println("\n**********************************");
                         System.out.println("Identifiant de Travail : " + id_request);
                         System.out.println("Rue : " + rue);
                         System.out.println("Type d'impact sur la rue : " + entrave.getString("streetimpacttype"));
-                        System.out.println("====================================");
+                        System.out.println("************************************");
 
                         found = true;
                     }

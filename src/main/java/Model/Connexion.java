@@ -3,9 +3,6 @@ package Model;
 import java.util.Scanner;
 
 public class Connexion {
-    // Initialisation d'un scanner afin d'obtenir l'input de l'utilisateur
-    private Scanner scanner = new Scanner(System.in);
-
     // Cette méthode prend en paramètre le choix et des instances initiales d'un résident
     // et d'un intervenant afin de pouvoir appeler les méthodes appropriées au besoin
     public static void traiterChoix(String choix, Resident resident, Intervenant intervenant) {
@@ -24,7 +21,7 @@ public class Connexion {
                 break;
             case "4":
                 System.out.println("Au revoir !");
-                System.exit(0);
+                System.exit(0); // Fin du programme
                 break;
             default:
                 System.out.println("Option invalide. Veuillez entrer une option entre 1 et 4.");
@@ -32,6 +29,8 @@ public class Connexion {
         }
     }
 
+    // Methode ayant en param. des instances de resident et d'intervenant. Sert à connaitre
+    // s'il s'agit d'un résident ou intervenant afin de procéder à l'inscription adéquate
     public static void demanderTypeInscription(Resident resident, Intervenant intervenant) {
         Scanner scanner = new Scanner(System.in);
 

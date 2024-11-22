@@ -481,7 +481,7 @@
 
         .sequence-diagram {
             display: block;
-            min-height: 600px;
+            max-height: 500px;
             min-width: 600px;
             height: 100%;
             width: auto;
@@ -491,6 +491,7 @@
         .class-diagram {
             display: block;
             max-width: 1500px;
+            min-height: 500px;
             height: 100%;
             background-color: #d5d5d5;
         }
@@ -1871,21 +1872,26 @@
                 <div>
                     <h3 class="subsection-title">Risques</h3>
                     <ol class="risks">
-                        <li><b>Risque de performance et scalabilité:</b> 
-                            Le système doit pouvoir gérer une grande quantité de données liées aux travaux en cours et à venir. Si la scalabilité n’est pas anticipée, l’application pourrait devenir lente à mesure que le volume de données et le nombre d’utilisateurs augmentent, impactant l’expérience utilisateur.
-                            </li>
-                        <li><b>Risque de sécurité des données:</b>
-                            L’application traite des données personnelles sensibles (courriels, adresses, localisation des résidents). Si ces données ne sont pas correctement sécurisées, cela pourrait entraîner des violations de données, exposant ainsi l’application à des risques légaux et de perte de confiance des utilisateurs.
+                        <li><b>Problème de lenteur si y'a beaucoup d’utilisateurs :</b> 
+                            Explication: Si l’application est utilisée par beaucoup de résidents à la fois, elle pourrait devenir lente. <br>
+                            Solution : Prévoir des serveurs qui peuvent s’adapter automatiquement à la charge (plus de puissance quand beaucoup d’utilisateurs se connectent).
+                        </li>
+                        <li><b>Risque de perte ou de vol des données des utilisateurs :</b>
+                            Explication : Les informations personnelles (comme les courriels ou adresses) pourraient être volées si elles ne sont pas protégées. <br>
+                            Solution : Chiffrer les données (les rendre illisibles sans une clé) et utiliser des mots de passe forts et sécurisés.
                         </li>
                         <li><b>Risque de surcharge des serveurs lors des pics de trafic:</b>
-                            Lors de périodes d’activité intense, par exemple à la suite de la publication d’importants travaux routiers ou de perturbations majeures, il est possible que les serveurs soient submergés. Si l’infrastructure n’est pas correctement configurée pour gérer ces pics, cela pourrait entraîner des interruptions de service.
-                            </li>
-                        <li><b>Risque de manque d’engagement des utilisateurs:</b>
-                            Même si l’application est techniquement fonctionnelle, il est crucial d’assurer l’engagement des résidents. Si l’interface utilisateur n’est pas intuitive ou que les notifications sont mal gérées, les utilisateurs risquent d’abandonner l’application, réduisant ainsi son utilité.
-                            </li>
+                            Explication : Lors de périodes d’activité intense, par exemple à la suite de la publication d’importants travaux routiers ou de perturbations majeures, il est possible que les serveurs soient submergés. Si l’infrastructure n’est pas correctement configurée pour gérer ces pics, cela pourrait entraîner des interruptions de service.<br>
+                            Solution : Ajouter un système de cache (stocker temporairement des informations pour réduire les demandes au serveur).
+                        </li>
+                        <li><b>Désintérêt des utilisateurs :</b>
+                            Explication : Si l’application est compliquée à utiliser ou n’envoie pas de notifications utiles, les résidents risquent de ne pas l’utiliser.<br>
+                            Solution : Faire des tests avec de vrais utilisateurs pour s’assurer que l’application est simple et agréable à utiliser.
+                        </li>
                         <li><b>Risque d’intégration avec les systèmes existants:</b>
-                            L’application devra s’intégrer aux systèmes existants de la ville et des partenaires privés. Des incompatibilités techniques ou des retards dans les intégrations pourraient affecter la qualité et la disponibilité des informations affichées aux résidents, réduisant ainsi la fiabilité du service.
-                            </li>
+                            Explication : L’application utilise des informations provenant d’autres systèmes (comme Info-Entraves). Si ces connexions ne fonctionnent pas, les données affichées pourraient être incorrectes ou absentes. <br>
+                            Solution : Tester régulièrement les connexions aux autres systèmes et prévoir une sauvegarde (comme afficher des données anciennes) en cas de problème.
+                        </li>
                     </ol>
                 </div>
 
@@ -1911,16 +1917,32 @@
                 
                 <div>
                     <h3 class="subsection-title">Besoins matériels</h3>
-                    <p>
-                        <em><b>1. Serveurs cloud </b>
+                        <ol> 
+                            <li> <b>Pour les utilisateurs : </b>
+                                <ul>
+                                    <li>
+                                        Ils doivent avoir un appareil avec une connexion Internet (ordinateur, smartphone ou tablette).
+                                    </li>
+                                    <li>
+                                        Pour les développeurs ou administrateurs : Un ordinateur avec Java installé.
+                                    </li>
+                                </ul>
+                            </li>
 
-                            <br>Nous aurons besoin de serveurs hébergés sur des services cloud (comme AWS, Azure ou Google Cloud) pour héberger l’application et la base de données. Cela nous permet de bénéficier d’une haute disponibilité et d’une mise à l’échelle facile en fonction du nombre d’utilisateurs.
-                            
-                            <b>2. Base de données relationnelle</b>
-                            
-                            <br>Une base de données relationnelle, telle que PostgreSQL ou MySQL, est nécessaire pour stocker les informations structurées comme les utilisateurs, les travaux et les notifications. Ces bases sont robustes et assurent l’intégrité des données.
-                            </em>
-                    </p>
+                            <li> <b> Pour l’application : </b>
+                                <ul>
+                                    <li> Des serveurs cloud (par exemple AWS, Azure ou Google Cloud) pour héberger l’application et la base de données. Ces serveurs s’adaptent facilement si le nombre d’utilisateurs augmente.</li>
+                                    <li> Une base de données comme PostgreSQL ou MySQL pour organiser et stocker les informations. </li>
+                                </ul>
+                            </li>
+
+                            <li> <b> Coût estimé : </b>
+                                <ul>
+                                    <li> Serveurs cloud : 100 à 300 $/mois pour un usage de base. </li>
+                                    <li> Base de données : Environ 30 à 100 $/mois si elle est gérée séparément.</li>
+                                </ul>
+                            </li>
+                        </ol>
                 </div>
 
                 <div>

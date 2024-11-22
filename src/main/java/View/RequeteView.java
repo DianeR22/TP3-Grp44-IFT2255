@@ -35,6 +35,7 @@ public class RequeteView {
                     retour(scanner);
                     break;
                 case "3":
+                    System.out.println("Vous êtes sur la section : Soumettre une candidature ! Cette option n'est pas encore implémentée\n");
                     IntervenantController.soumettreCandidature();
                     retour(scanner);
                     break;
@@ -65,7 +66,7 @@ public class RequeteView {
                 requetesFiltrees = GestionRequete.filtrerParType(type);
                 break;
             case 2:
-                System.out.print("Entrez le quartier : ");
+                System.out.print("Entrez le quartier: ");
                 String quartier = scanner.nextLine();
                 requetesFiltrees = GestionRequete.filtrerParQuartier(quartier);
                 break;
@@ -83,7 +84,7 @@ public class RequeteView {
         if (requetesFiltrees.isEmpty()) {
             System.out.println("Aucune requête correspondante.");
         } else {
-            System.out.println("\n**** Requêtes filtrées ****");
+            System.out.println("\n**** Voici les requêtes filtrées ****");
             for (Requete requete : requetesFiltrees) {
                 System.out.println("Titre : " + requete.getTitreTravail());
                 System.out.println("Type de travail: " + requete.getTypeTravaux());

@@ -27,7 +27,7 @@ public class IntervenantView {
         switch (input) {
             case "1":
                 // Appeler la méthode pour modifier le profil
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Modifier son profil! Cette option n'est encore pas implémentée!");
                 retour(scanner);
                 break;
             case "2":
@@ -36,11 +36,11 @@ public class IntervenantView {
                 retour(scanner);
                 break;
             case "3":
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Soumettre un nouveau projet de travaux ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "4":
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Mettre à jour les informations d'un chantier! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "5":

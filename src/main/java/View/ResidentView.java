@@ -22,10 +22,8 @@ public class ResidentView {
         System.out.println("4. Notifications");
         System.out.println("5. Permettre une planification participative");
         System.out.println("6. Soumettre une requête de travail");
-        System.out.println("7. Signaler un problème à la ville");
-        System.out.println("8. Laisser un avis");
-        System.out.println("9. Consulter les entraves routieres.");
-        System.out.println("10. Retourner au menu principal");
+        System.out.println("7. Consulter les entraves routieres.");
+        System.out.println("8. Retourner au menu principal");
 
         // Récupérer le input de l'utilisateur
         Scanner scanner = new Scanner(System.in);
@@ -35,7 +33,7 @@ public class ResidentView {
         switch (input) {
             case "1":
                 // Modifier le profil (non définie ici)
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Modifier son profil ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "2":
@@ -45,41 +43,31 @@ public class ResidentView {
                 break;
             case "3":
                 // Option pour rechercher des travaux (non définie ici)
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Rechercher des travaux ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "4":
                 // Notifications (non définie ici)
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Notifications ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "5":
                 // Permettre une planification participative (non définie ici)
-                System.out.println("Option non implémentée");
+                System.out.println("Vous êtes sur la section : Permettre une planification participative ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "6":
                 // Soumettre une requête de travail
+                System.out.println("Vous êtes sur la section : Soumettre une requête de travail !");
                 RequeteController.obtenirInformationsRequete();
                 retour(scanner);
                 break;
             case "7":
-                // Signaler un problème (non définie ici)
-                System.out.println("Option non implémentée");
-                retour(scanner);
-                break;
-            case "8":
-                // Laisser un avis (non définie ici)
-                System.out.println("Option non implémentée");
-                retour(scanner);
-                break;
-
-            case "9":
                 // Consulter les entraves
                 EntraveController.afficherMenu(scanner);
                 retour(scanner);
                 break;
-            case "10":
+            case "8":
                 ConnexionController.afficherMenuPrincipal();
                 break;
             default:

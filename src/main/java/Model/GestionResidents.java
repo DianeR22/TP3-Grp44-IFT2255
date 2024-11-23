@@ -60,7 +60,6 @@ public class GestionResidents{
         ObjectMapper obj = new ObjectMapper();
         try {
             obj.writeValue(new File(FICHIER_RESIDENTS), listeResidents);
-            System.out.println("Requetes sauvegardees avec succes");
         } catch (IOException e) {
             System.out.println("Erreur dans la sauvegarde.");
         }

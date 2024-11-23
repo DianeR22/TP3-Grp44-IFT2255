@@ -119,7 +119,7 @@ public class Resident extends Utilisateur {
     private String obtenirDateNaissance() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            System.out.println("Veuillez entrer votre date de naissance (JJ/MM/AAAA).");
+            System.out.println("Veuillez entrer votre date de naissance (AAAA/MM/JJ).");
             String dateNaissance = scanner.nextLine();
             if (!Valider.validerDate(dateNaissance)) {
                 System.out.println("Date de naissance invalide.");

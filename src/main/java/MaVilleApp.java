@@ -8,6 +8,7 @@ import View.RequeteView;
 public class MaVilleApp {
     public static void main(String[] args) {
 
+
         // Charger les requêtes, les intervenants et les résidents initialisés
         GestionRequete.chargeRequetes();
         GestionResidents.chargeResidents();

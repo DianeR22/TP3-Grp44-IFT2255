@@ -4,8 +4,10 @@ import Controller.IntervenantController;
 import Controller.RequeteController;
 import Model.GestionRequete;
 import Model.Requete;
+import Model.Valider;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class RequeteView {
@@ -95,7 +97,7 @@ public class RequeteView {
         }
     }
 
-    // Permet d'obtenir les caractérstiques de la requête du résident
+    // Permet d'obtenir les caractéristiques de la requête du résident
     public static void obtenirInformationsRequete() {
         Scanner scanner = new Scanner(System.in);
 
@@ -106,14 +108,40 @@ public class RequeteView {
         System.out.println("Entrez une description détaillée du travail : ");
         String description = scanner.nextLine();
 
-        System.out.println("Entrez le type de travail : ");
-        String typeTravail = scanner.nextLine();
+        // Demande du type de travaux
+        // Liste des types de travaux possibles
+        System.out.println("Entrez le type de travail parmi les suivants : ");
+        for (Valider.TypeTravail travail : Valider.TypeTravail.values()) {
+            System.out.println("- " + travail.getDescription());
+        }
 
-        System.out.println("Entrez la date de début espérée (format: JJ/MM/AAAA) : ");
-        String dateDebut = scanner.nextLine();
+        boolean typeValide = false;
+        String typeTravailChoisi = "";
+        while (!typeValide) {
+            typeTravailChoisi = scanner.nextLine().toUpperCase();
+            if (Valider.validerTypeTravail(typeTravailChoisi)) {
+                typeValide = true;
+            } else {
+                System.out.println("Type de travail invalide. Veuillez réessayer.");
+            }
+        }
+
+        // Demande de la date
+        String dateDebut = "";
+        boolean dateValide = false;
+        while (!dateValide) {
+            System.out.println("Entrez la date de début espérée (format: JJ/MM/AAAA) : ");
+            dateDebut = scanner.nextLine();
+
+            if (Valider.validerDate(dateDebut)) {
+                dateValide = true;
+            } else {
+                System.out.println("Le format de la date n'est pas correct. Veuillez réessayer.");
+            }
+        }
 
         // Soumettre la requête
-        RequeteController.soumettreRequete(titreTravail, description, typeTravail, dateDebut);
+        RequeteController.soumettreRequete(titreTravail, description, typeTravailChoisi, dateDebut);
     }
 
     // Affichage de toutes les requêtes

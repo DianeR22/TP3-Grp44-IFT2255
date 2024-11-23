@@ -17,6 +17,8 @@ public class Valider {
             + "(?=.*[@#$%^&+=?~!*()_\\-\\{\\}|\\[\\]\\\\:\"/'])"
             + "(?=\\S+$).{8,20}$");
 
+
+
     private static final Pattern IDENTIFIANT = Pattern.compile("\\d{8}");
 
     // Valider le numéro de téléphone entré, il peut y avoir des tiret ou des espaces entre les blocs de numéros
@@ -24,9 +26,11 @@ public class Valider {
         return PHONE_PATTERN.matcher(numTel).matches();
     }
 
+
+
     // Valider la date en format JJ/MM/AAAA
-    public static boolean validerDate(String dateNaissance) {
-        return DATE_PATTERN.matcher(dateNaissance).matches();
+    public static boolean validerDate(String date) {
+        return DATE_PATTERN.matcher(date).matches();
     }
     // Méthode qui a pour paramètre la date de naissance du résident et qui renvoie True
     // si le résident a au moins 16 ans.
@@ -68,5 +72,48 @@ public class Valider {
         return IDENTIFIANT.matcher(identifiant).matches();
     }
 
+    public static boolean validerTypeTravail(String typeTravailChoisi){
+
+        // On supprime les espaces inutiles (avant et après le texte)
+        String typeTravailArrange = typeTravailChoisi.trim().replaceAll("\\s+", " ");
+        // Comparer pour voir que le type de travail choisi correspond à l'un des
+        // types possibles
+        for (TypeTravail travail : TypeTravail.values()){
+            // On compare avec la chaine arrangée et on ne fait pas attention à la casse
+            if (travail.name().replaceAll("_", " ").equalsIgnoreCase(typeTravailArrange)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    // Énumération de tous les types possibles
+    public enum TypeTravail {
+        // Types de travaux possibles avec les accents et caractères spéciaux
+        TRAVAUX_ROUTIERS("Travaux routiers"),
+        TRAVAUX_GAZ_ELECTRICITE("Travaux de gaz ou électricité"),
+        CONSTRUCTION_RENOVATION("Construction ou rénovation"),
+        ENTRETIEN_PAYSAGER("Entretien paysager"),
+        TRAVAUX_TRANSPORTS_COMMUNS("Travaux liés aux transports en commun"),
+        TRAVAUX_SIGNALISATION_ECLAIRAGE("Travaux de signalisation et éclairage"),
+        TRAVAUX_SOUTERRAINS("Travaux souterrains"),
+        TRAVAUX_RESIDENTIEL("Travaux résidentiels"),
+        ENTRETIEN_URBAIN("Entretien urbain"),
+        ENTRETIEN_RESEAUX_TELECOMMUNICATION("Entretien des réseaux de télécommunication");
+
+        private final String description;
+
+        TypeTravail(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+
 
 }
+

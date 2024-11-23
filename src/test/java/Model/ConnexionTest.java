@@ -35,7 +35,7 @@ public void testTraiterChoixResident(){
 
     // Vérifier que la connexion n'est pas appelé pour le résident 
     verify(intervenant, never()).connexion(); 
-
+}
   @Test 
     public void testTraiterChoixInscription(){ 
         // Créer deux mock de résident et intervenant 

@@ -51,7 +51,7 @@ public class GestionIntervenants{
         ObjectMapper obj = new ObjectMapper();
         try {
             obj.writeValue(new File(FICHIER_INTERVENANTS), listeIntervenants);
-            System.out.println("Intervenants sauvegardees avec succes");
+        
         } catch (IOException e) {
             System.out.println("Erreur dans la sauvegarde.");
         }

@@ -3,6 +3,7 @@ package Model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 // Valider est une classe qui permet de procéder à une vérification de l'information rentrée par un utilisateur
@@ -10,6 +11,9 @@ public class Valider {
 
     // Expressions regulières (regex) utilisées pour valider des chaînes de caractères (date, numéro de tel, courriel, mdp, identifiant)
     private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
+    // Format souhaité pour la date : JJ/MM/AAAA
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     private static Pattern PHONE_PATTERN = Pattern.compile("^\\d{3}[-. ]?\\d{3}[-. ]?\\d{4}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     private static Pattern PASSWORD = Pattern.compile("^(?=.*[0-9])"
@@ -28,19 +32,23 @@ public class Valider {
 
 
 
-    // Valider la date en format JJ/MM/AAAA
+    // Méthode pour valider si la date est correcte (au format JJ/MM/AAAA)
     public static boolean validerDate(String date) {
-        return DATE_PATTERN.matcher(date).matches();
+        try {
+            // Parser la date avec le format voulu
+            LocalDate.parse(date, DATE_FORMATTER);
+            return true;  // Si aucun exception, la date est valide
+        } catch (DateTimeParseException e) {
+            // Format est incorrect
+            return false;
+        }
     }
     // Méthode qui a pour paramètre la date de naissance du résident et qui renvoie True
     // si le résident a au moins 16 ans.
     public static boolean validerAge(String DateDeNaissance){
 
-        // Format souhaité pour la date
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        // Parser la date avec le formatter
-        LocalDate anneeNaissance = LocalDate.parse(DateDeNaissance, formatter);
+        // Parser la date avec le DATE_FORMATTER (au format JJ/MM/AAAA)
+        LocalDate anneeNaissance = LocalDate.parse(DateDeNaissance, DATE_FORMATTER);
 
         // Date courante
         LocalDate currentDate = LocalDate.now();
@@ -90,7 +98,7 @@ public class Valider {
 
     // Énumération de tous les types possibles
     public enum TypeTravail {
-        // Types de travaux possibles avec les accents et caractères spéciaux
+
         TRAVAUX_ROUTIERS("Travaux routiers"),
         TRAVAUX_GAZ_ELECTRICITE("Travaux de gaz ou électricité"),
         CONSTRUCTION_RENOVATION("Construction ou rénovation"),

@@ -119,15 +119,21 @@ public class Resident extends Utilisateur {
     private String obtenirDateNaissance() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            System.out.println("Veuillez entrer votre date de naissance (AAAA/MM/JJ).");
+            System.out.println("Veuillez entrer votre date de naissance (JJ/MM/AAAA).");
             String dateNaissance = scanner.nextLine();
+
+            // Vérifie si la date est valide
             if (!Valider.validerDate(dateNaissance)) {
-                System.out.println("Date de naissance invalide.");
-            } else if (!Valider.validerAge(dateNaissance)) {
-                System.out.println("Vous ne pouvez pas vous inscrire, car vous avez moins de 16 ans.");
-                return null;
+                System.out.println("Date de naissance invalide. Veuillez entrer la date au format JJ/MM/AAAA.");
             }
-            return dateNaissance;
+            // Vérifie si l'âge est valide
+            else if (!Valider.validerAge(dateNaissance)) {
+                System.out.println("Vous ne pouvez pas vous inscrire, car vous avez moins de 16 ans.");
+            }
+            // Si la date est valide et l'âge est suffisant, retourner la date
+            else {
+                return dateNaissance;
+            }
         }
     }
 
@@ -162,7 +168,7 @@ public class Resident extends Utilisateur {
     private String obtenirMotDePasse() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            System.out.println("Veuillez entrer votre mot de passe.");
+            System.out.println("Veuillez entrer votre mot de passe. Celui-ci doit contenir au minimum 8 caractères et maximum 20. Il doit contenir au moins un chiffre, une majuscule et un caractère spécial");
             String motDePasse = scanner.nextLine();
             if (Valider.validerMDP(motDePasse)) {
                 return motDePasse;

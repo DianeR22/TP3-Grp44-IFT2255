@@ -472,10 +472,8 @@
 
         .activity-diagram {
             display: block;
-            min-height: 600px;
-            min-width: 600px;
-            height: 100%;
-            width: auto;
+            height: auto;
+            width: 80%;
             background-color: #d5d5d5;
         }
 
@@ -485,14 +483,14 @@
             min-width: 600px;
             height: 100%;
             width: auto;
-            background-color: #73aee5
+            background-color: #92c0ea
         }
 
         .class-diagram {
             display: block;
-            max-width: 1500px;
+            width: 100%;
             min-height: 500px;
-            height: 100%;
+            height: auto;
             background-color: #d5d5d5;
         }
 
@@ -613,7 +611,16 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <h3 class="nav-item-title"><a class="nav-item-title__link" href="#prototype">Prototype</a> </h3>
+                        <h3 class="nav-item-title"><a class="nav-item-title__link" href="#analysis">Conception</a></h3>
+                        <ul class="bare-list nav-item-details">
+                            <li class="dash">Architecture </li>
+                            <li class="dash">Diagramme de classes</li>
+                            <li class="dash">Diagrammes de séquence</li>
+                            <li class="dash">Justification du choix de design</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <h3 class="nav-item-title"><a class="nav-item-title__link" href="#prototype">Implémentation</a> </h3>
                     </li>
                 </ul>
             </nav>
@@ -623,23 +630,20 @@
                 <h2 id="plan" class="section-title">Cadre du projet</h2>
                 <h3 class="subsection-title">Introduction</h3>
                 <p>
-                    <em>
-                        Les résidents de la ville de Montréal sont souvent pris par surprise lorsqu’ils leur arrivent de 
-                        prendre la route et de se retrouver face à des embouteillages imprévus et de devoir modifier
-                        leur itinéraire. Pour cause, les chantiers et les travaux ne sont que rarement annoncés
-                        correctement et à temps. Bien que les habitants de Montréal aient accès au service Infos 
-                        entraves et travaux, celui-ci se trouve être limité et manque d'éfficacité. <br><br>
+                    Les résidents de la ville de Montréal sont souvent pris par surprise lorsqu’ils leur arrivent de 
+                    prendre la route et de se retrouver face à des embouteillages <br> imprévus et de devoir modifier
+                    leur itinéraire. Pour cause, les chantiers et les travaux ne sont que rarement annoncés
+                    correctement et à temps. <br> Bien que les habitants de Montréal aient accès au service Infos 
+                    entraves et travaux, celui-ci se trouve être limité et manque d'éfficacité. <br><br>
 
-                        C’est donc dans ce contexte qu’une proposition emerge : l’application MaVille. Celle-ci 
-                        permettra d’améliorer plusieurs aspects très importants: la communication entre résidents et 
-                        intervenants publics et privés, la diffusion d’informations adéquates sur les travaux en cours ainsi 
-                        que la participation active des résidents.
-
-                    </em>
+                    C’est donc dans ce contexte qu’une proposition emerge : l’application MaVille. Celle-ci 
+                    permettra d’améliorer plusieurs aspects très importants: <br> la communication entre résidents et 
+                    intervenants publics et privés, la diffusion d’informations adéquates sur les travaux en cours ainsi 
+                    que la <br> participation active des résidents.
                 </p>
                 <h3 class="subsection-title">Échéancier</h3>
                 <p>
-                    <em>Présentation de l'échéancier et la distribution des tâches (au moins pour le devoir 1)</em>
+                    <em>Présentation de l'échéancier et la distribution des tâches à partir du devoir 1</em>
                      <pre>
 
                                |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  10 |  11 |  12 | 13 | 14 | 15
@@ -1948,18 +1952,18 @@
                 <div>
                     <h3 class="subsection-title">Solution de stockage</h3>
                     <p>
-                        <em>Nous allons utiliser une base de données relationnelle simple comme MySQL ou PostgreSQL pour stocker toutes les informations de l’application.
-                            
-                                •Utilisation : Toutes les données comme les informations des utilisateurs (nom, courriel), les détails des travaux (type de travaux, adresse, dates), et les notifications seront stockées dans des tableaux organisés de manière structurée.</em>
+                        Nous allons utiliser une base de données relationnelle simple comme MySQL ou PostgreSQL pour stocker toutes les informations de l’application
+                            <ul>
+                                <li> Utilisation : Toutes les données comme les informations des utilisateurs (nom, courriel), les détails des travaux (type de travaux, adresse, dates), et les notifications seront stockées dans des tableaux organisés de manière structurée</li>
+                            </ul>
                     </p>
                 </div>
 
                 <div>
                     <h3 class="subsection-title">Solution d'intégration</h3>
-
-                    <p>
-                        <em>Pour l’intégration de l’application MaVille avec les systèmes existants, comme Info-Entraves et les services de la ville concernant les travaux, nous opterons pour l’utilisation d’API REST. Cela permettra de récupérer en temps réel toutes les informations nécessaires sur les travaux en cours ou à venir. L’enjeu principal sera de garantir que les données fournies par ces API soient fiables, bien structurées et facilement intégrables à notre base de données. Nous devrons nous assurer de la compatibilité des formats utilisés, comme le JSON ou XML, pour faciliter l’échange de données. Il faudra également prévoir des tests réguliers pour s’assurer que l’intégration se fait sans accroc et que les informations affichées aux utilisateurs sont toujours à jour. En parallèle, nous devrons anticiper les cas d’indisponibilité des systèmes externes en mettant en place des mécanismes de gestion des erreurs, afin que l’application puisse continuer à fonctionner de manière fluide malgré tout.</em>
-                    </p>
+                        <p>
+                            Pour l’intégration de l’application MaVille avec les systèmes existants, comme Info-Entraves et les services de la ville concernant les travaux, nous opterons pour l’utilisation d’API REST. Cela permettra de récupérer en temps réel toutes les informations nécessaires sur les travaux en cours ou à venir. L’enjeu principal sera de garantir que les données fournies par ces API soient fiables, bien structurées et facilement intégrables à notre base de données. Nous devrons nous assurer de la compatibilité des formats utilisés, comme le JSON ou XML, pour faciliter l’échange de données. Il faudra également prévoir des tests réguliers pour s’assurer que l’intégration se fait sans accroc et que les informations affichées aux utilisateurs sont toujours à jour. En parallèle, nous devrons anticiper les cas d’indisponibilité des systèmes externes en mettant en place des mécanismes de gestion des erreurs, afin que l’application puisse continuer à fonctionner de manière fluide malgré tout
+                        </p>
                 </div>
             </section>
 
@@ -2060,7 +2064,9 @@
                         <li> Travaux : Détails des projets en cours ou planifiés (titre, description, type, dates de début/fin, statut, horaire, rues/quartiers affectés)</li>
                         <li> Requêtes : Requêtes soumises par les résidents (titre, description, type, état)</li>
                     </ul>
-                    <p> Ce qui est utilisé dans notre application ce sont des fichiers json qui comporte ces infos</p> 
+                    <p> Ce qui est utilisé dans notre application ce sont des fichiers json qui comporte ces infos y'en a un dédié
+                        aux résidents, un autre pour les intervenants, un autre pour les requêtes puis un final pour les candidatures
+                    </p> 
                     
                     <li><b>Services externes/API : </b></li>
                     <p> L'application utilise les services externes de la ville de Montréal pour obtenir les infos sur les travaux et entraves. <br>
@@ -2089,7 +2095,68 @@
                     <img class="sequence-diagram" src="diagrammes/diagrammeSequence3.svg" alt="Diagramme de séquence">
                 </div>
 
-            <!-- Section du prototype: comment l'utiliser-->
+            <br>
+            <br>
+            <!-- Section pour la justification du choix de design -->
+            <section class="main-section">
+                <h2 id="justification" class="section-title"> Justification du choix de design</h2>
+                <ol> 
+                    <li> Séparation des responsabilités : 
+                        <ul>
+                            <li>
+                            En utilisant l'architecture MVC, chaque couche (Modèle, Vue, Contrôleur) a une responsabilité claire où le Modèle gère la logique métier
+                            et les données,  <br> la Vue gère l'affichage puis le Contrôleur gère les interactions utilisateurs et donc fait le lien entre le Modèle et la Vue
+                            </li>
+                            <li> Cette séparation des tâches garantit une maintenabilité facile et évolutive</li>                            
+                        </ul>
+                    </li>
+
+                    <li> Abstraction et modularité : 
+                        <ul>
+                            <li>
+                                Utilisation de la classe abstraite Utilisateur qui contient des méthodes et attributs qui sont en commun entre les résidents et les intervenants.
+                                Il y'a aussi eu une méthode abstraite "inscription" qui est sera utilisée par nos deux types d'utilisateurs. L'abstraction définie permet des extensions futures 
+                                plus facile et permet ainsi la modularité de notre solution 
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        Encapsulation et cohésion : 
+                        <ul>
+                            <li>
+                                Chaque classe a sa responsabilité bien définie
+                            </li>
+                            <li> 
+                                Les méthodes et attributs pertinents sont regroupés ensemble, augmentant ainsi la cohésion
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li> Faible couplage : 
+                        <ul>
+                            <li>
+                                Utilisation de dépendances injectées pour réduire le couplage entre les différentes classes
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li> Gestion des erreurs :
+                        <ul>
+                            <li> Implémentation de mécanisme de gestion d'exceptions pour pouvoir capturer les erreurs (vous trouverez des try and catch partout)</li>
+                            <li> Ajout de plusieurs tests unitaires permettant de valider les inputs et des méthodes précises pour réduire les erreurs et 
+                                augmenter la satisfaction client
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                
+
+
+
+                
+            <!-- Section de l'implémenttation: comment l'utiliser-->
             <section class="main-section">
                 <h2 id="prototype" class="section-title">Implémentation</h2>
 
@@ -2100,9 +2167,10 @@
                        <br><br>
                  <em>
                        Précisions: L'implémentation contient plusieurs répertoires dont data et libs. Data contient les fichiers Json des résidents, des intervenants, des requêtes
-                       et des candidatures (le fichier candidatures est vide pour le moment). Libs contient une bibliothèque : java.20210307.jar. Elle permet de manipuler des données
-                       au format Json. Il faut l'ajouter comme bibliothèque (Add as a library) s'il y a des erreurs liées au Json. (Cela est à faire si vous utilisez un IDE). 
-                       Pensez également à ajouter toutes les importations nécessaires pour que le code fonctionne correctement.
+                       et des candidatures <br>
+                       (le fichier candidatures est vide pour le moment). Libs contient une bibliothèque : java.20210307.jar. Elle permet de manipuler des données
+                       au format Json. <br>Il faut l'ajouter comme bibliothèque (Add as a library) s'il y a des erreurs liées au Json. (Cela est à faire si vous utilisez un IDE).
+                       Pensez également à ajouter toutes les importations <br> nécessaires pour que le code fonctionne correctement.
                     </em>
                     <br><br>
                        <em>Comptes préconfigurés 
@@ -2143,7 +2211,7 @@
     </main>
     <footer class="report-footer">
         <p>
-            Devoir 1 &ndash; Analyse des exigences<br>
+            Devoir 2 &ndash; Conception et première implémentation<br>
             IFT2255 (Génie logiciel) <br>
             Automne 2024
         </p>

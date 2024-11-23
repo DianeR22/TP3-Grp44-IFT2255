@@ -73,9 +73,9 @@ public class GestionRequete {
         ObjectMapper obj = new ObjectMapper();
         try {
             obj.writeValue(new File(FICHIER_REQUETES), listeRequetes);
-            System.out.println("Requtes sauvegardees avec succes");
+            //System.out.println("Requêtes sauvegardées avec succès");
         } catch (IOException e) {
-            System.out.println("Erreur dans la sauvegarde.");
+            System.out.println("Erreur dans la sauvegarde de la requête.");
         }
     }
 
@@ -86,11 +86,11 @@ public class GestionRequete {
             File file = new File(FICHIER_REQUETES);
             if (file.exists()){
                 listeRequetes = obj.readValue(file, obj.getTypeFactory().constructCollectionType(List.class, Requete.class));
-                //System.out.println("Requetes chargees avec succes");
+                //System.out.println("Requêtes chargées avec succès");
             }
 
         }catch(IOException e){
-            System.out.println("Erreur dans le chargement.");
+            System.out.println("Erreur dans le chargement des requêtes.");
         }
     }
 

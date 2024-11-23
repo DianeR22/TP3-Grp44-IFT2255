@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GestionResidents{
 
-    // Initialisation d'une liste statique de résidents
+    // Initialisation d'une liste de résidents
     private static List<Resident> listeResidents = new ArrayList<>();
 
     private static final String FICHIER_RESIDENTS = "data/residents.json";

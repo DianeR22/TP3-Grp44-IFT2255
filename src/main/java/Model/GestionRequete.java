@@ -116,22 +116,4 @@ public class GestionRequete {
                 .toList();
     }
 
-    // Initialisation de 3 requêtes
-    public static void initialiserRequetes() {
-        Requete requete1 = new Requete( "Réparation du réseau d'égouts",
-                "Réparer une fuite sur la conduite principale d'égout sous la rue principale",
-                "Égouts",
-                "2024-12-03");
-        Requete requete2 = new Requete("Déblocage de conduits souterrains",
-                "Éliminer l'obstruction causée par des racines d'arbres bloquant les canalisations",
-                "Égouts",
-                "2024-11-20");
-        Requete requete3 = new Requete("Réparation des nids de poule", "Réparer les nids de poule sur la rue principale", "Entretien de route","2024-11-20");
-
-        // Ajouter ces intervenants à la liste
-        ajouterRequete(requete1);
-        ajouterRequete(requete2);
-        ajouterRequete(requete3);
-    }
-
 }

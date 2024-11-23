@@ -146,7 +146,7 @@ public class ServiceAPI {
                             (typeFiltre == 1 && id_request.equalsIgnoreCase(filtre)) || // Par travail
                             (typeFiltre == 2 && rue.equalsIgnoreCase(filtre))) {  // Par type
 
-                        // Afficher chaque entraves de manière lisible et formatée
+                        // Afficher chaque entrave
                         System.out.println("\n**********************************");
                         System.out.println("Identifiant de Travail : " + id_request);
                         System.out.println("Rue : " + rue);

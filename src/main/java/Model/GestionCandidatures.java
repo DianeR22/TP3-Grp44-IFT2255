@@ -37,7 +37,7 @@ public class GestionCandidatures {
                 listeCandidatures = obj.readValue(file, obj.getTypeFactory().constructCollectionType(List.class, Candidature.class));
             }
         } catch(IOException e){
-            System.out.println("Erreur dans le chargement des résidents." + e.getMessage());
+            //System.out.println("Erreur dans le chargement des candidatures." + e.getMessage());
         }
     }
 

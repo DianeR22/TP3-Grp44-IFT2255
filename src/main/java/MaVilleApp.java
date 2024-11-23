@@ -14,8 +14,7 @@ public class MaVilleApp {
         GestionResidents.chargeResidents();
         GestionIntervenants.chargeIntervenants();
 
-        // Aucune candidature pour le moment
-        GestionCandidatures.chargeCandidatures();
+
 
         // Afficher le menu et obtenir le input de l'utilisateur nécessaire
         while (true) {

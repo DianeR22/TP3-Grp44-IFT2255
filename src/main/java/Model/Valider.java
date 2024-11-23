@@ -90,7 +90,6 @@ public class Valider {
 
     // Énumération de tous les types possibles
     public enum TypeTravail {
-        // Types de travaux possibles avec les accents et caractères spéciaux
         TRAVAUX_ROUTIERS("Travaux routiers"),
         TRAVAUX_GAZ_ELECTRICITE("Travaux de gaz ou électricité"),
         CONSTRUCTION_RENOVATION("Construction ou rénovation"),

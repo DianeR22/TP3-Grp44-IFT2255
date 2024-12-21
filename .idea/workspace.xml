@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0dd80298-5250-414e-8dac-50f5cb21ffda" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="0dd80298-5250-414e-8dac-50f5cb21ffda" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -57,7 +55,7 @@
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "feedback-dm2",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/asp3rity/Repositories/2255studs/Projet-IFT2255-equipe-45",
+    "last_opened_file_path": "/home/asp3rity/Repositories/2255studs/TP1-Grp44-IFT2255",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -141,8 +139,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
       </set>
     </attachedChunks>
   </component>
@@ -163,6 +161,7 @@
       <workItem from="1732998702459" duration="25000" />
       <workItem from="1733101271042" duration="2029000" />
       <workItem from="1733688826325" duration="2411000" />
+      <workItem from="1734485242057" duration="724000" />
     </task>
     <servers />
   </component>

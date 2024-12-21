@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GestionCandidatures {
 
@@ -26,6 +27,18 @@ public class GestionCandidatures {
         System.out.println("Nouvelle candidature soumise!");
     }
 
+    // Méthode qui supprime la candidature voulue et charge les candidatures
+    // afin d'être à jour
+    public static void supprimerCandidature(Candidature candidature){
+        if (candidature == null) {
+            System.out.println("Candidature invalide !");
+            return;
+        }
+            listeCandidatures.remove(candidature);
+            chargeCandidatures();
+            System.out.println("Nouvelle candidature soumise!");
+        }
+
 
     // Cette méthode sert à charger les candidatures à la liste de candidatures du
     // fichier json approprié
@@ -42,7 +55,7 @@ public class GestionCandidatures {
     }
 
 
-    // Méthode servant à sauvegarder une candidature et à le placer dans le fichier json
+    // Méthode servant à sauvegarder une candidature et à la placer dans le fichier json
     public static void saveCandidature(){
         ObjectMapper obj = new ObjectMapper();
         try {
@@ -52,6 +65,15 @@ public class GestionCandidatures {
             System.out.println("Erreur dans la sauvegarde de la candidature.");
         }
     }
+
+    // Cette méthode permet de récupérer les candidatures d'un intervenant spécifique
+    public static List<Candidature> getCandidaturesDeIntervenant(Intervenant intervenant) {
+        return listeCandidatures.stream()
+                .filter(c -> c.getIntervenant().equals(intervenant))
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }

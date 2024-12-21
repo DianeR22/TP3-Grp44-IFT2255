@@ -1,7 +1,9 @@
 package View;
 
 import Controller.ConnexionController;
+import Controller.EntraveController;
 import Controller.ResidentController;
+import Controller.TravauxController;
 import Model.ServiceAPI;
 
 import java.util.Scanner;
@@ -49,22 +51,27 @@ public class EntravesView {
     // Aucun filtrage
     public static void afficherToutesLesEntraves(Scanner scanner){
         System.out.println("Voici la liste de toutes les entraves associées aux travaux en cours: ");
-        serviceAPI.recupererEntraves(0, null);
+        EntraveController.recupererEntraves(0, null);
 
         }
 
     // Filtrer par travail
     public static void afficherEntraveParTravail(Scanner scanner){
-        System.out.println("Veuillez entrer le travail souhaité: ");
-        String filtre = scanner.nextLine();
-        serviceAPI.recupererEntraves(1, filtre);
+        System.out.println("Voici tous les travaux en cours: ");
+        // Afficher tous les travaux sans filtre
+        TravauxController.recupererTravaux(0, null);
+        System.out.println("Veuillez entrer le numéro du travail souhaité: ");
+        int idTravail = scanner.nextInt();
+        EntraveController.recupererEntravesParTravail(idTravail);
+
+
     }
 
     // Filtrer par rue
     public static void afficherEntraveParRue(Scanner scanner){
         System.out.println("Veuillez entrer la rue souhaitée:");
         String filtre = scanner.nextLine();
-        serviceAPI.recupererEntraves(2, filtre);
+        EntraveController.recupererEntraves(2, filtre);
     }
 
     // Permet de revenir en arrière selon les besoins de l'utilisateur

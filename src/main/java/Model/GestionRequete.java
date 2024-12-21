@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class GestionRequete {
 
@@ -30,7 +32,6 @@ public class GestionRequete {
     }
 
     public static void supprimerRequete(int index){
-
         int size = listeRequetes.size();
         System.out.println(size);
         // Trouver l'index de la requête à supprimer
@@ -44,10 +45,10 @@ public class GestionRequete {
             requeteSupprimee.setResident(null); // Retirer la référence du résident
         }
         System.out.println("Requête supprimée avec succès!");
-            // Vérifier immédiatement que la requête est supprimée
-        RequeteView.afficherRequetes();
+        // Vérifier immédiatement que la requête est supprimée
+        //RequeteView.afficherRequetes();
         saveRequete();
-        System.out.println(size);
+        //System.out.println(size);
     }}
 
     // Méthode pour vider la liste des requêtes
@@ -67,7 +68,7 @@ public class GestionRequete {
         GestionRequete.saveRequete();
     }
 
-    // Cette méthode sert à charger une requête à la liste de requêtes dans le
+    // Cette méthode sert à sauvegarder une requête à la liste de requêtes dans le
     // fichier json approprié
     public static void saveRequete(){
         ObjectMapper obj = new ObjectMapper();
@@ -79,7 +80,7 @@ public class GestionRequete {
         }
     }
 
-    // Méthode servant à sauvegarder une requete et à le placer dans le fichier json
+    // Méthode servant à charger les requetes et à les placer dans le fichier json
     public static void chargeRequetes(){
         ObjectMapper obj = new ObjectMapper();
         try{
@@ -114,6 +115,56 @@ public class GestionRequete {
         return listeRequetes.stream()
                 .filter(requete -> requete.getDebut().equals(dateDebut))
                 .toList();
+    }
+
+    // Faire le suivi d'une requête
+    public static void suiviRequête(Resident resident){
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Récupérer les requêtes du résident spécifique
+        List<Requete> listeRequetes = getRequetesDeResident(resident);
+
+        if (listeRequetes.isEmpty()) {
+            System.out.println("Vous n'avez soumis aucune requête.");
+            return;
+        }
+
+        System.out.println("Vos requêtes: ");
+        // Afficher les requêtes de l'intervenant numérotées
+        for (int i = 0; i < listeRequetes.size(); i++){
+            Requete requete = listeRequetes.get(i);
+            System.out.println((i+1) + ". " + requete.getTitreTravail());
+        }
+
+        System.out.println("Entrez le numéro de la requête que vous voulez suivre: ");
+        int index = scanner.nextInt();
+
+        // Valider l'index
+        if (index < 1 || index > listeRequetes.size()) {
+            System.out.println("Choix invalide.");
+            return;
+        }
+
+        Requete requeteChoisie = listeRequetes.get(index+1);
+        afficherSuiviRequete(requeteChoisie);
+    }
+
+    // Affiche le suivi de la requête demandé par le résident
+    public static void afficherSuiviRequete( Requete requete){
+        System.out.println("Titre: " + requete.getTitreTravail());
+        System.out.println("Description: " + requete.getDescription());
+        System.out.println("Type de travaux: " + requete.getTypeTravaux());
+        System.out.println("Date de début espérée: " + requete.getDebut());
+        System.out.println("Candidatures reçues:");
+
+    }
+
+    // Cette méthode permet de récupérer les candidatures d'un intervenant spécifique
+    public static List<Requete> getRequetesDeResident(Resident resident) {
+        return listeRequetes.stream()
+                .filter(c -> c.getResident().equals(resident))
+                .collect(Collectors.toList());
     }
 
 }

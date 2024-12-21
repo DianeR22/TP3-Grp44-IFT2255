@@ -22,8 +22,9 @@ public class ResidentView {
         System.out.println("4. Notifications");
         System.out.println("5. Permettre une planification participative");
         System.out.println("6. Soumettre une requête de travail");
-        System.out.println("7. Consulter les entraves routieres.");
-        System.out.println("8. Retourner au menu principal");
+        System.out.println("7. Faire le suivi d'une requête");
+        System.out.println("8. Consulter les entraves routieres.");
+        System.out.println("9. Retourner au menu principal");
 
         // Récupérer le input de l'utilisateur
         Scanner scanner = new Scanner(System.in);
@@ -38,12 +39,14 @@ public class ResidentView {
                 break;
             case "2":
                 // Option pour consulter les travaux en cours ou à venir
-                TravauxController.afficherMenu(scanner);
+                // ERREUR ICI: TravauxController.afficherMenu(scanner);
+                System.out.println("Vous êtes sur la section : Rechercher des travaux ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "3":
                 // Option pour rechercher des travaux (non définie ici)
-                System.out.println("Vous êtes sur la section : Rechercher des travaux ! Cette option n'est pas encore implémentée!");
+                TravauxController.afficherMenu(scanner);
+
                 retour(scanner);
                 break;
             case "4":
@@ -63,11 +66,17 @@ public class ResidentView {
                 retour(scanner);
                 break;
             case "7":
+                // Faire suivi
+                System.out.println("Vous êtes sur la section : Faire le suivi d'une requête !");
+                RequeteController.obtenirInformationsRequete();
+                retour(scanner);
+                break;
+            case "8":
                 // Consulter les entraves
                 EntraveController.afficherMenu(scanner);
                 retour(scanner);
                 break;
-            case "8":
+            case "9":
                 ConnexionController.afficherMenuPrincipal();
                 break;
             default:

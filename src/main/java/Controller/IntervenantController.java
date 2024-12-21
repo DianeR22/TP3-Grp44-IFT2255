@@ -23,4 +23,9 @@ public class IntervenantController {
     GestionIntervenants.soumettreCandidature();
 }
 
+    // Appel de la méthode soumettreCandidature dans le modèle de GestionIntervenants
+    public static void supprimerCandidature(){
+        GestionIntervenants.supprimerCandidature();
+    }
+
 }

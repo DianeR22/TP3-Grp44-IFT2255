@@ -22,8 +22,9 @@ public class RequeteView {
             System.out.println("1. Afficher toutes les requêtes");
             System.out.println("2. Filtrer les requêtes");
             System.out.println("3. Soumettre une candidature");
-            System.out.println("4. Retour au menu principal");
-            System.out.println("Entrez une option entre 1 et 4.");
+            System.out.println("4. Supprimer une candidature");
+            System.out.println("5. Retour au menu principal");
+            System.out.println("Entrez une option entre 1 et 5.");
 
             String choix = scanner.nextLine();
 
@@ -42,6 +43,11 @@ public class RequeteView {
                     retour(scanner);
                     break;
                 case "4":
+                    System.out.println("Vous êtes sur la section : Supprimer une candidature ! Cette option n'est pas encore implémentée\n");
+                    IntervenantController.supprimerCandidature();
+                    retour(scanner);
+                    break;
+                case "5":
                    IntervenantController.afficherMenuIntervenant();
                 default:
                     System.out.println("Option invalide. Veuillez réessayer.");
@@ -58,7 +64,7 @@ public class RequeteView {
         System.out.print("Votre choix : ");
 
         int choix = scanner.nextInt();
-        scanner.nextLine(); // Consommer le retour de ligne
+        scanner.nextLine();
 
         List<Requete> requetesFiltrees;
         switch (choix) {

@@ -102,8 +102,56 @@ public class GestionIntervenants{
         Candidature candidature = new Candidature(dateDebut, dateFin, requeteChoisie, intervenant);
         // Ajouter la candidature à la liste de candidatures
         GestionCandidatures.ajouterCandidature(candidature);
+        // Sauvegarder la candidature
+        GestionCandidatures.saveCandidature();
 
         System.out.println("Votre candidature a été soumise avec succès pour la requête: requete.getTitreTravail()");
+    }
+
+    // Méthode permettant de supprimer une candidature. Elle affiche les candidatures
+    // d'un intervenant et retire celle que l'intervenant choisit. Les candidatures
+    // restantes sont finalement chargées dans le json.
+    public static void supprimerCandidature() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        // Récupérer l'intervenant connecté
+        Intervenant intervenant = Intervenant.getIntervenantConnecte();
+
+        // Récupérer les candidatures soumises de l'intervenant
+        List<Candidature> listeCandidatures = GestionCandidatures.getCandidaturesDeIntervenant(intervenant);
+
+        if (listeCandidatures.isEmpty()) {
+            System.out.println("Vous n'avez soumis aucune candidature pour le moment.");
+            return;
+        }
+
+        System.out.println("Voici la liste des candidatures que vous avez soumis: ");
+
+        // Afficher les candidatures de l'intervenant numérotées
+        for (int i = 0; i < listeCandidatures.size(); i++){
+            Candidature candidature = listeCandidatures.get(i);
+            System.out.println((i+1) + ". " + candidature.getRequete().getTitreTravail() + "| Date de début: "
+            + candidature.getDateDebut() + " | Date de fin: " + candidature.getDateFin());
+        }
+
+        System.out.println("Entrez le numéro de la candidature que vous souhaitez supprimer: ");
+        int index = scanner.nextInt();
+
+        // Valider l'index
+        if (index < 1 || index > listeCandidatures.size()) {
+            System.out.println("Choix invalide. Retour au menu principal.");
+            return;
+        }
+
+        // Récupérer et supprimer la candidature choisie
+        Candidature candidatureChoisie = listeCandidatures.get(index-1);
+        GestionCandidatures.supprimerCandidature(candidatureChoisie);
+        System.out.println("Votre candidature pour le travail \"" + candidatureChoisie.getRequete().getTitreTravail() +
+                "\" a été retirée avec succès.");
+
+        // Charger la liste des candidatures actuelle après suppression
+        GestionCandidatures.saveCandidature();
     }
 
 }

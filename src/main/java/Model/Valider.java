@@ -1,5 +1,6 @@
 package Model;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -80,16 +81,31 @@ public class Valider {
         return IDENTIFIANT.matcher(identifiant).matches();
     }
 
-    public static boolean validerTypeTravail(String typeTravailChoisi){
-
-        // On supprime les espaces inutiles (avant et après le texte)
+    // Valider le type de travail entré par l'utilisateur en comparant avec la liste des types de travail
+    // acceptée
+    public static boolean validerTypeTravail(String typeTravailChoisi) {
+        // On enlève les espaces inutiles de ce que l'utilisateur a entré comme type
         String typeTravailArrange = typeTravailChoisi.trim().replaceAll("\\s+", " ");
-        // Comparer pour voir que le type de travail choisi correspond à l'un des
-        // types possibles
-        for (TypeTravail travail : TypeTravail.values()){
-            // On compare avec la chaine arrangée et on ne fait pas attention à la casse
-            if (travail.name().replaceAll("_", " ").equalsIgnoreCase(typeTravailArrange)){
-                return true;
+
+        // Normalisation pour enlever les accents de ce que l'utilisateur a entré comme type
+        String typeTravailArrangeSansAccents = Normalizer.normalize(typeTravailArrange, Normalizer.Form.NFD);
+        typeTravailArrangeSansAccents = typeTravailArrangeSansAccents.replaceAll("[^\\p{ASCII}]", "");
+
+
+        // Comparaison pour voir si le type choisi correspond à un dans la liste
+        for (TypeTravail travail : TypeTravail.values()) {
+
+            // On enlève les underscores et on met des espaces du type de travail de la liste
+            String travailNom = travail.name().replaceAll("_", " ").toLowerCase();
+
+            // Normalisation de l'énumération pour enlever les accents du type de travail de la liste
+            String travailNomSansAccents = Normalizer.normalize(travailNom, Normalizer.Form.NFD);
+            travailNomSansAccents = travailNomSansAccents.replaceAll("[^\\p{ASCII}]", "");
+
+
+            // On compare les deux chaînes sans prendre en compte la casse
+            if (travailNomSansAccents.equalsIgnoreCase(typeTravailArrangeSansAccents)) {
+                return true; // Les chaines sont équivalentes
             }
         }
         return false;
@@ -100,15 +116,15 @@ public class Valider {
     public enum TypeTravail {
 
         TRAVAUX_ROUTIERS("Travaux routiers"),
-        TRAVAUX_GAZ_ELECTRICITE("Travaux de gaz ou électricité"),
-        CONSTRUCTION_RENOVATION("Construction ou rénovation"),
+        TRAVAUX_DE_GAZ_OU_ELECTRICITE("Travaux de gaz ou électricité"),
+        CONSTRUCTION_OU_RENOVATION("Construction ou rénovation"),
         ENTRETIEN_PAYSAGER("Entretien paysager"),
-        TRAVAUX_TRANSPORTS_COMMUNS("Travaux liés aux transports en commun"),
-        TRAVAUX_SIGNALISATION_ECLAIRAGE("Travaux de signalisation et éclairage"),
+        TRAVAUX_LIES_AUX_TRANSPORTS_EN_COMMUNS("Travaux liés aux transports en commun"),
+        TRAVAUX_DE_SIGNALISATION_ET_ECLAIRAGE("Travaux de signalisation et éclairage"),
         TRAVAUX_SOUTERRAINS("Travaux souterrains"),
-        TRAVAUX_RESIDENTIEL("Travaux résidentiels"),
+        TRAVAUX_RESIDENTIELS("Travaux résidentiels"),
         ENTRETIEN_URBAIN("Entretien urbain"),
-        ENTRETIEN_RESEAUX_TELECOMMUNICATION("Entretien des réseaux de télécommunication");
+        ENTRETIEN_DES_RESEAUX_DE_TELECOMMUNICATION("Entretien des réseaux de télécommunication");
 
         private final String description;
 

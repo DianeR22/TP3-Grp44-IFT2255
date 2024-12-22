@@ -7,6 +7,7 @@ public class Requete {
     private String description;
     private String typeTravaux;
     private String debut;
+    private String etat = "Ouverte";
 
     private Intervenant intervenant;
     private Resident resident;
@@ -72,4 +73,11 @@ public class Requete {
         this.resident = resident;
     }
 
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String nouvelEtat) {
+        this.etat = nouvelEtat;
+    }
 }

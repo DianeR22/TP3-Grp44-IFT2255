@@ -15,10 +15,10 @@ public void testTraiterChoixIntervenant() {
     Connexion.traiterChoix("2", resident, intervenant); 
 
     // Vérifier que la connexion est appelé pour l'intervenant 
-    verify(intervenant).connexion(); 
+    verify(intervenant).connexion(intervenant);
 
     // Vérifier que la connexion n'est pas appelé pour le résident 
-    verify(resident, never()).connexion(); 
+    verify(resident, never()).connexion(resident);
 } 
 
 @Test 
@@ -31,10 +31,10 @@ public void testTraiterChoixResident(){
     Connexion.traiterChoix("1", resident, intervenant); 
 
     // Vérifier que la connexion est appelé pour l'intervenant 
-    verify(resident).connexion(); 
+    verify(resident).connexion(resident);
 
     // Vérifier que la connexion n'est pas appelé pour le résident 
-    verify(intervenant, never()).connexion(); 
+    verify(intervenant, never()).connexion(intervenant);
 }
   @Test 
     public void testTraiterChoixInscription(){ 
@@ -47,7 +47,7 @@ public void testTraiterChoixResident(){
  
         // Verifier que les méthodes connexion de resident et intervenant ne 
         // sont pas appelées 
-        verify(resident, never()).connexion(); 
-        verify(intervenant, never()).connexion(); 
+        verify(resident, never()).connexion(resident);
+        verify(intervenant, never()).connexion(intervenant);
     } 
 }

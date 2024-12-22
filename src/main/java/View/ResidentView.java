@@ -4,6 +4,7 @@ import Controller.ConnexionController;
 import Controller.EntraveController;
 import Controller.RequeteController;
 import Controller.TravauxController;
+import Model.GestionRequete;
 import Model.Resident;
 
 import java.util.Scanner;
@@ -68,7 +69,8 @@ public class ResidentView {
             case "7":
                 // Faire suivi
                 System.out.println("Vous êtes sur la section : Faire le suivi d'une requête !");
-                RequeteController.obtenirInformationsRequete();
+                Resident resident = Resident.getResidentConnecte();
+                GestionRequete.suiviRequete(resident);
                 retour(scanner);
                 break;
             case "8":

@@ -1,11 +1,15 @@
 package Controller;
-import Model.Resident;
 import View.ResidentView;
 
+/**
+ * Contrôleur pour la gestion des résidents. Permet d'afficher le menu des résidents.
+ */
 public class ResidentController {
 
-    // Faire appel à afficherMenuResident de la vue Resident pour afficher le
-    // menu des résidents
+    /**
+     * Appelle la méthode afficherMenuResident de la vue Resident pour afficher
+     * le menu des résidents.
+     */
     public static void afficherMenuResident(){
         ResidentView.afficherMenuResident();
     }

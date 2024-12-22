@@ -1,0 +1,53 @@
+[
+  {
+    "nom": "Dupont",
+    "prenom": "Bob",
+    "adresseCourriel": "bob.dupont@gmail.com",
+    "motDePasse": "M0tdepasse24$",
+    "dateNaissance": "15/02/2001",
+    "telephone": "514-667-4567",
+    "adresse": "Montreal, Plateau"
+  },
+  {
+    "nom": "Habib",
+    "prenom": "Marie",
+    "adresseCourriel": "marie.habib@gmail.com",
+    "motDePasse": "Securit3%",
+    "dateNaissance": "20/05/1967",
+    "telephone": "514-987-0000",
+    "adresse": "Montreal, Rosemont"
+  },
+  {
+    "nom": "Gauthier",
+    "prenom": "Thomas",
+    "adresseCourriel": "thomas.gauthier@gmail.com",
+    "motDePasse": "DonneeS321%",
+    "dateNaissance": "10/12/1998",
+    "telephone": "438-246-1357",
+    "adresse": "Montreal, Hochelaga"
+  },
+  {
+    "nom": "Akloul",
+    "prenom": "Marie",
+    "adresseCourriel": "marie.akloul@gmail.com",
+    "motDePasse": "Securit3%",
+    "type": "Entreprise publique",
+    "identifiantVille": "12345678"
+  },
+  {
+    "nom": "Desjardins",
+    "prenom": "Jean",
+    "adresseCourriel": "jean.desjardins@gmail.com",
+    "motDePasse": "Travaux!2023",
+    "type": "Entrepreneur privé",
+    "identifiantVille": "87654321"
+  },
+  {
+    "nom": "Ibrir",
+    "prenom": "Amine",
+    "adresseCourriel": "amine.ibrir@gmail.com",
+    "motDePasse": "Travail@2024",
+    "type": "Particulier",
+    "identifiantVille": "11223344"
+  }
+]

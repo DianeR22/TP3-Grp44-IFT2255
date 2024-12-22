@@ -3,6 +3,7 @@ package View;
 import Controller.IntervenantController;
 import Controller.RequeteController;
 import Model.GestionRequete;
+import Model.Intervenant;
 import Model.Requete;
 import Model.Valider;
 
@@ -23,7 +24,8 @@ public class RequeteView {
             System.out.println("2. Filtrer les requêtes");
             System.out.println("3. Soumettre une candidature");
             System.out.println("4. Supprimer une candidature");
-            System.out.println("5. Retour au menu principal");
+            System.out.println("5. Suivre sa candidature");
+            System.out.println("6. Retour au menu principal");
             System.out.println("Entrez une option entre 1 et 5.");
 
             String choix = scanner.nextLine();
@@ -38,16 +40,22 @@ public class RequeteView {
                     retour(scanner);
                     break;
                 case "3":
-                    System.out.println("Vous êtes sur la section : Soumettre une candidature ! Cette option n'est pas encore implémentée\n");
+                    System.out.println("Vous êtes sur la section : Soumettre une candidature !");
                     IntervenantController.soumettreCandidature();
                     retour(scanner);
                     break;
                 case "4":
-                    System.out.println("Vous êtes sur la section : Supprimer une candidature ! Cette option n'est pas encore implémentée\n");
+                    System.out.println("Vous êtes sur la section : Supprimer une candidature !\n");
                     IntervenantController.supprimerCandidature();
                     retour(scanner);
                     break;
                 case "5":
+                    System.out.println("Vous êtes sur la section : Suivre une candidature !\n");
+                    Intervenant intervenant = Intervenant.getIntervenantConnecte();
+                    IntervenantController.suivreCandidature(intervenant);
+                    retour(scanner);
+                    break;
+                case "6":
                    IntervenantController.afficherMenuIntervenant();
                 default:
                     System.out.println("Option invalide. Veuillez réessayer.");

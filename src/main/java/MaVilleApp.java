@@ -1,9 +1,5 @@
 import Controller.ConnexionController;
-import Model.GestionCandidatures;
-import Model.GestionIntervenants;
-import Model.GestionRequete;
-import Model.GestionResidents;
-import Model.GestionTravaux;
+import Model.*;
 
 
 public class MaVilleApp {
@@ -13,10 +9,14 @@ public class MaVilleApp {
         GestionRequete.chargeRequetes();
         GestionResidents.chargeResidents();
         GestionIntervenants.chargeIntervenants();
+        GestionCandidatures.chargeCandidatures();
+
 
         // Récupérer les types de travaux appelés reason_categoory dans l'API des travaux
         // et les placer dans un json pour le mapping
         GestionTravaux.sauvegarderCategoriesDansFichier();
+
+
 
 
 

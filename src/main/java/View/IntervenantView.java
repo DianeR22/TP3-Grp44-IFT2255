@@ -36,7 +36,7 @@ public class IntervenantView {
                 retour(scanner);
                 break;
             case "3":
-                System.out.println("Vous êtes sur la section : Soumettre un nouveau projet de travaux ! Cette option n'est pas encore implémentée!");
+                System.out.println("Vous êtes sur la section : Soumettre un nouveau projet de travail ! Cette option n'est pas encore implémentée!");
                 retour(scanner);
                 break;
             case "4":
@@ -54,6 +54,7 @@ public class IntervenantView {
         }
     }
 
+    // Permet de revenir en arrière selon les besoins de l'utilisateur
     private static void retour(Scanner scanner){
         System.out.println("Voulez-vous revenir au menu des intervenants (1) ou retourner au menu principal (2)? Veuillez repondre par 1 ou par 2.");
         String reponse = scanner.nextLine();

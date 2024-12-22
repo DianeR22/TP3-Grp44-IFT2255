@@ -7,14 +7,15 @@ public class Connexion {
     // et d'un intervenant afin de pouvoir appeler les méthodes appropriées au besoin
     public static void traiterChoix(String choix, Resident resident, Intervenant intervenant) {
 
+
         // Utilisation d'un bloc switch pour appeler les fonctions appropriées selon l'option
         // choisie par l'utilisateur
         switch (choix) {
             case "1":
-                resident.connexion();
+                resident.connexion(resident);
                 break;
             case "2":
-                intervenant.connexion();
+                intervenant.connexion(intervenant);
                 break;
             case "3":
                 demanderTypeInscription(resident, intervenant);
@@ -38,10 +39,10 @@ public class Connexion {
         while (true) {
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("R")) {
-                resident.inscription();
+                resident.inscription(resident);
                 break;
             } else if (input.equalsIgnoreCase("I")) {
-                intervenant.inscription();
+                intervenant.inscription(intervenant);
                 break;
             } else {
                 System.out.println("Option invalide. Veuillez réessayer en entrant l'option R ou I.");

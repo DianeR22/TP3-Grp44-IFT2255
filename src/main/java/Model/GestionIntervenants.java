@@ -57,7 +57,27 @@ public class GestionIntervenants{
         }
     }
 
-    // Méthode qui permet à l'intervenant de soumettre une candidature
+    // Méthode pour charger les résidents depuis le fichier JSON
+    public static List<Intervenant> chargerIntervenantsDepuisFichier() {
+        // Spécifiez le chemin de votre fichier JSON
+        File fichier = new File("data/intervenants.json");
+
+        // Créez un ObjectMapper pour mapper le JSON à des objets Java
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            // Lire le fichier JSON et mapper son contenu à une liste d'objets Intervenant
+            List<Intervenant> intervenants = objectMapper.readValue(fichier, objectMapper.getTypeFactory().constructCollectionType(List.class, Intervenant.class));
+            return intervenants;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;  // En cas d'erreur, retourner null
+        }
+    }
+
+    // Méthode qui permet à l'intervenant de soumettre une candidature en entrant
+    // les informations essentielles. Elle ajoute la candidature à la liste des
+    // candidatures et au fichier json correspondant
     public static void soumettreCandidature(){
         // Récupérer le input de l'utilisateur
         Scanner scanner = new Scanner(System.in);
@@ -79,6 +99,8 @@ public class GestionIntervenants{
         System.out.println("Entrer le numéro de la requête que vous souhaitez:");
         int index = scanner.nextInt();
 
+        scanner.nextLine();
+
         // Valider l'index
         if (index < 1 || index > listeRequetes.size()) {
             System.out.println("Choix invalide. Retour au menu principal.");
@@ -89,13 +111,13 @@ public class GestionIntervenants{
         Requete requeteChoisie = listeRequetes.get(index-1);
 
         // Demander les dates
-        System.out.print("Entrez la date de début (format : YYYY-MM-DD) : ");
+        System.out.print("Entrez la date de début (format : YYYY/MM/DD) : ");
         String dateDebut = scanner.nextLine();
 
-        System.out.print("Entrez la date de fin (format : YYYY-MM-DD) : ");
+        System.out.print("Entrez la date de fin (format : YYYY/MM/DD) : ");
         String dateFin = scanner.nextLine();
 
-        // Récupérer l'intervenant en question
+        // Récupérer l'intervenant connecté
         Intervenant intervenant = Intervenant.getIntervenantConnecte();
 
         // Créer une instance de candidature
@@ -126,7 +148,7 @@ public class GestionIntervenants{
             return;
         }
 
-        System.out.println("Voici la liste des candidatures que vous avez soumis: ");
+        System.out.println("Voici la liste des candidatures que vous avez soumise: ");
 
         // Afficher les candidatures de l'intervenant numérotées
         for (int i = 0; i < listeCandidatures.size(); i++){
@@ -140,13 +162,14 @@ public class GestionIntervenants{
 
         // Valider l'index
         if (index < 1 || index > listeCandidatures.size()) {
-            System.out.println("Choix invalide. Retour au menu principal.");
+            System.out.println("Choix invalide.");
             return;
         }
 
         // Récupérer et supprimer la candidature choisie
         Candidature candidatureChoisie = listeCandidatures.get(index-1);
         GestionCandidatures.supprimerCandidature(candidatureChoisie);
+
         System.out.println("Votre candidature pour le travail \"" + candidatureChoisie.getRequete().getTitreTravail() +
                 "\" a été retirée avec succès.");
 

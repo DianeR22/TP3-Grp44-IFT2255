@@ -17,21 +17,8 @@ public class GestionResidents{
     private static Resident residentConnecte;
 
     // Getter et setter
-
     public static List<Resident> getListeResidents() {
         return listeResidents;
-    }
-
-    public static void setListeResidents(List<Resident> listeResidents) {
-        GestionResidents.listeResidents = listeResidents;
-    }
-
-    public static Resident getResidentConnecte() {
-        return residentConnecte;
-    }
-
-    public static void setResidentConnecte(Resident resident) {
-        GestionResidents.residentConnecte = resident;
     }
 
     // Méthode pour ajouter un résident à la liste des résidents
@@ -55,13 +42,32 @@ public class GestionResidents{
         }
     }
 
-    // Méthode servant à sauvegarder un resident et à le placer dans le fichier json
+    // Méthode servant à sauvegarder les résidents et à les placer dans le fichier json
     public static void saveResident(){
         ObjectMapper obj = new ObjectMapper();
         try {
             obj.writeValue(new File(FICHIER_RESIDENTS), listeResidents);
         } catch (IOException e) {
             System.out.println("Erreur dans la sauvegarde.");
+        }
+    }
+
+    // Méthode qui retourne la liste des résidents depuis le fichier JSON
+    public static List<Resident> chargerResidentsDepuisFichier() {
+
+        // Fichier json en question
+        File fichier = new File("data/residents.json");
+
+        // Créer un ObjectMapper pour mapper le JSON à des objets Java
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            // Lire le fichier JSON et mapper son contenu à une liste d'objets Resident
+            List<Resident> residents = objectMapper.readValue(fichier, objectMapper.getTypeFactory().constructCollectionType(List.class, Resident.class));
+            return residents;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

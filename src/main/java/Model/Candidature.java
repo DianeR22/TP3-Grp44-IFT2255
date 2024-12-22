@@ -6,6 +6,8 @@ public class Candidature {
     private String dateFin;
     private Requete requete;
     private Intervenant intervenant;
+    private String messageResident;
+    private String etat = "En attente";
 
     // Constructeur
     public Candidature(String dateDebut, String dateFin, Requete requete, Intervenant intervenant) {
@@ -13,6 +15,11 @@ public class Candidature {
         this.dateFin = dateFin;
         this.requete = requete;
         this.intervenant = intervenant;
+    }
+
+    // Constructeur sans arguement
+    public Candidature(){
+
     }
 
     // Getter et setter
@@ -48,4 +55,19 @@ public class Candidature {
         this.intervenant = intervenant;
     }
 
+    public String getMessageResident() {
+        return messageResident;
+    }
+
+    public void setMessageResident(String messageResident) {
+        this.messageResident = messageResident;
+    }
+
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String nouvelEtat) {
+        this.etat = nouvelEtat;
+    }
 }

@@ -13,6 +13,8 @@ public abstract class Utilisateur {
     protected String motDePasse;
     protected String adresseCourriel;
 
+    private static Utilisateur utilisateur;
+
     // Constructeur avec arguments
     public Utilisateur(String nom, String prenom, String motDePasse, String adresseCourriel) {
         this.nom = nom;
@@ -25,6 +27,7 @@ public abstract class Utilisateur {
     public Utilisateur() {
 
     }
+
 
     //Getter et setter
 
@@ -60,15 +63,17 @@ public abstract class Utilisateur {
         this.adresseCourriel = adresseCourriel;
     }
 
+
     // Méthode abstraite inscription qui doit être implémentée par les classes filles de la
     // classe mère utilisateur
-    public abstract void inscription();
+    public abstract void inscription(Utilisateur utilisateur);
 
     // Méthode connexion qui n'a pas de valeur de retour et qui permet à un utilisateur
     // de se connecter en entrant une adresse courriel et un mot de passe
-    public void connexion() {
+    public void connexion(Utilisateur utilisateur) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Vous êtes sur la page de connexion!");
+
 
         int tentative = 0;
         while (tentative < 3) {
@@ -79,6 +84,13 @@ public abstract class Utilisateur {
 
             if (verifierConnexion(adresseCourriel, motDePasse)) {
                 System.out.println("Connexion réussie.");
+
+                // Vérifier le type de l'utilisateur
+                if (utilisateur instanceof Resident) {
+                    Resident.connecterResident((Resident) utilisateur, adresseCourriel); // Cast pour utiliser la méthode spécifique
+                } else if (utilisateur instanceof Intervenant) {
+                    Intervenant.connecterIntervenant((Intervenant) utilisateur, adresseCourriel);
+                }
                 afficherMenu();
                 return;  // Connexion réussie
             } else {
@@ -90,7 +102,7 @@ public abstract class Utilisateur {
             }
         }
 
-        // Après 3 tentatives échouées
+        // Après 3 mauvaises tentatives
         System.out.println("Vous avez échoué à vous connecter après 3 tentatives. Veuillez réessayer plus tard. Le programme va maintenant se terminer.");
         System.exit(0);
     }

@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Resident extends Utilisateur {
@@ -10,7 +11,7 @@ public class Resident extends Utilisateur {
 
     private Scanner scanner;
     private Resident resident;
-    private Resident residentConnecte;
+    private static Resident residentConnecte;
 
 
     // Constructeur avec arguments, certains sont hérités de la classe utilisateur
@@ -19,6 +20,31 @@ public class Resident extends Utilisateur {
         this.dateNaissance = dateNaissance;
         this.telephone = telephone;
         this.adresse = adresse;
+    }
+
+
+    // La méthode equals sert à vérifier que les 2 objets sont
+    // égaux s'ils ont la même adresse courriel
+    @Override
+    public boolean equals(Object obj) {
+        // Vérifie si ces objets sont identiques
+        if (this == obj) {
+            return true;
+        }
+        // Vérifie si ces objets appartiennent à la même classe
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        // Vérifie si ces objets ont la même adresse courriel
+        Resident resident = (Resident) obj;
+        return this.adresseCourriel != null && this.adresseCourriel.equals(resident.adresseCourriel);
+    }
+
+    // Garantir que le code de hachage et cohérent avec la méthode equals
+    @Override
+    public int hashCode() {
+        // Retourne le code de hachage de l'adresse, 0 si null
+        return adresseCourriel != null ? adresseCourriel.hashCode() : 0;
     }
 
     // Constructeur sans arguement
@@ -63,17 +89,41 @@ public class Resident extends Utilisateur {
         this.resident = resident;
     }
 
-    public Resident getResidentConnecte() {
+    public static Resident getResidentConnecte() {
         return residentConnecte;
     }
 
     public void setResidentConnecte(Resident residentConnecte) {
-        this.residentConnecte = residentConnecte;
+        Resident.residentConnecte = residentConnecte;
+    }
+
+    // Cette méthode prend en param. l'utilisateur et son email. Elle sert à connecter
+    // le résident en trouvant le résident présentement connecté en comparant
+    // son adresse courriel avec l'adresse courriel de tous les résidents inscrits.
+    // Elle permet trouver le résident connecté et d'avoir une variable residentConnecte
+    // utile pour associer une requête à un résident par exemple.
+    public static Resident connecterResident(Utilisateur utilisateur, String email) {
+        // Prendre la liste des résidents depuis le fichier JSON
+        List<Resident> residents = GestionResidents.chargerResidentsDepuisFichier();
+
+        // Chercher le résident avec l'email donné
+        for (Resident resident : residents) {
+            if (resident.getAdresseCourriel().equals(email)) {
+                residentConnecte = resident;
+                return resident;  // Résident trouvé
+            }
+        }
+        return null;
+
+    }
+
+    public static void deconnecterResident() {
+        residentConnecte = null; // Déconnecte le résident
     }
 
     // Méthode inscription qui collecte les informations nécessaires à l'inscription du résident
     @Override
-    public void inscription() {
+    public void inscription(Utilisateur utilisateur) {
         Scanner scanner = new Scanner(System.in);
 
         nom = obtenirNom("Nom");
@@ -104,7 +154,7 @@ public class Resident extends Utilisateur {
         afficherInformations();
 
         // Demander au résident s'il souhaite se connecter
-        demanderConnexion(scanner);
+        demanderConnexion(scanner, utilisateur);
 
     }
 
@@ -204,11 +254,11 @@ public class Resident extends Utilisateur {
     }
 
     // Méthode pour demander au résident s'il souhaite se connecter
-    private void demanderConnexion(Scanner scanner) {
+    private void demanderConnexion(Scanner scanner, Utilisateur utilisateur) {
         System.out.println("\nMerci pour vos informations! Souhaitez-vous vous connecter? (Oui/Non)");
         String reponse = scanner.next();
         if (reponse.equalsIgnoreCase("Oui")) {
-            super.connexion();
+            super.connexion(utilisateur);
         } else {
             System.out.println("Au revoir !");
             System.exit(0);

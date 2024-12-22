@@ -1,5 +1,8 @@
 package Model;
 
+import jdk.jshell.execution.Util;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class Intervenant extends Utilisateur {
@@ -23,8 +26,32 @@ public class Intervenant extends Utilisateur {
 
     }
 
-    // Getter et setter
 
+    // La méthode equals sert à vérifier que les 2 objets sont
+    // égaux s'ils ont la même adresse courriel
+    @Override
+    public boolean equals(Object obj) {
+        // Vérifie si ces objets sont identiques
+        if (this == obj) {
+            return true;
+        }
+        // Vérifie si ces objets appartiennent à la même classe
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        // Vérifie si ces objets ont la même adresse courriel
+        Intervenant intervenant = (Intervenant) obj;
+        return this.adresseCourriel != null && this.adresseCourriel.equals(intervenant.adresseCourriel);
+    }
+
+    // Garantir que le code de hachage et cohérent avec la méthode equals
+    @Override
+    public int hashCode() {
+        // Retourne le code de hachage de l'adresse, 0 si null
+        return adresseCourriel != null ? adresseCourriel.hashCode() : 0;
+    }
+
+    // Getter et setter
     public String getType() {
         return type;
     }
@@ -57,9 +84,35 @@ public class Intervenant extends Utilisateur {
         Intervenant.intervenantConnecte = intervenant;
     }
 
+    // Cette méthode prend en param. l'utilisateur et son email. Elle sert à connecter
+    // l'intervenant en trouvant l'intervenant présentement connecté en comparant
+    // son adresse courriel avec l'adresse courriel de tous les intervenants inscrits.
+    // Elle permet trouver l'intervenant connecté et d'avoir une variable intervenantConnecte
+    // utile pour associer une candidature à l'intervenant postulant celle-ci
+    public static Intervenant connecterIntervenant(Utilisateur utilisateur, String email) {
+        // Prendre la liste des intervenants depuis le fichier JSON
+        List<Intervenant> intervenants = GestionIntervenants.chargerIntervenantsDepuisFichier();
+
+        // Chercher l'intervenant avec l'email donné
+        for (Intervenant intervenant : intervenants) {
+            if (intervenant.getAdresseCourriel().equals(email)) {
+                // Intervenant trouvé est l'intervenant présentement connecté
+                intervenantConnecte = intervenant;
+                return intervenant;
+            }
+        }
+        return null;
+
+    }
+
+    public static void deconnecterResident() {
+        intervenantConnecte = null; // Déconnecte le résident
+    }
+
+
     // Méthode inscription qui collecte les informations nécessaires à l'inscription de l'intervenant
     @Override
-    public void inscription() {
+    public void inscription(Utilisateur utilisateur) {
         // Initialisation d'un scanner afin d'obtenir l'input de l'intervenant
         Scanner scanner = new Scanner(System.in);
 
@@ -87,7 +140,7 @@ public class Intervenant extends Utilisateur {
         afficherInformations();
 
         // Demander à l'intervenant s'il souhaite se connecter
-        demanderConnexion(scanner);
+        demanderConnexion(scanner, utilisateur);
     }
 
     // Méthode pour obtenir le nom ou prénom
@@ -164,11 +217,12 @@ public class Intervenant extends Utilisateur {
     }
 
     // Méthode pour demander à l'intervenant s'il souhaite se connecter
-    private void demanderConnexion(Scanner scanner) {
+    private void demanderConnexion(Scanner scanner, Utilisateur utilisateur) {
         System.out.println("Merci pour vos informations! Souhaitez-vous vous connecter? (Oui/Non)");
         String reponse = scanner.next();
         if (reponse.equalsIgnoreCase("Oui")) {
-            super.connexion();
+
+            super.connexion(utilisateur);
         } else {
             System.out.println("Au revoir.");
             System.exit(0);

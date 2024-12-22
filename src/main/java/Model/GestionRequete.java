@@ -31,6 +31,8 @@ public class GestionRequete {
         listeRequetes.add(requete);
     }
 
+    // Méthode qui prend en param. l'index de la requête à supprimer et supprime
+    // cette requête de la liste des requêtes ainsi que du fichier JSON.
     public static void supprimerRequete(int index){
         int size = listeRequetes.size();
         System.out.println(size);
@@ -61,11 +63,13 @@ public class GestionRequete {
         Requete requete = new Requete(titreTravail, description, typeTravail, dateDebut);
         GestionRequete.ajouterRequete(requete);
 
-        Resident resident = GestionResidents.getResidentConnecte();
+        Resident resident = Resident.getResidentConnecte();
+        System.out.println("Le resident connecté est" + resident);
         if (resident != null) {
             requete.setResident(resident);
         }
         GestionRequete.saveRequete();
+        System.out.println("Votre requête a été soumise avec succès!");
     }
 
     // Cette méthode sert à sauvegarder une requête à la liste de requêtes dans le
@@ -87,7 +91,6 @@ public class GestionRequete {
             File file = new File(FICHIER_REQUETES);
             if (file.exists()){
                 listeRequetes = obj.readValue(file, obj.getTypeFactory().constructCollectionType(List.class, Requete.class));
-                //System.out.println("Requêtes chargées avec succès");
             }
 
         }catch(IOException e){
@@ -117,8 +120,11 @@ public class GestionRequete {
                 .toList();
     }
 
-    // Faire le suivi d'une requête
-    public static void suiviRequête(Resident resident){
+    // Méthode qui prend en param. le resident souhaitant suivre sa requête. Elle
+    // commence par afficher toutes les requêtes afin que le résident puisse choisir
+    // ce qu'il souhaite. Elle affiche en appelant afficherSuivi les candidatures
+    // liées à la requête en question.
+    public static void suiviRequete(Resident resident){
 
         Scanner scanner = new Scanner(System.in);
 
@@ -131,7 +137,6 @@ public class GestionRequete {
         }
 
         System.out.println("Vos requêtes: ");
-        // Afficher les requêtes de l'intervenant numérotées
         for (int i = 0; i < listeRequetes.size(); i++){
             Requete requete = listeRequetes.get(i);
             System.out.println((i+1) + ". " + requete.getTitreTravail());
@@ -146,25 +151,109 @@ public class GestionRequete {
             return;
         }
 
-        Requete requeteChoisie = listeRequetes.get(index+1);
+        Requete requeteChoisie = listeRequetes.get(index-1);
         afficherSuiviRequete(requeteChoisie);
     }
 
-    // Affiche le suivi de la requête demandé par le résident
-    public static void afficherSuiviRequete( Requete requete){
-        System.out.println("Titre: " + requete.getTitreTravail());
-        System.out.println("Description: " + requete.getDescription());
-        System.out.println("Type de travaux: " + requete.getTypeTravaux());
-        System.out.println("Date de début espérée: " + requete.getDebut());
-        System.out.println("Candidatures reçues:");
+    // Prend en param. une requête et affiche les candidatures associées. Si l'état de
+    // la candidature est : en attaente, le résident peut choisir la candidature et laisser un message
+    //  à l'intervenant. Si l'état est : confirmée par l'intervenant. Le résident devrait
+    // fermer la requête.
+    public static void afficherSuiviRequete(Requete requete) {
+        System.out.println("Candidatures reçues pour votre requête : " + requete.getTitreTravail());
+
+        // Liste des candidatures associées à cette requête
+        List<Candidature> candidatures = new ArrayList<>();
+        for (Candidature candidature : GestionCandidatures.getListeCandidatures()) {
+            if (candidature.getRequete().equals(requete)) {
+                candidatures.add(candidature);
+            }
+        }
+
+        // Vérifie s'il y a des candidatures
+        if (candidatures.isEmpty()) {
+            System.out.println("Aucune candidature pour cette requête.");
+            return;
+        }
+
+        // Affiche les candidatures avec numérotation
+        System.out.println("Liste des candidatures :");
+        for (int i = 0; i < candidatures.size(); i++) {
+            Candidature candidature = candidatures.get(i);
+            System.out.println((i + 1) + ". Intervenant : " + candidature.getIntervenant().getNom() + " " + candidature.getIntervenant().getPrenom());
+            System.out.println("Type d'intervenant : " + candidature.getIntervenant().getType());
+            System.out.println("Date de début : " + candidature.getDateDebut());
+            System.out.println("Date de fin : " + candidature.getDateFin());
+            System.out.println("État de la candidature : " + candidature.getEtat());
+            System.out.println("---------------------------");
+        }
+
+        // Demande au résident de sélectionner une candidature
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Entrez le numéro de la candidature à laquelle vous souhaitez répondre (1-" + candidatures.size() + ") : ");
+        int choix = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choix < 1 || choix > candidatures.size()) {
+            System.out.println("Choix invalide.");
+            return;
+        }
+
+        Candidature candidatureChoisie = candidatures.get(choix - 1);
+
+        // Vérifie si la candidature est confirmée par l'intervenant
+        if ("Confirmé par l'intervenant".equalsIgnoreCase(candidatureChoisie.getEtat())) {
+            System.out.print("La candidature est confirmée par l'intervenant. Voulez-vous fermer la requête ? (O/N) : ");
+            String fermerRequete = scanner.nextLine().trim().toUpperCase();
+            if (fermerRequete.equals("O")) {
+                requete.setEtat("Fermée");
+                System.out.println("La requête a été fermée.");
+                return;
+            } else {
+                System.out.println("La requête reste ouverte.");
+                return;
+            }
+        }
+
+        // Demander au résident s'il veut ajouter un message
+        System.out.print("Voulez-vous ajouter un message à l'intervenant ? (O/N) : ");
+        String reponse = scanner.nextLine().trim().toUpperCase();
+
+        String message = "";
+        if (reponse.equals("O")) {
+            System.out.print("Entrez votre message pour l'intervenant : ");
+            message = scanner.nextLine();
+        } else if (!reponse.equals("N")) {
+            System.out.println("Candidature acceptée. État mis à jour.");
+            return;
+        }
+
+        // Met à jour la candidature
+        candidatureChoisie.setMessageResident(message.isEmpty() ? null : message);
+        candidatureChoisie.setEtat("Accepté par le résident.");
 
     }
 
-    // Cette méthode permet de récupérer les candidatures d'un intervenant spécifique
+    // Méthode qui prend en param. un resident et retourne une liste
+    // de requête associée à un résident
     public static List<Requete> getRequetesDeResident(Resident resident) {
-        return listeRequetes.stream()
-                .filter(c -> c.getResident().equals(resident))
-                .collect(Collectors.toList());
-    }
+        // Vérifier si la liste de requêtes est vide
+        if (listeRequetes == null || listeRequetes.isEmpty()) {
+            return List.of(); // Retourner une liste vide si aucune requête n'est présente
+        }
 
+        // Filtrer les requêtes par le résident
+        List<Requete> requetes = listeRequetes.stream()
+                .filter(c -> {
+                    // Si le résident de la requête est null, on l'ignore
+                    if (c.getResident() == null) {
+                        return false;
+                    }
+                    // Comparaison entre le résident de la requête et le résident passé en paramètre
+                    return c.getResident().equals(resident);
+                })
+                .collect(Collectors.toList());
+
+        return requetes;
+    }
 }

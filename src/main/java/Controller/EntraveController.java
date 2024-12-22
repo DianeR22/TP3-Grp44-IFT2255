@@ -7,41 +7,57 @@ import org.json.JSONObject;
 
 import java.util.Scanner;
 
-
+/**
+ * Contrôleur pour la gestion des entraves routières. Permet d'afficher les informations
+ * liées aux entraves, de les filtrer et de récupérer les détails d'un travail associé.
+ */
 public class EntraveController {
-    // Faire appel à afficherMenu de la vue Entrave afin d'afficher le menu des entraves
-    // routières
+
+    /**
+     * Affiche le menu des entraves routières à l'utilisateur.
+     *
+     * @param scanner L'objet Scanner pour récupérer les entrées de l'utilisateur.
+     */
     public static void afficherMenu(Scanner scanner){
         EntravesView.afficherMenu(scanner);
     }
 
     private static final String API_URL_ENTRAVES = "https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=a2bc8014-488c-495d-941b-e7ae1999d1bd";
+
+    /**
+     * Récupère les entraves en fonction du filtre choisi par l'utilisateur et les affiche.
+     *
+     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour filtrer par rue).
+     * @param filtre La valeur du filtre, généralement le nom de la rue.
+     */
     public static void recupererEntraves(int typeFiltre, String filtre) {
         try {
+
             JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_ENTRAVES);
             if (jsonResponse == null) {
                 System.out.println("Impossible de récupérer les données de l'API.");
                 return;
             }
 
+            // Parcourir le json et extraire l'objet result ainsi que records qui est le tableau d'objets
             JSONArray records = jsonResponse.getJSONObject("result").getJSONArray("records");
 
             boolean found = false;
+            // Numéroter les entraves
+            int compteur = 1;
+            // Parcourir le tableau d'objets records pour extraire les objets
             for (int i = 0; i < records.length(); i++) {
                 JSONObject entrave = records.getJSONObject(i);
-                String id_request = entrave.getString("id_request");
                 String rue = entrave.getString("shortname");
 
-                if ((typeFiltre == 0) ||
-                        (typeFiltre == 1 && id_request.equalsIgnoreCase(filtre)) ||
-                        (typeFiltre == 2 && rue.equalsIgnoreCase(filtre))) {
-
-                    System.out.println("\n**********************************");
-                    System.out.println("Identifiant de Travail : " + id_request);
+                // Identifier le filtre
+                if (typeFiltre == 0 || (typeFiltre == 1 && rue.equalsIgnoreCase(filtre))) {
+                    System.out.println("\nEntrave #" + compteur);
+                    System.out.println("**********************************");
                     System.out.println("Rue : " + rue);
                     System.out.println("Type d'impact sur la rue : " + entrave.getString("streetimpacttype"));
-                    System.out.println("************************************");
-
+                    System.out.println("**********************************");
+                    compteur++;
                     found = true;
                 }
             }
@@ -54,13 +70,17 @@ public class EntraveController {
         }
     }
 
-    // Méthode pour récupérer les travaux depuis l'API
+    /**
+     * Récupère toutes les entraves disponibles via l'API et les retourne sous forme de tableau.
+     *
+     * @return Un tableau contenant les entraves récupérées.
+     */
     public static JSONArray getEntraves() {
         // Appel à la méthode getDataFromApi pour récupérer les données
         JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_ENTRAVES);
 
         if (jsonResponse != null) {
-            // Récupérer la liste des travaux à partir de la réponse JSON
+            // Récupérer la liste des entraves à partir de la réponse JSON
             JSONArray travaux = jsonResponse.getJSONObject("result").getJSONArray("records");
             return travaux;
         } else {
@@ -69,20 +89,25 @@ public class EntraveController {
         }
     }
 
-
+    /**
+     * Récupère et affiche les entraves associées à un travail particulier en utilisant
+     * l'identifiant du travail.
+     *
+     * @param idTravail L'identifiant du travail dont on veut connaître les entraves associées.
+     */
     public static void recupererEntravesParTravail(int idTravail) {
+
         // Récupérer les travaux avec l'API des travaux
         JSONArray travaux = TravauxController.getTravaux();
 
-        // Rechercher le travail correspondant à l'_id donné. (_id est un entier tandis
-        // que id est une série de chiffres et lettres)
+        // Rechercher le travail correspondant à l'id donné.
         String longTravailId = null;
         for (int i = 0; i < travaux.length(); i++) {
             JSONObject travail = travaux.getJSONObject(i);
-            int travailShortId = travail.getInt("_id"); // Utilisation de _id
+            int travailShortId = travail.getInt("_id");
 
-            // Si l'_id correspond à l'entrée de l'utilisateur, on a trouvé le travail
-            // en question
+            // Si l'_id du travail correspond à l'entrée idTravail de l'utilisateur, on a trouvé le travail
+            // en question et on extrait son long id composé de chiffres et lettres
             if (travailShortId == idTravail) {
                 longTravailId = travail.getString("id");
                 break;
@@ -107,19 +132,24 @@ public class EntraveController {
             // Si les IDs correspondent, afficher les informations de l'entrave
             if (longTravailId.equals(entraveId)) {
                 afficherEntraveDuTravail(entrave);
-                entraveTrouvee = true; // Une correspondance a été trouvée
+                entraveTrouvee = true; // Entrave trouvée
             }
         }
 
-        // Si aucune entrave n'est trouvée
         if (!entraveTrouvee) {
             System.out.println("Aucune entrave associée à ce travail.");
         }
     }
+
+    /**
+     * Affiche les informations détaillées d'une entrave particulière.
+     *
+     * @param entrave L'objet JSON représentant une entrave dont les détails doivent être affichés.
+     */
     public static void afficherEntraveDuTravail(JSONObject entrave){
 
         // Récupérer les informations de l'entrave
-        String streetName = entrave.getString("name");
+        String streetName = entrave.getString("shortname");
         String streetImpactType = entrave.getString("streetimpacttype");
         String sidewalkBlockedType = entrave.getString("sidewalk_blockedtype");
 
@@ -130,7 +160,4 @@ public class EntraveController {
         System.out.println("Blocage du trottoir : " + sidewalkBlockedType);
         System.out.println("------------------------------");
     }
-
-
-
 }

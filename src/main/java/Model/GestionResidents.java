@@ -41,6 +41,21 @@ public class GestionResidents{
         saveResident();
     }
 
+    public static void supprimerResident(int index){
+        int size = listeResidents.size();
+
+        // Trouver l'index de la requête à supprimer
+        if (index >=0 && index <= size) {
+            Resident residentRetire = listeResidents.get(index);
+            // Supprimer la requête de la liste
+            listeResidents.remove(residentRetire);
+
+            System.out.println("Résident supprimée avec succès!");
+
+            // Sauvegarder les résidents de la liste dans le json des résidents
+            saveResident();
+        }}
+
     /**
      * Cette méthode sert à charger les résidents depuis un fichier JSON
      * et à les ajouter à la liste des résidents.

@@ -54,7 +54,7 @@ public class GestionRequete {
     /**
      *  Méthode qui prend l'index de la requête à supprimer et supprime
      *  cette requête de la liste des requêtes ainsi que du fichier JSON.
-     * @param index
+     * @param index index de la requête dans la liste
      */
     public static void supprimerRequete(int index){
         int size = listeRequetes.size();
@@ -70,10 +70,9 @@ public class GestionRequete {
             requeteSupprimee.setResident(null); // Retirer la référence du résident
         }
         System.out.println("Requête supprimée avec succès!");
-        // Vérifier immédiatement que la requête est supprimée
-        //RequeteView.afficherRequetes();
+
+        // Sauvegarder les requêtes de la liste dans le json des requêtes
         saveRequete();
-        //System.out.println(size);
     }}
 
     // Méthode pour vider la liste des requêtes

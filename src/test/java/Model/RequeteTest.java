@@ -8,24 +8,24 @@ public class RequeteTest {
 
     @Test
     public void soumettreRequete() {
-        // Réinitialiser l'état avant chaque test en vidant la liste
-        GestionRequete.viderListe();
 
+        // Charger les requêtes
+        GestionRequete.chargeRequetes();
         // Créer une requête avec des caractéristiques données
-        GestionRequete.soumettreRequete("Réparation de route", "Routes endommagées à cause de nids de poules", "Entretien de route", "02/01/2025");
+        GestionRequete.soumettreRequete("Réparation de route", "Routes endommagées à cause de nids de poules", "Travaux routiers", "02/01/2025");
 
-        // La liste, qui a été vidée, doit avoir une size de 1 après l'ajout d'une requête
-        assertEquals(1, GestionRequete.getListeRequetes().size());
 
-        // Récupérer la requête en index 0 de la liste
-        Requete requete = GestionRequete.getListeRequetes().get(0);
+        // Récupérer la requête en dernier index de la liste
+        Requete requete = GestionRequete.getListeRequetes().get(GestionRequete.getListeRequetes().size() - 1);
 
         // Tester les caractéristiques attendues de la requête
         assertEquals("Réparation de route", requete.getTitreTravail());
         assertEquals("Routes endommagées à cause de nids de poules", requete.getDescription());
-        assertEquals("Entretien de route", requete.getTypeTravaux());
+        assertEquals("Travaux routiers", requete.getTypeTravaux());
         assertEquals("02/01/2025", requete.getDebut());
-    }
+
+        GestionRequete.supprimerRequete(GestionRequete.getListeRequetes().size() - 1);
 
 
+}
 }

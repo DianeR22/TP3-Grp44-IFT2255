@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  * Contrôleur pour la gestion des entraves routières. Permet d'afficher les informations
- * liées aux entraves, de les filtrer et de récupérer les détails d'un travail associé.
+ * liées aux entraves, de les filtrer et de récupérer les détails d'un travail voulu.
  */
 public class EntraveController {
 
@@ -28,7 +28,7 @@ public class EntraveController {
      * Récupère les entraves en fonction du filtre choisi par l'utilisateur et les affiche.
      *
      * @param typeFiltre Le type de filtre (0 pour tous, 1 pour filtrer par rue).
-     * @param filtre La valeur du filtre, généralement le nom de la rue.
+     * @param filtre La valeur du filtre, le nom de la rue.
      */
     public static void recupererEntraves(int typeFiltre, String filtre) {
         try {
@@ -71,9 +71,9 @@ public class EntraveController {
     }
 
     /**
-     * Récupère toutes les entraves disponibles via l'API et les retourne sous forme de tableau.
+     * Récupère toutes les entraves avec l'API et les retourne en forme de tableau.
      *
-     * @return Un tableau contenant les entraves récupérées.
+     * @return Un tableau avec les entraves récupérées.
      */
     public static JSONArray getEntraves() {
         // Appel à la méthode getDataFromApi pour récupérer les données
@@ -90,8 +90,8 @@ public class EntraveController {
     }
 
     /**
-     * Récupère et affiche les entraves associées à un travail particulier en utilisant
-     * l'identifiant du travail.
+     * Récupère et affiche les entraves associées à un travail particulier avec
+     * l'identifiant du travail entré par l'utilisateur.
      *
      * @param idTravail L'identifiant du travail dont on veut connaître les entraves associées.
      */
@@ -142,9 +142,9 @@ public class EntraveController {
     }
 
     /**
-     * Affiche les informations détaillées d'une entrave particulière.
+     * Affiche les informations d'une entrave.
      *
-     * @param entrave L'objet JSON représentant une entrave dont les détails doivent être affichés.
+     * @param entrave L'objet JSON représentant une entrave dont on veut les détails.
      */
     public static void afficherEntraveDuTravail(JSONObject entrave){
 

@@ -3,6 +3,14 @@ package Model;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * La classe Resident représente un type d'utilisateur avec des informations
+ * comme la date de naissance, l'adresse, le mot de passe et permet la
+ * gestion de l'inscription, de la connexion et de toutes les informations
+ * associées à un résident dans le système.
+ *
+ * Cette classe hérite de la classe Utilisateur.
+ */
 public class Resident extends Utilisateur {
     // Attributs spécifiques au résident
     private String dateNaissance;
@@ -14,7 +22,18 @@ public class Resident extends Utilisateur {
     private static Resident residentConnecte;
 
 
-    // Constructeur avec arguments, certains sont hérités de la classe utilisateur
+    /**
+     * Constructeur de la classe Resident permettant d'instancier un résident avec ses attributs
+     * et ceux hérités par la classe Utilisateur.
+     *
+     * @param nom Le nom du résident.
+     * @param prenom Le prénom du résident.
+     * @param adresseCourriel L'adresse courriel du résident.
+     * @param motDePasse Le mot de passe du résident.
+     * @param dateNaissance La date de naissance du résident.
+     * @param telephone Le numéro de téléphone du résident.
+     * @param adresse L'adresse du résident.
+     */
     public Resident(String nom, String prenom, String adresseCourriel, String motDePasse, String dateNaissance, String telephone, String adresse) {
         super(nom, prenom, motDePasse, adresseCourriel);
         this.dateNaissance = dateNaissance;
@@ -23,8 +42,12 @@ public class Resident extends Utilisateur {
     }
 
 
-    // La méthode equals sert à vérifier que les 2 objets sont
-    // égaux s'ils ont la même adresse courriel
+    /**
+     * Vérifie si deux objets Resident sont égaux en comparant les adresse courriel.
+     *
+     * @param obj L'objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         // Vérifie si ces objets sont identiques
@@ -40,68 +63,133 @@ public class Resident extends Utilisateur {
         return this.adresseCourriel != null && this.adresseCourriel.equals(resident.adresseCourriel);
     }
 
-    // Garantir que le code de hachage et cohérent avec la méthode equals
+    /**
+     * Retourne le code de hachage de l'adresse courriel pour garantir une
+     * cohérence avec la méthode equals
+     *
+     * @return Le code de hachage de l'adresse courriel.
+     */
     @Override
     public int hashCode() {
         // Retourne le code de hachage de l'adresse, 0 si null
         return adresseCourriel != null ? adresseCourriel.hashCode() : 0;
     }
 
-    // Constructeur sans arguement
+    /**
+     * Constructeur sans argument, nécessaire pour certaines initialisations.
+     */
     public Resident() {
         super();
     }
 
     // Getter et setter
+    /**
+     * Retourne la date de naissance du résident.
+     *
+     * @return La date de naissance du résident.
+     */
     public String getDateNaissance() {
         return dateNaissance;
     }
 
+    /**
+     * Définit la date de naissance du résident.
+     *
+     * @param dateNaissance La date de naissance à attribuer au résident.
+     */
     public void setDateNaissance(String dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
+    /**
+     * Retourne le telephone du résident.
+     *
+     * @return Le telephone du résident.
+     */
     public String getTelephone() {
         return telephone;
     }
 
+    /**
+     * Définit le telephone du résident.
+     *
+     * @param telephone Le telephone à attribuer au résident.
+     */
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
+    /**
+     * Retourne l'adresse du résident.
+     *
+     * @return L'adresse du résident.
+     */
     public String getAdresse() {
         return adresse;
     }
 
+    /**
+     * Définit l'adresse du résident.
+     *
+     * @param adresse L'adresse à attribuer au résident.
+     */
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
 
+    /**
+     * Définit un scanner du résident.
+     *
+     * @param scanner Le scanner à attribuer au résident.
+     */
     public void setScanner(Scanner scanner) {
         this.scanner = scanner;
     }
 
+    /**
+     * Retourne le résident.
+     *
+     * @return Le résident.
+     */
     public Resident getResident() {
         return resident;
     }
 
+    /**
+     * Définit le résident.
+     *
+     * @param resident Le résident à attribuer au résident.
+     */
     public void setResident(Resident resident) {
         this.resident = resident;
     }
 
+    /**
+     * Retourne le résident connecté.
+     *
+     * @return Le résident connecté.
+     */
     public static Resident getResidentConnecte() {
         return residentConnecte;
     }
 
+    /**
+     * Définit le résident connecté.
+     *
+     * @param residentConnecte le résident connecté à attribuer.
+     */
     public void setResidentConnecte(Resident residentConnecte) {
         Resident.residentConnecte = residentConnecte;
     }
 
-    // Cette méthode prend en param. l'utilisateur et son email. Elle sert à connecter
-    // le résident en trouvant le résident présentement connecté en comparant
-    // son adresse courriel avec l'adresse courriel de tous les résidents inscrits.
-    // Elle permet trouver le résident connecté et d'avoir une variable residentConnecte
-    // utile pour associer une requête à un résident par exemple.
+    /**
+     * Permet de connecter un résident en comparant l'adresse courriel fournie avec les résidents inscrits.
+     * Elle permet trouver le résident connecté et d'avoir une variable residentConnecte
+     * utile pour associer une requête à un résident par exemple.
+     * @param utilisateur L'utilisateur qui se connecte.
+     * @param email L'adresse courriel du résident.
+     * @return Le résident connecté, ou null si aucun résident avec cette adresse n'est trouvé.
+     */
     public static Resident connecterResident(Utilisateur utilisateur, String email) {
         // Prendre la liste des résidents depuis le fichier JSON
         List<Resident> residents = GestionResidents.chargerResidentsDepuisFichier();
@@ -121,7 +209,13 @@ public class Resident extends Utilisateur {
         residentConnecte = null; // Déconnecte le résident
     }
 
-    // Méthode inscription qui collecte les informations nécessaires à l'inscription du résident
+
+   /** Effectue l'inscription d'un résident, en collectant toutes les informations nécessaires
+    * et en validant les entrées.
+    * Après l'inscription, il est proposé au résident de se connecter.
+    *
+    * @param utilisateur L'utilisateur souhaitant s'inscrire.
+    */
     @Override
     public void inscription(Utilisateur utilisateur) {
         Scanner scanner = new Scanner(System.in);
@@ -157,6 +251,8 @@ public class Resident extends Utilisateur {
         demanderConnexion(scanner, utilisateur);
 
     }
+
+    // Méthodes privées pour obtenir et valider les informations personnelles du résident
 
     // Méthode pour obtenir le nom ou prénom
     private String obtenirNom(String type) {

@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe GestionResidents permet de gérer les résidents en permettant de les
+ * ajouter, les charger, les sauvegarder et de récupérer
+ * des résidents depuis un fichier JSON.
+ */
 public class GestionResidents{
 
     // Initialisation d'une liste de résidents
@@ -17,18 +22,29 @@ public class GestionResidents{
     private static Resident residentConnecte;
 
     // Getter et setter
+    /**
+     * Retourne la liste des résidents.
+     *
+     * @return La liste des résidents.
+     */
     public static List<Resident> getListeResidents() {
         return listeResidents;
     }
 
-    // Méthode pour ajouter un résident à la liste des résidents
+    /**
+     * Méthode pour ajouter un résident à la liste des résidents.
+     *
+     * @param resident Le résident à ajouter.
+     */
     public static void ajouterResident(Resident resident) {
         listeResidents.add(resident);
         saveResident();
     }
 
-    // Cette méthode sert à charger un résident à la liste de résidents du
-    // fichier json approprié
+    /**
+     * Cette méthode sert à charger les résidents depuis un fichier JSON
+     * et à les ajouter à la liste des résidents.
+     */
     public static void chargeResidents(){
         ObjectMapper obj = new ObjectMapper();
         try{
@@ -42,7 +58,9 @@ public class GestionResidents{
         }
     }
 
-    // Méthode servant à sauvegarder les résidents et à les placer dans le fichier json
+    /**
+     * Méthode servant à sauvegarder les résidents dans un fichier JSON.
+     */
     public static void saveResident(){
         ObjectMapper obj = new ObjectMapper();
         try {
@@ -52,7 +70,11 @@ public class GestionResidents{
         }
     }
 
-    // Méthode qui retourne la liste des résidents depuis le fichier JSON
+    /**
+     * Méthode qui retourne la liste des résidents depuis le fichier JSON.
+     *
+     * @return La liste des résidents ou null si erreur.
+     */
     public static List<Resident> chargerResidentsDepuisFichier() {
 
         // Fichier json en question

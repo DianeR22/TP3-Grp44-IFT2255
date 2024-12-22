@@ -8,12 +8,18 @@ import Model.Requete;
 import Model.Valider;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
+/**
+ * La classe {@code RequeteView} permet à l'intervenant de gérer les requêtes de travail.
+ * Elle fournit un menu pour afficher, filtrer, soumettre et suivre des requêtes,
+ * ainsi que pour supprimer une candidature.
+ */
 public class RequeteView {
 
-    // Affichage du menu des requêtes pour l'intervenant
+    /**
+     * Affiche le menu principal des requêtes de travail pour l'intervenant.
+     */
     public static void afficherMenuRequete() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -56,14 +62,19 @@ public class RequeteView {
                     retour(scanner);
                     break;
                 case "6":
-                   IntervenantController.afficherMenuIntervenant();
+                    IntervenantController.afficherMenuIntervenant();
                 default:
                     System.out.println("Option invalide. Veuillez réessayer.");
             }
         }
     }
 
-    // Méthode qui filtre les requêtes selon le choix de l'utilisateur
+    /**
+     * Permet de filtrer les requêtes selon le choix de l'utilisateur.
+     * L'utilisateur peut filtrer par type de travail, quartier, ou date de début.
+     *
+     * @param scanner Le scanner utilisé pour lire les choix
+     */
     private static void filtrerRequetes(Scanner scanner) {
         System.out.println("\n--- Filtrer les requêtes ---");
         System.out.println("1. Par type");
@@ -111,7 +122,10 @@ public class RequeteView {
         }
     }
 
-    // Permet d'obtenir les caractéristiques de la requête du résident
+    /**
+     * Permet à l'utilisateur de soumettre une nouvelle requête
+     * en récoltant les informations nécessaires.
+     */
     public static void obtenirInformationsRequete() {
         Scanner scanner = new Scanner(System.in);
 
@@ -158,7 +172,10 @@ public class RequeteView {
         RequeteController.soumettreRequete(titreTravail, description, typeTravailChoisi, dateDebut);
     }
 
-    // Affichage de toutes les requêtes
+    /**
+     * Affiche toutes les requêtes de travail disponibles.
+     * Si aucune requête n'est disponible, un message est affiché disant qu'il n'y en a pas.
+     */
     public static void afficherRequetes() {
         List<Requete> listeRequetes = GestionRequete.getListeRequetes();
 
@@ -176,7 +193,11 @@ public class RequeteView {
         }
     }
 
-    // Permet de revenir en arrière pour l'utilisateur
+    /**
+     * Permet de revenir au menu précédent en appuyant sur entrée.
+     *
+     * @param scanner Le scanner utilisé pour lire l'entrée de l'utilisateur
+     */
     private static void retour(Scanner scanner) {
         System.out.println("Appuyez sur entrée pour revenir au menu.");
         scanner.nextLine();

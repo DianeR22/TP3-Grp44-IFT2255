@@ -1,10 +1,12 @@
 package Model;
-
-import jdk.jshell.execution.Util;
-
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * La classe Intervenant représente un utilisateur du système.
+ * Elle hérite de la classe Utilisateur et possède des fonctionnalités liées à l'inscription,
+ * la connexion, et la gestion d'informations des intervenants.
+ */
 public class Intervenant extends Utilisateur {
     // // Attributs spécifiques à l'intervenant
     private String type;
@@ -14,21 +16,36 @@ public class Intervenant extends Utilisateur {
     // Variable statique pour l'intervenant connecté
     private static Intervenant intervenantConnecte;
 
-    // Constructeur avec arguments, certains sont hérités de la classe utilisateur
+    /**
+     * Constructeur de la classe Intervenant avec des paramètres pour initialiser les attributs.
+     *
+     * @param nom Le nom de l'intervenant.
+     * @param prenom Le prénom de l'intervenant.
+     * @param adresseCourriel L'adresse e-mail de l'intervenant.
+     * @param motDePasse Le mot de passe de l'intervenant.
+     * @param type Le type de l'intervenant (Public, Privé, Individu).
+     * @param identifiantVille L'identifiant de la ville de l'intervenant.
+     */
     public Intervenant(String nom, String prenom, String adresseCourriel, String motDePasse, String type, String identifiantVille) {
         super(nom, prenom, motDePasse, adresseCourriel);
         this.type = type;
         this.identifiantVille = identifiantVille;
     }
 
-    // Constructeur sans arguments
+    /**
+     * Constructeur sans arguments pour créer un intervenant sans initialisation.
+     */
     public Intervenant() {
 
     }
 
 
-    // La méthode equals sert à vérifier que les 2 objets sont
-    // égaux s'ils ont la même adresse courriel
+    /**
+     * Vérifie l'égalité de l'intervenant avec un autre objet en utilisant l'adresse courriel.
+     *
+     * @param obj L'objet à comparer.
+     * @return true si les deux objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         // Vérifie si ces objets sont identiques
@@ -44,51 +61,100 @@ public class Intervenant extends Utilisateur {
         return this.adresseCourriel != null && this.adresseCourriel.equals(intervenant.adresseCourriel);
     }
 
-    // Garantir que le code de hachage et cohérent avec la méthode equals
+    /**
+     * Génère un code de hachage basé sur l'adresse courriel pour garantir une cohérence avec
+     * la méthode equals.
+     *
+     * @return Le code de hachage de l'adresse courriel.
+     */
     @Override
     public int hashCode() {
-        // Retourne le code de hachage de l'adresse, 0 si null
         return adresseCourriel != null ? adresseCourriel.hashCode() : 0;
     }
 
     // Getter et setter
+    /**
+     * Retourne le type de l'intervenant.
+     *
+     * @return Le type de l'intervenant (par exemple, "Public", "Privé", ou "Individu").
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Définit le type de l'intervenant.
+     * @param type Le type à attribuer à l'intervenant.
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+
+    /**
+     * Retourne l'identifiant de la ville de l'intervenant.
+     *
+     * @return L'identifiant de la ville (code à 8 chiffres).
+     */
     public String getIdentifiantVille() {
         return identifiantVille;
     }
 
+    /**
+     * Définit l'identifiant de la ville de l'intervenant.
+     *
+     * @param identifiantVille L'identifiant de la ville (code à 8 chiffres).
+     */
     public void setIdentifiantVille(String identifiantVille) {
         this.identifiantVille = identifiantVille;
     }
 
+    /**
+     * Retourne l'intervenant actuel.
+     *
+     * @return L'objet Intervenant correspondant à l'intervenant actuel.
+     */
     public Intervenant getIntervenant() {
         return intervenant;
     }
 
+    /**
+     * Définit l'intervenant actuel.
+     *
+     * @param intervenant L'intervenant à définir comme l'intervenant
+     */
     public void setIntervenant(Intervenant intervenant) {
         this.intervenant = intervenant;
     }
 
+    /**
+     * Retourne l'intervenant connecté.
+     *
+     * @return L'intervenant actuellement connecté
+     */
     public static Intervenant getIntervenantConnecte() {
         return intervenantConnecte;
     }
 
+    /**
+     * Définit l'intervenant connecté.
+     *
+     * @param intervenant L'intervenant à définir comme celui qui est connecté.
+     */
     public static void setIntervenantConnecte(Intervenant intervenant) {
         Intervenant.intervenantConnecte = intervenant;
     }
 
-    // Cette méthode prend en param. l'utilisateur et son email. Elle sert à connecter
-    // l'intervenant en trouvant l'intervenant présentement connecté en comparant
-    // son adresse courriel avec l'adresse courriel de tous les intervenants inscrits.
-    // Elle permet trouver l'intervenant connecté et d'avoir une variable intervenantConnecte
-    // utile pour associer une candidature à l'intervenant postulant celle-ci
+    /**
+     * Cette méthode permet de connecter un intervenant en vérifiant son adresse e-mail
+     * par rapport aux intervenants inscrits dans le système. Elle permet de trouver
+     * l'intervenant connecté et d'avoir une variable intervenantConnecte
+     * utile pour associer une candidature à l'intervenant par exemple.
+     *
+     * @param utilisateur L'utilisateur qui se connecte.
+     * @param email L'adresse e-mail de l'intervenant.
+     * @return L'intervenant trouvé si l'adresse e-mail est valide, sinon null.
+     */
     public static Intervenant connecterIntervenant(Utilisateur utilisateur, String email) {
         // Prendre la liste des intervenants depuis le fichier JSON
         List<Intervenant> intervenants = GestionIntervenants.chargerIntervenantsDepuisFichier();
@@ -109,8 +175,12 @@ public class Intervenant extends Utilisateur {
         intervenantConnecte = null; // Déconnecte le résident
     }
 
-
-    // Méthode inscription qui collecte les informations nécessaires à l'inscription de l'intervenant
+    /**
+     * La méthode d'inscription permet à un intervenant de s'inscrire en collectant
+     * ses informations et en les enregistrant dans le système.
+     *
+     * @param utilisateur L'utilisateur qui s'inscrit.
+     */
     @Override
     public void inscription(Utilisateur utilisateur) {
         // Initialisation d'un scanner afin d'obtenir l'input de l'intervenant
@@ -143,14 +213,23 @@ public class Intervenant extends Utilisateur {
         demanderConnexion(scanner, utilisateur);
     }
 
-    // Méthode pour obtenir le nom ou prénom
+    /**
+     * Permet de collecter un nom ou un prénom.
+     *
+     * @param type Le type (nom ou prénom) à collecter.
+     * @return Le nom ou prénom entré par l'utilisateur.
+     */
     private String obtenirNom(String type) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez entrer votre " + type + ".");
         return scanner.nextLine();
     }
 
-    // Méthode pour obtenir et valider l'adresse email
+    /**
+     * Permet de collecter et valider l'adresse e-mail de l'intervenant.
+     *
+     * @return L'adresse e-mail valide.
+     */
     private String obtenirEmail() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -164,7 +243,12 @@ public class Intervenant extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider le mot de passe
+    /**
+     * Permet de collecter et valider le mot de passe de l'intervenant
+     * et de procéder à la validation de celui-ci.
+     *
+     * @return Le mot de passe valide.
+     */
     private String obtenirMotDePasse() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -178,7 +262,11 @@ public class Intervenant extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider le type d'intervenant
+    /**
+     * Permet de collecter et valider le type d'intervenant.
+     *
+     * @return Le type d'intervenant valide.
+     */
     private String obtenirType() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -192,7 +280,11 @@ public class Intervenant extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider l'identifiant de la ville
+    /**
+     * Permet de collecter et valider l'identifiant de la ville de l'intervenant.
+     *
+     * @return L'identifiant de la ville valide.
+     */
     private String obtenirIdentifiantVille() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -206,7 +298,9 @@ public class Intervenant extends Utilisateur {
         }
     }
 
-    // Méthode pour afficher les informations recueillies
+    /**
+     * Affiche les informations de l'intervenant après l'inscription.
+     */
     private void afficherInformations() {
         System.out.println("\nInformations recueillies :");
         System.out.println("Nom : " + nom);
@@ -216,7 +310,12 @@ public class Intervenant extends Utilisateur {
         System.out.println("Identifiant de la ville : " + identifiantVille);
     }
 
-    // Méthode pour demander à l'intervenant s'il souhaite se connecter
+    /**
+     * Demande à l'intervenant s'il souhaite se connecter après inscription.
+     *
+     * @param scanner Le scanner utilisé pour lire la réponse.
+     * @param utilisateur L'utilisateur qui s'inscrit.
+     */
     private void demanderConnexion(Scanner scanner, Utilisateur utilisateur) {
         System.out.println("Merci pour vos informations! Souhaitez-vous vous connecter? (Oui/Non)");
         String reponse = scanner.next();

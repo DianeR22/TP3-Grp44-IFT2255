@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
+/**
+ * Classe permettant de faire des opérations comme ajouter une requête à la liste
+ * des requêtes, à la supprimer, à sauvegarder une requête ou à
+ * charger la liste des requêtes
+ */
 public class GestionRequete {
 
     private static final String FICHIER_REQUETES = "data/requetes.json";
@@ -18,21 +22,40 @@ public class GestionRequete {
     private static List<Requete> listeRequetes = new ArrayList<>();
 
     // Getter et setter
+
+    /**
+     * Permet de récupérer la liste des requêtes
+     * @return la liste des requêtes
+     */
     public static List<Requete> getListeRequetes() {
         return listeRequetes;
     }
 
+    /**
+     * Permet de définir une liste des requêtes
+     * @param listeRequetes
+     */
     public static void setListeRequetes(List<Requete> listeRequetes) {
         GestionRequete.listeRequetes = listeRequetes;
     }
 
+    /**
+     * Permet d'ajouter une requête à la liste des requêtes
+     * @param requete
+     */
     // Ajouter une requête à la liste des requêtes
     public static void ajouterRequete(Requete requete){
         listeRequetes.add(requete);
     }
 
-    // Méthode qui prend en param. l'index de la requête à supprimer et supprime
-    // cette requête de la liste des requêtes ainsi que du fichier JSON.
+
+
+
+    /**
+     *  Méthode qui prend l'index de la requête à supprimer et supprime
+     *  cette requête de la liste des requêtes ainsi que du fichier JSON.
+     * @param index
+     */
     public static void supprimerRequete(int index){
         int size = listeRequetes.size();
         System.out.println(size);
@@ -57,8 +80,14 @@ public class GestionRequete {
     public static void viderListe() { listeRequetes.clear();
     }
 
-    // SoumettreRequete permet de créer une requête et de l'ajouter à la liste des requêtes
-    // Elle prend en paramètres toutes les caractéristiques d'une requête en String
+    /**
+     * SoumettreRequete permet de créer une requête et de l'ajouter à la liste des requêtes
+     *  Elle prend en paramètres toutes les caractéristiques d'une requête en String
+     * @param titreTravail titre du travail
+     * @param description la description du travail
+     * @param typeTravail le type du travail parmi une liste proposée
+     * @param dateDebut la date de début souhaitée
+     */
     public static void soumettreRequete(String titreTravail,String description, String typeTravail, String dateDebut){
         Requete requete = new Requete(titreTravail, description, typeTravail, dateDebut);
         GestionRequete.ajouterRequete(requete);
@@ -72,8 +101,10 @@ public class GestionRequete {
         System.out.println("Votre requête a été soumise avec succès!");
     }
 
-    // Cette méthode sert à sauvegarder une requête à la liste de requêtes dans le
-    // fichier json approprié
+    /**
+     *  Cette méthode sert à sauvegarder une requête à la liste de requêtes dans le
+     *  fichier json approprié
+     */
     public static void saveRequete(){
         ObjectMapper obj = new ObjectMapper();
         try {
@@ -84,7 +115,10 @@ public class GestionRequete {
         }
     }
 
-    // Méthode servant à charger les requetes et à les placer dans le fichier json
+
+    /**
+     * Méthode servant à charger les requetes et à les placer dans le fichier json
+     */
     public static void chargeRequetes(){
         ObjectMapper obj = new ObjectMapper();
         try{
@@ -99,31 +133,51 @@ public class GestionRequete {
     }
 
 
-    // Méthode pour filtrer les requêtes par type de travaux
+
+    /** FiltrerParType sert à filtrer une liste de requêtes qui possède le filtre
+     * de type de travail en caractéristique et à afficher ces requêtes
+     * @param typeTravaux type de travail entré par l'utilisateur
+     * @return une liste de requêtes qui possède ce type de travail en caraactéristique
+     */
     public static List<Requete> filtrerParType(String typeTravaux) {
         return listeRequetes.stream()
                 .filter(requete -> requete.getTypeTravaux().equalsIgnoreCase(typeTravaux))
                 .toList();
     }
 
-    // Méthode pour filtrer les requêtes par quartier
+
+    /** FiltrerParQuartier sert à filtrer une liste de requêtes qui possède le filtre
+     * de quartier en caractéristique et à afficher ces requêtes
+     * @param quartier le quartier entré par l'utilisateur
+     * @return la liste de requêtes ayant ce quartier en caractéristique
+     */
     public static List<Requete> filtrerParQuartier(String quartier) {
         return listeRequetes.stream()
                 .filter(requete -> requete.getResident() != null && requete.getResident().getAdresse().contains(quartier))
                 .toList();
     }
 
-    // Méthode pour filtrer les requêtes par date de début
+
+    /**
+     * FiltrerParDebut permet de récupérer une liste de requêtes dont la date
+     * de début est la même et est fixée par l'utilisateur
+     * @param dateDebut date choisie par utilisateur
+     * @return une liste de requêtes dont la date de début est la même
+     */
     public static List<Requete> filtrerParDate(String dateDebut) {
         return listeRequetes.stream()
                 .filter(requete -> requete.getDebut().equals(dateDebut))
                 .toList();
     }
 
-    // Méthode qui prend en param. le resident souhaitant suivre sa requête. Elle
-    // commence par afficher toutes les requêtes afin que le résident puisse choisir
-    // ce qu'il souhaite. Elle affiche en appelant afficherSuivi les candidatures
-    // liées à la requête en question.
+
+    /**
+     * Méthode qui prend en paramètre le résident souhaitant suivre sa requête.
+     * Elle commence par afficher toutes les requêtes afin que le résident puisse choisir ce qu'il souhaite.
+     * Elle affiche en appelant afficherSuivi les candidatures liées à la requête en question.
+     *
+     * @param resident Le résident souhaitant suivre sa requête.
+     */
     public static void suiviRequete(Resident resident){
 
         Scanner scanner = new Scanner(System.in);
@@ -155,10 +209,13 @@ public class GestionRequete {
         afficherSuiviRequete(requeteChoisie);
     }
 
-    // Prend en param. une requête et affiche les candidatures associées. Si l'état de
-    // la candidature est : en attaente, le résident peut choisir la candidature et laisser un message
-    //  à l'intervenant. Si l'état est : confirmée par l'intervenant. Le résident devrait
-    // fermer la requête.
+    /**
+     * Prend en paramètre une requête et affiche les candidatures associées.
+     * Si l'état de la candidature est : en attente, le résident peut choisir la candidature et laisser un message
+     * à l'intervenant. Si l'état est : confirmée par l'intervenant, le résident devrait fermer la requête.
+     *
+     * @param requete La requête pour laquelle afficher les candidatures.
+     */
     public static void afficherSuiviRequete(Requete requete) {
         System.out.println("Candidatures reçues pour votre requête : " + requete.getTitreTravail());
 

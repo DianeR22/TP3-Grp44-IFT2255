@@ -5,7 +5,11 @@ import Controller.ResidentController;
 
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * Classe abstraite d'un utilisateur dans le système. Elle possède les
+ * informations et méthodes qui sont communes à un résident et un intervenant, comme
+ * la connexion et l'inscription par exemple.
+ */
 public abstract class Utilisateur {
     // Attributs communs d'un résident et d'un intervenant
     protected String nom;
@@ -15,7 +19,14 @@ public abstract class Utilisateur {
 
     private static Utilisateur utilisateur;
 
-    // Constructeur avec arguments
+    /**
+     * Constructeur avec arguments pour initialiser un utilisateur.
+     *
+     * @param nom Le nom de l'utilisateur.
+     * @param prenom Le prénom de l'utilisateur.
+     * @param motDePasse Le mot de passe de l'utilisateur.
+     * @param adresseCourriel L'adresse courriel de l'utilisateur.
+     */
     public Utilisateur(String nom, String prenom, String motDePasse, String adresseCourriel) {
         this.nom = nom;
         this.prenom = prenom;
@@ -23,7 +34,9 @@ public abstract class Utilisateur {
         this.adresseCourriel = adresseCourriel;
     }
 
-    // Constructeur sans argument
+    /**
+     * Constructeur sans argument pour permettre l'initialisation d'un utilisateur sans attributs initiaux.
+     */
     public Utilisateur() {
 
     }
@@ -31,45 +44,95 @@ public abstract class Utilisateur {
 
     //Getter et setter
 
+    /**
+     * Récupère le nom de l'utilisateur.
+     *
+     * @return Le nom de l'utilisateur.
+     */
     public String getNom() {
         return nom;
     }
 
+    /**
+     * Définit le nom de l'utilisateur.
+     *
+     * @param nom Le nouveau nom de l'utilisateur.
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
-
+    /**
+     * Récupère le prénom de l'utilisateur.
+     *
+     * @return Le prénom de l'utilisateur.
+     */
     public String getPrenom() {
         return prenom;
     }
 
+    /**
+     * Définit le prénom de l'utilisateur.
+     *
+     * @param prenom Le nouveau prénom de l'utilisateur.
+     */
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
 
+    /**
+     * Récupère le mot de passe de l'utilisateur.
+     *
+     * @return Le mot de passe de l'utilisateur.
+     */
     public String getMotDePasse() {
         return motDePasse;
     }
 
+    /**
+     * Définit le mot de passe de l'utilisateur.
+     *
+     * @param motDePasse Le nouveau mot de passe de l'utilisateur.
+     */
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
 
+    /**
+     * Récupère l'adresse courriel de l'utilisateur.
+     *
+     * @return L'adresse courriel de l'utilisateur.
+     */
     public String getAdresseCourriel() {
         return adresseCourriel;
     }
 
+    /**
+     * Définit l'adresse courriel de l'utilisateur.
+     *
+     * @param adresseCourriel  Le nouvel adresse courriel de l'utilisateur.
+     */
     public void setAdresseCourriel(String adresseCourriel) {
         this.adresseCourriel = adresseCourriel;
     }
 
 
-    // Méthode abstraite inscription qui doit être implémentée par les classes filles de la
-    // classe mère utilisateur
+
+    /**
+     * Méthode abstraite d'inscription que les classes filles doivent implémenter
+     * pour gérer l'inscription des utilisateurs.
+     *
+     * @param utilisateur L'utilisateur s'inscrit.
+     */
     public abstract void inscription(Utilisateur utilisateur);
 
-    // Méthode connexion qui n'a pas de valeur de retour et qui permet à un utilisateur
-    // de se connecter en entrant une adresse courriel et un mot de passe
+    /**
+     * Permet à un utilisateur de se connecter en entrant son adresse courriel et mot de passe.
+     * L'utilisateur peut essayer de se connecter trois fois. En cas de 3 mauvaises tentatives,
+     * le programme se termine.
+     *
+     * @param utilisateur L'utilisateur qui tente de se connecter.
+     */
+
     public void connexion(Utilisateur utilisateur) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Vous êtes sur la page de connexion!");
@@ -108,9 +171,13 @@ public abstract class Utilisateur {
     }
 
 
-
-    // Cette méthode prend en paramètre l'email et mot de passe et vérifie qu'il s'agit bien
-    // d'un résident ou intervenant inscrit et que les identifiants sont valides
+    /**
+     * Vérifie si les identifiants (adresse courriel et mot de passe) sont valides pour un résident ou un intervenant.
+     *
+     * @param email L'adresse courriel à vérifier.
+     * @param mdp Le mot de passe à vérifier.
+     * @return true si l'adresse courriel et le mot de passe correspondent à un résident ou intervenant valide, false sinon.
+     */
     boolean verifierConnexion(String email, String mdp){
 
         // Récupérer les listes des résidents et des intervenants
@@ -138,9 +205,11 @@ public abstract class Utilisateur {
         }
         return false;
     }
-    // Méthode afficherMenu qui n'a pas de valeur de retour et qui identifie
-    // le type de l'objet (soit résident ou intervenant) et appelle la
-    // méthode adéquate en conséquence
+
+    /**
+     * Afficher un menu adapté au type d'utilisateur (résident ou intervenant) après une connexion réussie.
+     * Selon le type d'utilisateur, la méthode adéquate est appelée.
+     */
     void afficherMenu(){
         if (this instanceof Resident) {
             ResidentController.afficherMenuResident();

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Classe qui gère les intervenants. Possible d'ajouter un intervenant à la liste,
+ * de charger un intervenant, de sauvegarder la liste des intervenants, de charger une liste
+ * d'intervenants depuis le fichier json des intervenants pour en récupérer une liste,
+ * de soumettre une candidature ou de retirer une candidature.
+ */
 public class GestionIntervenants{
 
     // Initialisation d'une liste d'intervenants
@@ -17,15 +23,29 @@ public class GestionIntervenants{
     private static final String FICHIER_INTERVENANTS = "data/intervenants.json";
 
     // Getter et setter
+
+    /**
+     * Récupèrer la liste des intervenants.
+     * @return la liste des intervenants
+     */
     public static List<Intervenant> getListeIntervenants() {
         return listeIntervenants;
     }
 
+    /**
+     * Définit la liste des intervenants
+     * @param listeIntervenants
+     */
     public static void setListeIntervenants(List<Intervenant> listeIntervenants) {
         GestionIntervenants.listeIntervenants = listeIntervenants;
     }
 
     // Méthode pour ajouter un intervenant à la liste des intervenants et à le sauvegarder dans le fichier json
+
+    /**
+     * Ajoute un intervenant à la liste des intervenants
+     * @param intervenant
+     */
     public static void ajouterIntervenant(Intervenant intervenant) {
         listeIntervenants.add(intervenant);
         saveIntervenant();
@@ -34,6 +54,10 @@ public class GestionIntervenants{
 
     // Cette méthode sert à charger les intervenants à la liste d'intervenants du
     // fichier json approprié
+
+    /**
+     * Procède au chargement des intervenants présents dans le fichier json, donc inscrits.
+     */
     public static void chargeIntervenants(){
         ObjectMapper obj = new ObjectMapper();
         try{
@@ -47,6 +71,11 @@ public class GestionIntervenants{
     }
 
     // Méthode servant à sauvegarder un intervenant et à le placer dans le fichier json
+
+    /**
+     * Sauvegarde d'un intervenant en sauvegardant la liste des intervenants dans le fichier
+     * json.
+     */
     public static void saveIntervenant(){
         ObjectMapper obj = new ObjectMapper();
         try {
@@ -58,6 +87,12 @@ public class GestionIntervenants{
     }
 
     // Méthode pour charger les résidents depuis le fichier JSON
+
+    /**
+     * Permet de charger les intervenants depuis le fichier json pour en extraire
+     * une liste
+     * @return une liste des intervenants
+     */
     public static List<Intervenant> chargerIntervenantsDepuisFichier() {
         // Spécifiez le chemin de votre fichier JSON
         File fichier = new File("data/intervenants.json");
@@ -75,9 +110,10 @@ public class GestionIntervenants{
         }
     }
 
-    // Méthode qui permet à l'intervenant de soumettre une candidature en entrant
+    /** Méthode qui permet à l'intervenant de soumettre une candidature en entrant
     // les informations essentielles. Elle ajoute la candidature à la liste des
-    // candidatures et au fichier json correspondant
+    // candidatures et au fichier json correspondant.
+    */
     public static void soumettreCandidature(){
         // Récupérer le input de l'utilisateur
         Scanner scanner = new Scanner(System.in);
@@ -130,9 +166,10 @@ public class GestionIntervenants{
         System.out.println("Votre candidature a été soumise avec succès pour la requête: requete.getTitreTravail()");
     }
 
-    // Méthode permettant de supprimer une candidature. Elle affiche les candidatures
+    /** Méthode permettant de supprimer une candidature. Elle affiche les candidatures
     // d'un intervenant et retire celle que l'intervenant choisit. Les candidatures
-    // restantes sont finalement chargées dans le json.
+     restantes sont finalement chargées dans le json.
+     */
     public static void supprimerCandidature() {
 
         Scanner scanner = new Scanner(System.in);

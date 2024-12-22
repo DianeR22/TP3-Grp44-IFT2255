@@ -21,9 +21,9 @@ public class ConnexionController {
     /**
      * Traite les choix effectués par l'utilisateur en fonction de son rôle.
      *
-     * @param choix Le choix de l'utilisateur sous forme de chaîne de caractères.
-     * @param resident L'objet représentant le résident.
-     * @param intervenant L'objet représentant l'intervenant.
+     * @param choix Le choix de l'utilisateur sous forme de String.
+     * @param resident L'objet résident.
+     * @param intervenant L'objet intervenant.
      */
     public static void traiterChoix(String choix, Resident resident, Intervenant intervenant){
         Connexion.traiterChoix(choix, resident, intervenant);

@@ -2,9 +2,21 @@ package Model;
 
 import java.util.Scanner;
 
+/**
+ * Classe Connexion permettant de gérer les choix des utilisateurs
+ * pour la connexion ou l'inscription dans le système.
+ */
 public class Connexion {
-    // Cette méthode prend en paramètre le choix et des instances initiales d'un résident
-    // et d'un intervenant afin de pouvoir appeler les méthodes appropriées au besoin
+
+    /**
+     * Traite le choix de l'utilisateur en fonction de l'option choisie.
+     * Cette méthode prend en paramètre le choix et des instances initiales
+     * d'un résident et d'un intervenant afin de pouvoir appeler les méthodes appropriées.
+     *
+     * @param choix      L'option sélectionnée par l'utilisateur.
+     * @param resident   Instance du résident.
+     * @param intervenant Instance de l'intervenant.
+     */
     public static void traiterChoix(String choix, Resident resident, Intervenant intervenant) {
 
 
@@ -30,8 +42,13 @@ public class Connexion {
         }
     }
 
-    // Methode ayant en param. des instances de resident et d'intervenant. Sert à connaitre
-    // s'il s'agit d'un résident ou intervenant afin de procéder à l'inscription adéquate
+    /**
+    * Demande à l'utilisateur le type d'inscription dont il est question, soit un intervenant
+    * ou un résident.
+    *
+    * @param resident  Instance du résident.
+    * @param intervenant  Instance de l'intervenant.
+     */
     public static void demanderTypeInscription(Resident resident, Intervenant intervenant) {
         Scanner scanner = new Scanner(System.in);
 

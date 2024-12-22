@@ -26,8 +26,8 @@ public class TravauxController {
     /**
      * Récupère et affiche les travaux en fonction du filtre sélectionné par l'utilisateur.
      *
-     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour arrondissement, 2 pour type de travail)
-     * @param filtre Le critère de filtrage (nom de l'arrondissement ou type de travail)
+     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour arrondissement)
+     * @param filtre Le critère de filtrage (nom de rue)
      */
     public static void recupererTravaux(int typeFiltre, String filtre) {
         try {

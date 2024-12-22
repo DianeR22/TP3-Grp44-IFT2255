@@ -7,14 +7,25 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * La classe GestionTravaux permet de gérer les travaux en prenant les catégories de
+ * travaux depuis une API externe et en les sauvegardant dans un fichier JSON.
+ * Cela permet de mapper ces catégories à notre liste de type de travaux utilisée
+ * lors de la recherche de travaux par exemple.
+ */
 public class GestionTravaux {
+
+    // Chemin du fichier pour les catégories des travaux
     private static final String FICHIER_TRAVAUX = "data/reason_categories.json";
+    // Lien vers l'API des travaux
     private static final String API_URL_TRAVAUX = " https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=cc41b532-f12d-40fb-9f55-eb58c9a2b12b";
 
-    // Cette méthode permet de récupérer tous les types de travail de l'API des
-    // travaux de façon distincte et d'afficher le tout dans le fichier json
-    // reason_categorie.json
+    /**
+     * Cette méthode permet de récupérer tous les types de travail (catégories) de l'API des travaux de façon distincte.
+     * Elle prend les données, puis les retourne en forme de JSONObject.
+     *
+     * @return Un JSONObject contenant les catégories extraites de l'API, ou null en cas d'erreur.
+     */
     public static JSONObject extraireReasonCategories(){
         // Récupérer les données
         JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_TRAVAUX);
@@ -42,7 +53,12 @@ public class GestionTravaux {
         return result;
     }
 
-    // Méthode pour écrire un JSONObject dans un fichier JSON local
+    /**
+     * Cette méthode permet d'écrire un JSONObject dans un fichier JSON.
+     *
+     * @param jsonObject Le JSONObject à écrire.
+     * @param cheminFichier Le chemin du fichier dans lequel sauvegarder les données.
+     */
     public static void ecrireJsonDansFichier(JSONObject jsonObject, String cheminFichier) {
         try (FileWriter file = new FileWriter(cheminFichier)) {
             file.write(jsonObject.toString(4));
@@ -53,8 +69,10 @@ public class GestionTravaux {
         }
     }
 
-    // Méthode qui sauvegarde extrait les catégories et les place dans un fichier json.
-    // Elle est appelé dans maVilleApp.
+    /**
+     * Cette méthode extrait les catégories de travaux via l'API et les sauvegarde dans un fichier JSON.
+     * Elle est appelée depuis la classe MaVilleApp.
+     */
     public static void sauvegarderCategoriesDansFichier() {
         JSONObject categoriesJson = extraireReasonCategories();
         if (categoriesJson != null) {

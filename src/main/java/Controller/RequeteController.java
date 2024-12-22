@@ -6,14 +6,15 @@ import Model.Resident;
 import View.RequeteView;
 
 /**
- * Contrôleur pour la gestion des requêtes. Permet d'afficher les informations
- * des requêtes, d'ajouter une nouvelle requête et d'afficher toutes les requêtes existantes.
+ * Contrôleur pour la gestion des requêtes. Permet d'obtenir les informations
+ * des requêtes en demandant ces informatinos dans RequeteView,
+ * de soumettre une requête et d'afficher toutes les requêtes.
  */
 public class RequeteController {
 
     /**
      * Appelle la méthode obtenirInformationsRequete de la vue Requete pour
-     * collecter les informations nécessaires à la création d'une requête.
+     * collecter les informations à la nouvelle d'une requête.
      */
     public static void obtenirInformationsRequete(){
         RequeteView.obtenirInformationsRequete();
@@ -21,7 +22,7 @@ public class RequeteController {
 
     /**
      * Appelle la méthode soumettreRequete de la classe modèle GestionRequete
-     * pour ajouter une nouvelle requête à la liste des requêtes.
+     * pour ajouter une nouvelle requête à la liste des requêtes et au json des requêtes.
      *
      * @param titreTravail Le titre du travail.
      * @param description Une description du travail.

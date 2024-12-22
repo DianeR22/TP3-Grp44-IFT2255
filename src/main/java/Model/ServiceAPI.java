@@ -11,11 +11,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-// Classe qui permet de récupérer des données via une API
+/**
+ * Classe qui permet de récupérer des données via une API.
+ */
 public class ServiceAPI {
     private static final String OUTPUT_FILE = "data/reason_categories.json";
 
-    // Méthode pour récupérer les données depuis l'API
+    /**
+     * Méthode pour récupérer les données depuis l'API.
+     *
+     * @param URL l'URL de l'API
+     * @return Un objet {@link JSONObject} contenant les données reçues de l'API.
+     *         Retourne null si erreur
+     */
     public static JSONObject getDataFromApi(String URL) {
         try {
             // Connexion à l'API

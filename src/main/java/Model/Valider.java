@@ -6,9 +6,12 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
-
-// Valider est une classe qui permet de procéder à une vérification de l'information rentrée par un utilisateur
+/**
+ * La classe Valider permet de procéder à une vérification de l'information rentrée
+ * par un utilisateur.
+ */
 public class Valider {
+
 
     // Expressions regulières (regex) utilisées pour valider des chaînes de caractères (date, numéro de tel, courriel, mdp, identifiant)
     private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
@@ -26,14 +29,25 @@ public class Valider {
 
     private static final Pattern IDENTIFIANT = Pattern.compile("\\d{8}");
 
-    // Valider le numéro de téléphone entré, il peut y avoir des tiret ou des espaces entre les blocs de numéros
+
+    /**
+     * Valide le numéro de téléphone entré. Il peut y avoir des tirets ou des espaces entre les blocs de numéros.
+     *
+     * @param numTel Le numéro de téléphone à valider.
+     * @return true si le numéro de téléphone est valide, false sinon.
+     */
     public static boolean validerTel(String numTel) {
         return PHONE_PATTERN.matcher(numTel).matches();
     }
 
 
 
-    // Méthode pour valider si la date est correcte (au format JJ/MM/AAAA)
+    /**
+     * Valide si la date est correcte (au format JJ/MM/AAAA).
+     *
+     * @param date La date à valider.
+     * @return true si la date est valide, false sinon.
+     */
     public static boolean validerDate(String date) {
         try {
             // Parser la date avec le format voulu
@@ -44,8 +58,13 @@ public class Valider {
             return false;
         }
     }
-    // Méthode qui a pour paramètre la date de naissance du résident et qui renvoie True
-    // si le résident a au moins 16 ans.
+
+    /**
+     * Valide si le résident a au moins 16 ans, en fonction de la date de naissance.
+     *
+     * @param DateDeNaissance La date de naissance à valider.
+     * @return {@code true} si le résident a 16 ans ou plus, {@code false} sinon.
+     */
     public static boolean validerAge(String DateDeNaissance){
 
         // Parser la date avec le DATE_FORMATTER (au format JJ/MM/AAAA)
@@ -60,29 +79,54 @@ public class Valider {
 
     }
 
-    // Méthode qui a pour valeur de retour un int qui correspond à la période en années entre deux dates
-    // placées en paramètres
+    /**
+     * Calcule l'âge en années entre 2 dates.
+     *
+     * @param anneeNaissance La date de naissance.
+     * @param currentDate    La date actuelle.
+     * @return L'âge en années.
+     */
     private static int calculerAge(LocalDate anneeNaissance, LocalDate currentDate) {
         Period period = Period.between(anneeNaissance, currentDate);
         return period.getYears();
     }
-
-    // Valider le courriel en format local-part@domain
+    /**
+     * Valide l'adresse email au format local-part@domain.
+     *
+     * @param adresseCourriel L'adresse email à valider.
+     * @return {@code true} si l'email est valide, {@code false} sinon.
+     */
     public static boolean validerEmail(String adresseCourriel) {
         return EMAIL_PATTERN.matcher(adresseCourriel).matches();
     }
-    // Valider le mot de passe: min 8 caractères et max 20, une majuscule, un caractère spécial et un chiffre
+    /**
+     * Valide le mot de passe selon ces critères:
+     * - entre 8 et 20 caractères
+     * - contient une majuscule, un chiffre, et un caractère spécial.
+     *
+     * @param motDePasse Le mot de passe à valider.
+     * @return {@code true} si le mot de passe est valide, {@code false} sinon.
+     */
     public static boolean validerMDP(String motDePasse) {
         return PASSWORD.matcher(motDePasse).matches();
     }
 
-    // Valider l'identifier qui doit avoir 8 chiffres
+    /**
+     * Valide l'identifiant de la ville, qui doit être composé de 8 chiffres.
+     *
+     * @param identifiant L'identifiant à valider.
+     * @return {@code true} si l'identifiant est valide, {@code false} sinon.
+     */
     public static boolean validerIdentifiantVille(String identifiant) {
         return IDENTIFIANT.matcher(identifiant).matches();
     }
 
-    // Valider le type de travail entré par l'utilisateur en comparant avec la liste des types de travail
-    // acceptée
+    /**
+     * Valide le type de travail entré par l'utilisateur en le comparant avec la liste des types de travail acceptés.
+     *
+     * @param typeTravailChoisi Le type de travail à valider.
+     * @return {@code true} si le type de travail est valide, {@code false} sinon.
+     */
     public static boolean validerTypeTravail(String typeTravailChoisi) {
         // On enlève les espaces inutiles de ce que l'utilisateur a entré comme type
         String typeTravailArrange = typeTravailChoisi.trim().replaceAll("\\s+", " ");
@@ -111,8 +155,9 @@ public class Valider {
         return false;
     }
 
-
-    // Énumération de tous les types possibles
+    /**
+     * L'énumération {@code TypeTravail} contient les types de travail possibles.
+     */
     public enum TypeTravail {
 
         TRAVAUX_ROUTIERS("Travaux routiers"),

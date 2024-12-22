@@ -43,7 +43,7 @@ public class IntervenantController {
     /**
      * Suit une candidature spécifique via la méthode suiviCandidature du modèle GestionCandidatures.
      *
-     * @param intervenant L'intervenant dont on souhaite suivre la candidature.
+     * @param intervenant L'intervenant dont on veut permettre de suivre la candidature.
      */
     public static void suivreCandidature(Intervenant intervenant){
         GestionCandidatures.suiviCandidature(intervenant);

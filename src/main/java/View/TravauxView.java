@@ -11,19 +11,19 @@ import java.util.Scanner;
 
 import static Controller.TravauxController.recupererTravaux;
 
+/**
+ * La classe TravauxView gère l'affichage du menu de recherche des travaux
+ * et permet à l'utilisateur résident de filtrer les travaux.
+ */
 public class TravauxView {
 
-    private static final Map<String, String> reasonCategoryMap = new HashMap<>() {{
-        put("Travaux de construction", "Construction/rénovation sans excavation");
-        put("Travaux résidentiels", "Toiture - Rénovation");
-        put("Travaux souterrains", "Forage/excavation exploratoire");
-        put("Travaux de gaz ou électricité", "S-3 Infrastructure souterraine majeure - Réseaux de gaz");
-        put("Travaux routiers", "Réseaux routier - Réfection et travaux corrélatifs");
-        put("Travaux de signalisation et éclairage", "Feux de signalisation - Ajout/réparation");
-        put("Entretien urbain", "Égouts et aqueducs - Inspection et nettoyage");
-        put("Autres travaux", "Autre");
-    }};
 
+    /**
+     * Affiche le menu principal pour la recherche des travaux.
+     * Permet à l'utilisateur de choisir entre plusieurs options de filtrage.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
     public static void afficherMenu(Scanner scanner) {
 
         while (true) {
@@ -60,16 +60,25 @@ public class TravauxView {
         }
     }
 
-    // Afficher par quartier
+    /**
+     * Affiche les travaux filtrés par quartier.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
     public static void afficherTravauxParQuartier(Scanner scanner){
         System.out.println("Veuillez entrer le quartier souhaité: ");
         String filtre = scanner.nextLine();
         recupererTravaux(1, filtre);
-
     }
 
-    // Afficher par type
+    /**
+     * Affiche les travaux filtrés par type de travaux. L'utilisateur choisit un type
+     * et ce type est validé. La recherche se fait ensuite.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
     public static void afficherTravauxParType(Scanner scanner){
+        // Afficher les types de travaux acceptés à l'utilisateur
         afficherTypesDeTravaux();
         System.out.println("Veuillez entrer le type souhaité:");
         String filtre = scanner.nextLine();
@@ -82,31 +91,37 @@ public class TravauxView {
         } else {
             System.out.println("Le type de travaux n'est pas valide ou il n'est pas répertorié.");
         }
-
     }
 
-    // Aucun filtrage
+    /**
+     * Affiche tous les travaux sans aucun filtrage.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
     public static void afficherTousLesTravaux(Scanner scanner) {
-        System.out.println("Voici la liste de tous les travaux en cours ou a venir: ");
+        System.out.println("Voici la liste de tous les travaux en cours ou à venir: ");
         recupererTravaux(0, null);  // 0 pour afficher tous les travaux
-
     }
 
-    // Permet à l'utilisateur de revenir en arrière au besoin
+    /**
+     * Permet à l'utilisateur de revenir en arrière au menu des travaux ou retourner au menu des résidents.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
     private static void retour(Scanner scanner){
-        System.out.println("Voulez-vous revenir au menu des travaux en cours (1) ou retourner au menu des résidents (2)?. Veuillez repondre par 1 ou par 2.");
+        System.out.println("Voulez-vous revenir au menu des travaux en cours (1) ou retourner au menu des résidents (2)? Veuillez répondre par 1 ou par 2.");
         String reponse = scanner.nextLine();
         if (reponse.equalsIgnoreCase("1")) {
             //
-        } else{
+        } else {
             System.out.println("Retour au menu des résidents!");
             ResidentController.afficherMenuResident();
-
-            }
         }
+    }
 
-
-
+    /**
+     * Affiche les différents types de travaux parmi lesquels l'utilisateur peut choisir.
+     */
     public static void afficherTypesDeTravaux() {
         System.out.println("Choisissez le type de travaux:");
         System.out.println("1. Travaux routiers");
@@ -121,10 +136,19 @@ public class TravauxView {
         System.out.println("10. Entretien des réseaux de télécommunication");
         System.out.println("11. Autres");
     }
-    }
 
-
-
+    // Mapping des catégories de travaux
+    private static final Map<String, String> reasonCategoryMap = new HashMap<>() {{
+        put("Travaux de construction", "Construction/rénovation sans excavation");
+        put("Travaux résidentiels", "Toiture - Rénovation");
+        put("Travaux souterrains", "Forage/excavation exploratoire");
+        put("Travaux de gaz ou électricité", "S-3 Infrastructure souterraine majeure - Réseaux de gaz");
+        put("Travaux routiers", "Réseaux routier - Réfection et travaux corrélatifs");
+        put("Travaux de signalisation et éclairage", "Feux de signalisation - Ajout/réparation");
+        put("Entretien urbain", "Égouts et aqueducs - Inspection et nettoyage");
+        put("Autres travaux", "Autre");
+    }};
+}
 
 
 

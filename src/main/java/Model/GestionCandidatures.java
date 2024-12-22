@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * Cette classe gère diverses opérations sur les candidatures: ajout, supression,
+ * chargement, sauvegarde et suivi.
+ */
 public class GestionCandidatures {
 
     // Initialisation d'une liste de candidatures
@@ -19,15 +23,30 @@ public class GestionCandidatures {
 
 
     // Getter et setter
+    /**
+     * Retourne la liste des candidatures.
+     *
+     * @return la liste des candidatures.
+     */
     public static List<Candidature> getListeCandidatures() {
         return listeCandidatures;
     }
 
+    /**
+     * Définit la liste des candidatures.
+     *
+     * @param listeCandidatures la nouvelle liste des candidatures.
+     */
     public static void setListeCandidatures(List<Candidature> listeCandidatures) {
         GestionCandidatures.listeCandidatures = listeCandidatures;
     }
 
     // Méthode servant à ajouter une candidature et à la sauvegarder dans le fichier json
+    /**
+     * Ajouter une candidature à la liste et la sauvegarder dans le fichier JSON.
+     *
+     * @param candidature La candidature.
+     */
     public static void ajouterCandidature(Candidature candidature){
         if (candidature == null) {
             System.out.println("Candidature invalide !");
@@ -40,6 +59,11 @@ public class GestionCandidatures {
 
     // Méthode qui supprime la candidature voulue et charge les candidatures
     // afin d'être à jour
+    /**
+     * Supprimer une candidature à la liste et charger les candidatures dans le fichier JSON.
+     *
+     * @param candidature La candidature à supprimer.
+     */
     public static void supprimerCandidature(Candidature candidature){
         if (candidature == null) {
             System.out.println("Candidature invalide !");
@@ -53,6 +77,10 @@ public class GestionCandidatures {
 
     // Cette méthode sert à charger les candidatures à la liste de candidatures du
     // fichier json approprié
+
+    /**
+     * Charge les candidatures dans le fichier json et les ajouter à la liste des candidatures.
+     */
     public static void chargeCandidatures(){
         ObjectMapper obj = new ObjectMapper();
         try{
@@ -66,7 +94,9 @@ public class GestionCandidatures {
     }
 
 
-    // Méthode servant à sauvegarder une candidature et à la placer dans le fichier json
+    /**
+     * Sauvegarder une candidature et la placer dans le fichier json
+     */
     public static void saveCandidature(){
         ObjectMapper obj = new ObjectMapper();
         try {
@@ -78,6 +108,14 @@ public class GestionCandidatures {
     }
 
     // Cette méthode permet de récupérer les candidatures d'un intervenant spécifique
+    // en comparant l'intervenant actuel avec les intervenants liées aux candidatures.
+    /**
+     * Retourne les candidatures d'un intervenant en comparant l'intervenant actuel
+     * avec les intervenants liées aux candidatures.
+     *
+     * @param intervenant L'intervenant.
+     * @return Une liste des candidatures liées à cet intervenant.
+     */
     public static List<Candidature> getCandidaturesDeIntervenant(Intervenant intervenant) {
         return listeCandidatures.stream()
                 // Pour chaque candidature, voir si l'intervenant correspond
@@ -85,6 +123,13 @@ public class GestionCandidatures {
                 .collect(Collectors.toList());
     }
 
+
+    /**
+     * Permet à un intervenant de suivre ses candidatures, d'afficher leurs informations,
+     * et de confirmer une candidature dont la requête a été acceptée par un résident.
+     *
+     * @param intervenant L'intervenant.
+     */
     public static void suiviCandidature(Intervenant intervenant){
 
         // Extraire les candidatures postulés par intervenant
@@ -106,22 +151,24 @@ public class GestionCandidatures {
             System.out.println();
         }
 
-        // Demande à l'intervenant de sélectionner une candidature à confirmer
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Entrez le numéro de la candidature à confirmer: ");
-        int choix = scanner.nextInt();
-        scanner.nextLine();
+        for (Candidature candidature : candidaturesSuivis){
+            if (candidature.getRequete().getEtat() == "Accepté par un intervenant"){
+                // Demande à l'intervenant de sélectionner une candidature à confirmer
+                Scanner scanner = new Scanner(System.in);
+                System.out.print("Entrez le numéro de la candidature à confirmer parmi celles affichées: ");
+                int choix = scanner.nextInt();
+                scanner.nextLine();
 
-        if (choix < 1 || choix > candidaturesSuivis.size()) {
-            System.out.println("Choix invalide.");
-            return;
-        }
-
+                if (choix < 1 || choix > candidaturesSuivis.size()) {
+                    System.out.println("Choix invalide.");
+                    return;
+                }
         // Confirme la candidature sélectionnée
         Candidature candidatureChoisie = candidaturesSuivis.get(choix - 1);
         candidatureChoisie.setEtat("Confirmée par l'intervenant");
 
         System.out.println("Candidature confirmée pour la requête : " + candidatureChoisie.getRequete().getTitreTravail());
     }
-
+        }
+    }
 }

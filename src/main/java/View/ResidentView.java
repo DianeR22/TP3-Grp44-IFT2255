@@ -1,9 +1,6 @@
 package View;
 
-import Controller.ConnexionController;
-import Controller.EntraveController;
-import Controller.RequeteController;
-import Controller.TravauxController;
+import Controller.*;
 import Model.GestionRequete;
 import Model.Resident;
 
@@ -25,10 +22,11 @@ public class ResidentView {
         while(true){
             System.out.println("\nMenu Résident :");
             System.out.println("1. Modifier son profil");
-            System.out.println("2. Consulter les travaux en cours ou à venir");
+            System.out.println("2. Consulter les travaux en cours");
+            System.out.println("3. Consulter les travaux à venir");
             System.out.println("3. Rechercher des travaux");
             System.out.println("4. Notifications");
-            System.out.println("5. Permettre une planification participative");
+            System.out.println("5. Modifier vos préférences horaires");
             System.out.println("6. Soumettre une requête de travail");
             System.out.println("7. Faire le suivi d'une requête");
             System.out.println("8. Consulter les entraves routieres.");
@@ -54,7 +52,6 @@ public class ResidentView {
                 case "3":
                     // Option pour rechercher des travaux (non définie ici)
                     TravauxController.afficherMenu(scanner);
-
                     retour(scanner);
                     break;
                 case "4":
@@ -63,8 +60,10 @@ public class ResidentView {
                     retour(scanner);
                     break;
                 case "5":
-                    // Permettre une planification participative (non définie ici)
-                    System.out.println("Vous êtes sur la section : Permettre une planification participative ! Cette option n'est pas encore implémentée!");
+                    // Modifier les préférences horaires
+                    System.out.println("Vous êtes sur la section : Modifier vos préférences horaires !");
+                    Resident res = Resident.getResidentConnecte();
+                    PreferenceView.afficherMenuPreferences(res);
                     retour(scanner);
                     break;
                 case "6":

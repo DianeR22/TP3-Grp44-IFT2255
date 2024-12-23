@@ -2,16 +2,19 @@ package Model;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 /**
  * La classe Valider permet de procéder à une vérification de l'information rentrée
  * par un utilisateur.
  */
 public class Valider {
-
 
     // Expressions regulières (regex) utilisées pour valider des chaînes de caractères (date, numéro de tel, courriel, mdp, identifiant)
     private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
@@ -25,7 +28,9 @@ public class Valider {
             + "(?=.*[@#$%^&+=?~!*()_\\-\\{\\}|\\[\\]\\\\:\"/'])"
             + "(?=\\S+$).{8,20}$");
 
-
+    private static final String[] JOURS_DE_LA_SEMAINE = {
+            "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"
+    };
 
     private static final Pattern IDENTIFIANT = Pattern.compile("\\d{8}");
 
@@ -182,7 +187,96 @@ public class Valider {
         }
     }
 
+    /**
+     * Retourne une liste des descriptions des types de travaux valides.
+     *
+     * @return Une liste des descriptions des types de travaux valides.
+     */
+    public static List<String> getTypesTravauxValides() {
+        List<String> typesTravaux = new ArrayList<>();
+        for (TypeTravail type : TypeTravail.values()) {
+            typesTravaux.add(type.getDescription());
+        }
+        return typesTravaux;
+    }
 
+    /**
+     * Vérifie les conflits entre un projet et les préférences horaires des résidents.
+     *
+     * @param projet Le projet soumis.
+     * @return Une liste des entrées de préférences qui entrent en conflit avec le projet.
+     */
+    public static List<Preference.PreferenceEntry> verifierConflits(Projet projet) {
+        List<Preference.PreferenceEntry> conflits = new ArrayList<>();
 
+        // Charger tous les résidents
+        List<Resident> residents = GestionResidents.chargerResidentsDepuisFichier();
+
+        // Filtrer les résidents par quartiers affectés
+        for (Resident resident : residents) {
+            if (projet.getQuartiersAffectes().contains(resident.getAdresse())) {
+                // Charger les préférences du résident
+                Preference preferences = new Preference(resident.getAdresseCourriel());
+
+                for (Preference.PreferenceEntry preference : preferences.getPreferences()) {
+                    // Vérifier si le jour du projet et la préférence sont en conflit
+                    if (projet.getDateDebut().getDayOfWeek().toString().equalsIgnoreCase(preference.getJour())) {
+                        // Vérifier l'overlap entre les heures du projet et les heures de préférence
+                        if (isHoraireConflit(projet.getHeureDebut(), projet.getHeureFin(),
+                                preference.getHeureDebut(), preference.getHeureFin())) {
+                            conflits.add(preference);
+                        }
+                    }
+                }
+            }
+        }
+
+        return conflits;
+    }
+
+    /**
+     * Vérifie si deux plages horaires se chevauchent.
+     *
+     * @param debutProjet Heure de début du projet.
+     * @param finProjet Heure de fin du projet.
+     * @param debutPref Heure de début de la préférence.
+     * @param finPref Heure de fin de la préférence.
+     * @return true si les plages horaires se chevauchent, false sinon.
+     */
+    private static boolean isHoraireConflit(LocalTime debutProjet, LocalTime finProjet,
+                                            LocalTime debutPref, LocalTime finPref) {
+        return (debutProjet.isBefore(finPref) && finProjet.isAfter(debutPref));
+    }
+
+    /**
+     * Valide si le jour est un jour valide de la semaine.
+     *
+     * @param jour Le jour à valider.
+     * @return true si le jour est valide, false sinon.
+     */
+    public static boolean validerJour(String jour) {
+        return Arrays.stream(JOURS_DE_LA_SEMAINE).anyMatch(j -> j.equalsIgnoreCase(jour));
+    }
+
+    public static boolean validerDansPlage(LocalTime heure, LocalTime debutJournee, LocalTime finJournee) {
+        return !heure.isBefore(debutJournee) && !heure.isAfter(finJournee);
+    }
+
+    public static boolean validerHeureDansPlage(LocalTime heure) {
+        LocalTime debutJournee = LocalTime.of(8, 0);
+        LocalTime finJournee = LocalTime.of(17, 0);
+
+        return validerDansPlage(heure, debutJournee, finJournee);
+    }
+
+    public static boolean validerPlageHoraire(LocalTime heureDebut, LocalTime heureFin) {
+        LocalTime debutJournee = LocalTime.of(8, 0);
+        LocalTime finJournee = LocalTime.of(17, 0);
+
+        // Validate both start and end times individually and ensure start < end
+        return validerDansPlage(heureDebut, debutJournee, finJournee) &&
+                validerDansPlage(heureFin, debutJournee, finJournee) &&
+                heureFin.isAfter(heureDebut);
+    }
 }
 

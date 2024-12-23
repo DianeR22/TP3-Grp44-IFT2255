@@ -1,5 +1,18 @@
 package Model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,12 +28,12 @@ public class Resident extends Utilisateur {
     // Attributs spécifiques au résident
     private String dateNaissance;
     private String telephone;
-    private String adresse;
+    private String adresse; // Nom de la rue
+    private String codePostal;
 
     private Scanner scanner;
     private Resident resident;
     private static Resident residentConnecte;
-
 
     /**
      * Constructeur de la classe Resident permettant d'instancier un résident avec ses attributs
@@ -34,11 +47,13 @@ public class Resident extends Utilisateur {
      * @param telephone Le numéro de téléphone du résident.
      * @param adresse L'adresse du résident.
      */
-    public Resident(String nom, String prenom, String adresseCourriel, String motDePasse, String dateNaissance, String telephone, String adresse) {
+    public Resident(String nom, String prenom, String adresseCourriel, String motDePasse, String dateNaissance,
+                    String telephone, String adresse, String codePostal) {
         super(nom, prenom, motDePasse, adresseCourriel);
         this.dateNaissance = dateNaissance;
         this.telephone = telephone;
         this.adresse = adresse;
+        this.codePostal = codePostal;
     }
 
 
@@ -135,6 +150,14 @@ public class Resident extends Utilisateur {
      */
     public void setAdresse(String adresse) {
         this.adresse = adresse;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
     }
 
     /**
@@ -246,7 +269,7 @@ public class Resident extends Utilisateur {
 
         System.out.println("Vous êtes inscrit!");
         afficherInformations();
-
+        Preference preferences = new Preference(adresseCourriel);
         // Demander au résident s'il souhaite se connecter
         demanderConnexion(scanner, utilisateur);
 
@@ -360,7 +383,5 @@ public class Resident extends Utilisateur {
             System.exit(0);
         }
     }
-
-
 }
 

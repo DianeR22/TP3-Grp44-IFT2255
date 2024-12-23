@@ -58,8 +58,8 @@ public class ResidentView {
                     retour(scanner);
                     break;
                 case "5":
-                    // Notifications (non définie ici)
-                    System.out.println("Vous êtes sur la section : Notifications ! Cette option n'est pas encore implémentée!");
+                    // Notifications
+                    NotificationView.afficherZoneNotification(scanner);
                     retour(scanner);
                     break;
                 case "6":

@@ -5,6 +5,8 @@ import Controller.EntraveController;
 import Controller.ResidentController;
 import Controller.TravauxController;
 import Model.ServiceAPI;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Scanner;
 
@@ -63,7 +65,8 @@ public class EntravesView {
      */
     public static void afficherToutesLesEntraves(Scanner scanner){
         System.out.println("Voici la liste de toutes les entraves associées aux travaux en cours: ");
-        EntraveController.recupererEntraves(0, null);
+        JSONArray entravesNonFiltrees = EntraveController.recupererEntraves(0, null);
+        afficherEntraves(entravesNonFiltrees);
     }
 
     /**
@@ -90,7 +93,32 @@ public class EntravesView {
     public static void afficherEntraveParRue(Scanner scanner){
         System.out.println("Veuillez entrer la rue souhaitée:");
         String filtre = scanner.nextLine();
-        EntraveController.recupererEntraves(1, filtre);
+        JSONArray entravesFiltrees = EntraveController.recupererEntraves(1, filtre);
+        afficherEntraves(entravesFiltrees);
+    }
+
+    /**
+     * Méthode qui affiche à l'utilisateur les entraves filtrées ou pas
+     * @param entraves un JSONArray des entraves filtrées ou non
+     */
+    public static void afficherEntraves(JSONArray entraves) {
+        if (entraves == null || entraves.length() == 0) {
+            System.out.println("Aucune entrave à afficher.");
+            return;
+        }
+
+        // Parcourir du JSONArray et afficher des informations de toutes les entraves
+        for (int i = 0; i < entraves.length(); i++) {
+            JSONObject entrave = entraves.getJSONObject(i);
+            String rue = entrave.getString("shortname");
+            String impactType = entrave.getString("streetimpacttype");
+
+            System.out.println("\nEntrave #" + (i + 1));
+            System.out.println("**********************************");
+            System.out.println("Rue : " + rue);
+            System.out.println("Type d'impact sur la rue : " + impactType);
+            System.out.println("**********************************");
+        }
     }
 
     /**

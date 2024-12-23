@@ -10,6 +10,8 @@ public class GestionRequeteTest{
     @Test
     public void ajouterRequete() {
 
+        GestionRequete.chargeRequetes();
+
         Requete requete = new Requete("Égouts", "Problème de canalisation", "Travaux souterrains", "05/08/2025");
 
         // / Ajouter la requête à la gestion des requêtes

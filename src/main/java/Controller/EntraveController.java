@@ -25,26 +25,26 @@ public class EntraveController {
     private static final String API_URL_ENTRAVES = "https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=a2bc8014-488c-495d-941b-e7ae1999d1bd";
 
     /**
-     * Récupère les entraves en fonction du filtre choisi par l'utilisateur et les affiche.
+     * Récupère les entraves en fonction du filtre de l'utilisateur.
      *
-     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour filtrer par rue).
-     * @param filtre La valeur du filtre, le nom de la rue.
+     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour rue).
+     * @param filtre Le filtre, nom de la rue ou aucun.
+     * @return un JSONArray contenant les entraves filtrées ou non
      */
-    public static void recupererEntraves(int typeFiltre, String filtre) {
-        try {
+    public static JSONArray recupererEntraves(int typeFiltre, String filtre) {
+        JSONArray entravesFiltrees = new JSONArray(); // Pour stocker les entraves filtrées
 
+        try {
             JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_ENTRAVES);
             if (jsonResponse == null) {
                 System.out.println("Impossible de récupérer les données de l'API.");
-                return;
+                return null;
             }
 
             // Parcourir le json et extraire l'objet result ainsi que records qui est le tableau d'objets
             JSONArray records = jsonResponse.getJSONObject("result").getJSONArray("records");
 
             boolean found = false;
-            // Numéroter les entraves
-            int compteur = 1;
             // Parcourir le tableau d'objets records pour extraire les objets
             for (int i = 0; i < records.length(); i++) {
                 JSONObject entrave = records.getJSONObject(i);
@@ -52,12 +52,8 @@ public class EntraveController {
 
                 // Identifier le filtre
                 if (typeFiltre == 0 || (typeFiltre == 1 && rue.equalsIgnoreCase(filtre))) {
-                    System.out.println("\nEntrave #" + compteur);
-                    System.out.println("**********************************");
-                    System.out.println("Rue : " + rue);
-                    System.out.println("Type d'impact sur la rue : " + entrave.getString("streetimpacttype"));
-                    System.out.println("**********************************");
-                    compteur++;
+                    // Ajouter l'entrave filtrée au JSONArray
+                    entravesFiltrees.put(entrave);
                     found = true;
                 }
             }
@@ -65,9 +61,12 @@ public class EntraveController {
             if (!found) {
                 System.out.println("\nAucune entrave trouvée avec ce filtre.");
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return entravesFiltrees; // Retourner le JSONArray avec les entraves filtrées
     }
 
     /**

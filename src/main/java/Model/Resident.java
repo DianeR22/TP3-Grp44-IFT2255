@@ -264,6 +264,9 @@ public class Resident extends Utilisateur {
         // L'adresse du résident est entrée et permet de l'associer à un quartier de Montréal.
         adresse = obtenirAdresse();
 
+        // L'utilisateur entre un code postal et ce code est vérifié.
+        codePostal = obtenirCodePostal();
+
         // Ajouter le résident à la liste et sauvegarder
         GestionResidents.ajouterResident(this);
 
@@ -347,11 +350,25 @@ public class Resident extends Utilisateur {
         }
     }
 
+    // Méthode pour obtenir et valider le code postal
+    private String obtenirCodePostal() {
+        Scanner scanner = new Scanner(System.in);
+        while(true) {
+            System.out.println("Veuillez entrer votre code postal.");
+            String code = scanner.nextLine();
+            if (Valider.validerCodePostal(code)) {
+                return motDePasse;
+            } else {
+                System.out.println("Code postal invalide. Il doit être de la forme A1B 2C3.");
+            }
+        }
+    }
+
     // Méthode pour obtenir et valider l'adresse
     private String obtenirAdresse() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            System.out.println("Veuillez entrer votre adresse.");
+            System.out.println("Veuillez entrer votre adresse (rue).");
             String adresse = scanner.nextLine();
             if (!adresse.isEmpty()) {
                 return adresse;

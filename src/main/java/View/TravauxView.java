@@ -4,6 +4,8 @@ import Controller.ConnexionController;
 import Controller.ResidentController;
 import Controller.TravauxController;
 import Model.ServiceAPI;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +70,8 @@ public class TravauxView {
     public static void afficherTravauxParQuartier(Scanner scanner){
         System.out.println("Veuillez entrer le quartier souhaité: ");
         String filtre = scanner.nextLine();
-        recupererTravaux(1, filtre);
+        JSONArray travauxFiltres = recupererTravaux(1, filtre);
+        afficherTravaux(travauxFiltres);
     }
 
     /**
@@ -86,8 +89,8 @@ public class TravauxView {
         String reasonCategory = reasonCategoryMap.get(filtre);
 
         if (reasonCategory != null) {
-            System.out.println("Recherche des travaux dans la catégorie: " + reasonCategory);
-            TravauxController.recupererTravaux(2, reasonCategory);  // Appel à la fonction qui utilise l'API
+            JSONArray travauxFiltres = TravauxController.recupererTravaux(2, reasonCategory);  // Appel à la fonction qui utilise l'API
+            afficherTravaux(travauxFiltres);
         } else {
             System.out.println("Le type de travaux n'est pas valide ou il n'est pas répertorié.");
         }
@@ -100,7 +103,8 @@ public class TravauxView {
      */
     public static void afficherTousLesTravaux(Scanner scanner) {
         System.out.println("Voici la liste de tous les travaux en cours ou à venir: ");
-        recupererTravaux(0, null);  // 0 pour afficher tous les travaux
+        JSONArray travauxFiltres = recupererTravaux(0, null);  // 0 pour afficher tous les travaux
+        afficherTravaux(travauxFiltres);
     }
 
     /**
@@ -120,6 +124,43 @@ public class TravauxView {
     }
 
     /**
+     * Affiche les travaux à partir du JSONArray fourni.
+     *
+     * @param travaux Le JSONArray contenant les travaux à afficher
+     */
+    public static void afficherTravaux(JSONArray travaux) {
+        try {
+            if (travaux != null && travaux.length() > 0) {
+                for (int i = 0; i < travaux.length(); i++) {
+                    JSONObject travail = travaux.getJSONObject(i);
+                    String quartier = travail.getString("boroughid");
+                    String type = travail.getString("reason_category");
+
+                    System.out.println("\n***********************************");
+                    System.out.println("Travail ID : " + travail.getInt("_id"));
+                    System.out.println("Quartier : " + quartier);
+                    System.out.println("Statut actuel : " + travail.getString("currentstatus"));
+                    System.out.println("Motif : " + type);
+
+                    // Utilisation de opt() pour récupérer la valeur en tant que Object et conversion de la valeur en String
+                    String organizationName = travail.opt("organizationname") != null ? travail.opt("organizationname").toString() : "";
+                    System.out.println("Nom de l'intervenant : " + organizationName);
+
+                    // Utilisation de opt() pour récupérer la valeur en tant que Object et conversion de la valeur en String
+                    String submitterCategory = travail.opt("submittercategory") != null ? travail.opt("submittercategory").toString() : "";
+                    System.out.println("Catégorie de l'intervenant: " + submitterCategory);
+                    System.out.println("*************************************");
+                }
+            } else {
+                System.out.println("Aucun travail à afficher.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
      * Affiche les différents types de travaux parmi lesquels l'utilisateur peut choisir.
      */
     public static void afficherTypesDeTravaux() {
@@ -137,11 +178,13 @@ public class TravauxView {
         System.out.println("11. Autres");
     }
 
+
+
     // Mapping des catégories de travaux
     private static final Map<String, String> reasonCategoryMap = new HashMap<>() {{
         put("Travaux de construction", "Construction/rénovation sans excavation");
-        put("Travaux résidentiels", "Toiture - Rénovation");
-        put("Travaux souterrains", "Forage/excavation exploratoire");
+        put("Travaux résidentiels", "Trottoirs - Construction");
+        put("Travaux souterrains", "Construction/rénovation avec excavation");
         put("Travaux de gaz ou électricité", "S-3 Infrastructure souterraine majeure - Réseaux de gaz");
         put("Travaux routiers", "Réseaux routier - Réfection et travaux corrélatifs");
         put("Travaux de signalisation et éclairage", "Feux de signalisation - Ajout/réparation");
@@ -149,6 +192,4 @@ public class TravauxView {
         put("Autres travaux", "Autre");
     }};
 }
-
-
 

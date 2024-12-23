@@ -24,13 +24,13 @@ public class ResidentView {
             System.out.println("1. Modifier son profil");
             System.out.println("2. Consulter les travaux en cours");
             System.out.println("3. Consulter les travaux à venir");
-            System.out.println("3. Rechercher des travaux");
-            System.out.println("4. Notifications");
-            System.out.println("5. Modifier vos préférences horaires");
-            System.out.println("6. Soumettre une requête de travail");
-            System.out.println("7. Faire le suivi d'une requête");
-            System.out.println("8. Consulter les entraves routieres.");
-            System.out.println("9. Retourner au menu principal");
+            System.out.println("4. Rechercher des travaux");
+            System.out.println("5. Notifications");
+            System.out.println("6. Modifier vos préférences horaires");
+            System.out.println("7. Soumettre une requête de travail");
+            System.out.println("8. Faire le suivi d'une requête");
+            System.out.println("9. Consulter les entraves routieres.");
+            System.out.println("10. Retourner au menu principal");
 
             // Récupérer le input de l'utilisateur
             Scanner scanner = new Scanner(System.in);
@@ -44,47 +44,50 @@ public class ResidentView {
                     retour(scanner);
                     break;
                 case "2":
-                    // Option pour consulter les travaux en cours ou à venir
-                    // ERREUR ICI: TravauxController.afficherMenu(scanner);
+                    // Option pour consulter les travaux en cours
                     System.out.println("Vous êtes sur la section : Rechercher des travaux ! Cette option n'est pas encore implémentée!");
                     retour(scanner);
                     break;
                 case "3":
+                    System.out.println("Vous êtes sur la section : Consulter les travaux à venir ! Cette option n'est pas encore implémentée!");
+                    retour(scanner);
+                    break;
+                case "4":
                     // Option pour rechercher des travaux (non définie ici)
                     TravauxController.afficherMenu(scanner);
                     retour(scanner);
                     break;
-                case "4":
+                case "5":
                     // Notifications (non définie ici)
                     System.out.println("Vous êtes sur la section : Notifications ! Cette option n'est pas encore implémentée!");
                     retour(scanner);
                     break;
-                case "5":
+                case "6":
                     // Modifier les préférences horaires
                     System.out.println("Vous êtes sur la section : Modifier vos préférences horaires !");
                     Resident res = Resident.getResidentConnecte();
                     PreferenceView.afficherMenuPreferences(res);
                     retour(scanner);
                     break;
-                case "6":
+                case "7":
                     // Soumettre une requête de travail
                     System.out.println("Vous êtes sur la section : Soumettre une requête de travail !");
                     RequeteController.obtenirInformationsRequete();
                     retour(scanner);
                     break;
-                case "7":
+                case "8":
                     // Faire suivi
                     System.out.println("Vous êtes sur la section : Faire le suivi d'une requête !");
                     Resident resident = Resident.getResidentConnecte();
                     GestionRequete.suiviRequete(resident);
                     retour(scanner);
                     break;
-                case "8":
+                case "9":
                     // Consulter les entraves
                     EntraveController.afficherMenu(scanner);
                     retour(scanner);
                     break;
-                case "9":
+                case "10":
                     ConnexionController.afficherMenuPrincipal();
                     break;
                 default:

@@ -17,16 +17,15 @@ import java.util.regex.Pattern;
 public class Valider {
 
     // Expressions regulières (regex) utilisées pour valider des chaînes de caractères (date, numéro de tel, courriel, mdp, identifiant)
-    private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
-    // Format souhaité pour la date : JJ/MM/AAAA
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static Pattern PHONE_PATTERN = Pattern.compile("^\\d{3}[-. ]?\\d{3}[-. ]?\\d{4}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     private static Pattern PASSWORD = Pattern.compile("^(?=.*[0-9])"
             + "(?=.*[a-z])(?=.*[A-Z])"
             + "(?=.*[@#$%^&+=?~!*()_\\-\\{\\}|\\[\\]\\\\:\"/'])"
             + "(?=\\S+$).{8,20}$");
+    private static final Pattern CODE_PATTERN = Pattern.compile("[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$");
 
     private static final String[] JOURS_DE_LA_SEMAINE = {
             "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"
@@ -124,6 +123,11 @@ public class Valider {
      */
     public static boolean validerIdentifiantVille(String identifiant) {
         return IDENTIFIANT.matcher(identifiant).matches();
+    }
+
+    public static boolean validerCodePostal(String code){
+        return CODE_PATTERN.matcher(code).matches();
+
     }
 
     /**
@@ -279,4 +283,6 @@ public class Valider {
                 heureFin.isAfter(heureDebut);
     }
 }
+
+
 

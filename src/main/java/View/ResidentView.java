@@ -20,12 +20,14 @@ public class ResidentView {
         System.out.println("Vous êtes connecté!");
 
         while(true){
+            int nombreNonVues = NotificationController.obtenirNombreNotificationsNonVues();
+
             System.out.println("\nMenu Résident :");
             System.out.println("1. Modifier son profil");
             System.out.println("2. Consulter les travaux en cours");
             System.out.println("3. Consulter les travaux à venir");
             System.out.println("4. Rechercher des travaux");
-            System.out.println("5. Notifications");
+            System.out.println("5. Notifications (" + nombreNonVues + " non lues)");
             System.out.println("6. Modifier vos préférences horaires");
             System.out.println("7. Soumettre une requête de travail");
             System.out.println("8. Faire le suivi d'une requête");

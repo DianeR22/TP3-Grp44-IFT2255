@@ -1,0 +1,37 @@
+[
+    {
+        "preferences": [
+            {
+                "jour": "Lundi",
+                "heureDebut": "08:14",
+                "heureFin": "09:55"
+            },
+            {
+                "jour": "Mardi",
+                "heureDebut": "08:00",
+                "heureFin": "17:00"
+            }
+        ],
+        "email": "test.user@gmail.com"
+    },
+    {
+        "preferences": [
+            {
+                "jour": "Jeudi",
+                "heureDebut": "17:18",
+                "heureFin": "20:17"
+            },
+            {
+                "jour": "Lundi",
+                "heureDebut": "08:00",
+                "heureFin": "17:00"
+            },
+            {
+                "jour": "Vendredi",
+                "heureDebut": "08:15",
+                "heureFin": "14:00"
+            }
+        ],
+        "email": "test.user2@gmail.com"
+    }
+]

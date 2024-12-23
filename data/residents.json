@@ -1,1 +1,20 @@
-[{"nom":"Test","prenom":"User","motDePasse":"TestPassword1","adresseCourriel":"test.user@gmail.com","dateNaissance":"01/01/1990","telephone":"514-123-4567","adresse":"Montreal","resident":null}]
+[{
+   "motDePasse": "TestPassword1",
+   "adresseCourriel": "test.user@gmail.com",
+   "dateNaissance": "01/01/1990",
+   "adresse": "Montreal",
+   "telephone": "514-123-4567",
+   "nom": "Test",
+   "prenom": "User",
+   "resident": null
+},
+   {
+      "motDePasse": "TestPassword2",
+      "adresseCourriel": "test.user2@gmail.com",
+      "dateNaissance": "02/02/1991",
+      "adresse": "Quebec",
+      "telephone": "418-234-5678",
+      "nom": "Test",
+      "prenom": "User",
+      "resident": null
+   }]

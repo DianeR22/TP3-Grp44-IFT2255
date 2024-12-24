@@ -14,7 +14,7 @@ public class NotificationView {
             System.out.println("---- Zone de Notification ----");
             System.out.println("1. Consulter les notifications");
             System.out.println("2. S'abonner à un quartier");
-            System.out.println("3. Retirer un abonnement à un quartier");
+            System.out.println("3. Se désabonner d'un quartier");
             System.out.println("4. Voir les quartiers abonnés");
             System.out.println("5. Retourner au menu principal");
             System.out.println("Veuillez entrer votre choix (1-5) :");

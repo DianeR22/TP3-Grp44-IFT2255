@@ -3,7 +3,6 @@ package Controller;
 import Model.*;
 import View.IntervenantView;
 import View.RequeteView;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -125,6 +124,11 @@ public class IntervenantController {
             System.out.println("Projet soumis avec succès !");
             // Ajouter une notification pour ce projet
             System.out.println("Sauvegarde du projet : " + titre + " dans le quartier : " + quartiers);
+            // Ajouter une notification pour chaque quartier
+            for (String quartier : quartiers) {
+                NotificationController.ajouterNotificationProjetSoumis(titre, quartier);
+            }
+
         } else {
             System.out.println("Erreur lors de la création du projet. Veuillez vérifier les informations fournies.");
         }

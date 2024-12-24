@@ -7,24 +7,17 @@ import java.time.format.DateTimeFormatter;
  * Représente une notification dans le système.
  */
 public class Notification {
-    private int id; // Identifiant unique
-    private String message; // Contenu de la notification
-    private LocalDateTime timestamp; // Date et heure de création de la notification
-    private boolean vue; // Statut de la notification (vue ou non)
+    private int id;
+    private String message;
+    private LocalDateTime timestamp;
+    private boolean vue;
     private String quartier; // Quartier associé à la notification
 
-    /**
-     * Constructeur pour initialiser une notification avec ses attributs.
-     * @param id Identifiant unique
-     * @param message Contenu de la notification
-     * @param timestamp Date et heure de création
-     * @param quartier Quartier associé
-     */
     public Notification(int id, String message, LocalDateTime timestamp, String quartier) {
         this.id = id;
         this.message = message;
         this.timestamp = timestamp;
-        this.vue = false; // Par défaut, une notification est non vue
+        this.vue = false;
         this.quartier = quartier;
     }
 

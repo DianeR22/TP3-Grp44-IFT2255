@@ -124,7 +124,7 @@ public class IntervenantController {
             GestionProjets.sauvegarderProjet(projet);
             System.out.println("Projet soumis avec succès !");
             // Ajouter une notification pour ce projet
-            NotificationController.ajouterNotificationProjetSoumis(titre);
+            System.out.println("Sauvegarde du projet : " + titre + " dans le quartier : " + quartiers);
         } else {
             System.out.println("Erreur lors de la création du projet. Veuillez vérifier les informations fournies.");
         }

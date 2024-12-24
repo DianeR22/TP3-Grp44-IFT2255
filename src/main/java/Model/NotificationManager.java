@@ -50,4 +50,7 @@ public class NotificationManager {
     public static Set<String> obtenirQuartiersAbonnes() {
         return new HashSet<>(quartiersAbonnes);
     }
+    public static void retirerQuartier(String quartier) {
+        quartiersAbonnes.remove(quartier);
+    }
 }

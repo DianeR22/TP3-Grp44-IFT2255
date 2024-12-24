@@ -60,7 +60,6 @@ public class ResidentView {
                     retour(scanner);
                     break;
                 case "5":
-                    // Notifications
                     NotificationView.afficherZoneNotification(scanner);
                     retour(scanner);
                     break;

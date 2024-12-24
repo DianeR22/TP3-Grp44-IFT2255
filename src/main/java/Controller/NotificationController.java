@@ -45,4 +45,11 @@ public class NotificationController {
     public static Set<String> obtenirQuartiersAbonnes() {
         return NotificationManager.obtenirQuartiersAbonnes();
     }
+    public static int obtenirNombreNotificationsNonVues() {
+        return NotificationManager.compterNotificationsNonVues();
+    }
+    public static void retirerAbonnementQuartier(String quartier) {
+        NotificationManager.retirerQuartier(quartier);
+        System.out.println("Vous êtes maintenant désabonné du quartier : " + quartier);
+    }
 }

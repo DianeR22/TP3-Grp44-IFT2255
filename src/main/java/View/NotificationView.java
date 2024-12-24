@@ -14,9 +14,10 @@ public class NotificationView {
             System.out.println("---- Zone de Notification ----");
             System.out.println("1. Consulter les notifications");
             System.out.println("2. S'abonner à un quartier");
-            System.out.println("3. Voir les quartiers abonnés");
-            System.out.println("4. Retourner au menu principal");
-            System.out.println("Veuillez entrer votre choix (1-4) :");
+            System.out.println("3. Retirer un abonnement à un quartier");
+            System.out.println("4. Voir les quartiers abonnés");
+            System.out.println("5. Retourner au menu principal");
+            System.out.println("Veuillez entrer votre choix (1-5) :");
 
             String choix = scanner.nextLine();
 
@@ -30,6 +31,11 @@ public class NotificationView {
                     NotificationController.ajouterAbonnementQuartier(quartier);
                     break;
                 case "3":
+                    System.out.println("Entrez le nom du quartier dont vous souhaitez vous désabonner :");
+                    String quartierRetirer = scanner.nextLine();
+                    NotificationController.retirerAbonnementQuartier(quartierRetirer);
+                    break;
+                case "4":
                     var quartiers = NotificationController.obtenirQuartiersAbonnes();
                     if (quartiers.isEmpty()) {
                         System.out.println("Vous n'êtes abonné à aucun quartier.");
@@ -37,7 +43,7 @@ public class NotificationView {
                         System.out.println("Quartiers abonnés : " + String.join(", ", quartiers));
                     }
                     break;
-                case "4":
+                case "5":
                     return;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");

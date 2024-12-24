@@ -12,7 +12,7 @@
                 "heureFin": "17:00"
             }
         ],
-        "email": "test.user@gmail.com"
+        "email": "thomas.gauthier@gmail.com"
     },
     {
         "preferences": [
@@ -32,6 +32,6 @@
                 "heureFin": "14:00"
             }
         ],
-        "email": "test.user2@gmail.com"
+        "email": "bob.dupont@gmail.com"
     }
 ]

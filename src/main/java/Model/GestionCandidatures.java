@@ -57,8 +57,6 @@ public class GestionCandidatures {
         System.out.println("Nouvelle candidature soumise!");
     }
 
-    // Méthode qui supprime la candidature voulue et charge les candidatures
-    // afin d'être à jour
     /**
      * Supprimer une candidature à la liste et charger les candidatures dans le fichier JSON.
      *
@@ -73,10 +71,6 @@ public class GestionCandidatures {
             chargeCandidatures();
             System.out.println("Nouvelle candidature soumise!");
         }
-
-
-    // Cette méthode sert à charger les candidatures à la liste de candidatures du
-    // fichier json approprié
 
     /**
      * Charge les candidatures dans le fichier json et les ajouter à la liste des candidatures.
@@ -93,7 +87,6 @@ public class GestionCandidatures {
         }
     }
 
-
     /**
      * Sauvegarder une candidature et la placer dans le fichier json
      */
@@ -107,8 +100,6 @@ public class GestionCandidatures {
         }
     }
 
-    // Cette méthode permet de récupérer les candidatures d'un intervenant spécifique
-    // en comparant l'intervenant actuel avec les intervenants liées aux candidatures.
     /**
      * Retourne les candidatures d'un intervenant en comparant l'intervenant actuel
      * avec les intervenants liées aux candidatures.
@@ -122,7 +113,6 @@ public class GestionCandidatures {
                 .filter(c -> c.getIntervenant().equals(intervenant))
                 .collect(Collectors.toList());
     }
-
 
     /**
      * Permet à un intervenant de suivre ses candidatures, d'afficher leurs informations,
@@ -168,7 +158,7 @@ public class GestionCandidatures {
         candidatureChoisie.setEtat("Confirmée par l'intervenant");
 
         System.out.println("Candidature confirmée pour la requête : " + candidatureChoisie.getRequete().getTitreTravail());
-    }
+            }
         }
     }
 }

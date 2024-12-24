@@ -11,10 +11,25 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gère les préférences horaires des résidents.
+ *
+ * Cette classe permet de charger, sauvegarder, ajouter, et supprimer des
+ * préférences horaires associées à une adresse courriel spécifique.
+ * Les préférences sont stockées dans un fichier JSON.
+ */
 public class Preference {
     private String email; // Email du résident
     private List<PreferenceEntry> preferences; // Liste des préférences
 
+    /**
+     * Initialise une instance de préférences pour un résident donné.
+     *
+     * Le constructeur charge automatiquement les préférences existantes
+     * associées à l'adresse courriel fournie.
+     *
+     * @param email L'adresse courriel du résident.
+     */
     public Preference(String email) {
         this.email = email;
         this.preferences = new ArrayList<>();
@@ -25,16 +40,39 @@ public class Preference {
         return email;
     }
 
+    /**
+     * Retourne l'adresse courriel associée aux préférences.
+     *
+     * @return L'adresse courriel sous forme de chaîne.
+     */
     public List<PreferenceEntry> getPreferences() {
         return preferences;
     }
 
+    /**
+     * Ajoute une nouvelle préférence horaire pour le résident.
+     *
+     * Cette méthode ajoute une préférence composée d'un jour,
+     * d'une heure de début et d'une heure de fin à la liste,
+     * et sauvegarde les préférences mises à jour dans le fichier JSON.
+     *
+     * @param jour        Le jour de la semaine pour la préférence (ex. "Lundi").
+     * @param heureDebut  L'heure de début de la préférence.
+     * @param heureFin    L'heure de fin de la préférence.
+     */
     public void ajouterPreference(String jour, LocalTime heureDebut, LocalTime heureFin) {
         PreferenceEntry preferenceEntry = new PreferenceEntry(jour, heureDebut, heureFin);
         preferences.add(preferenceEntry);
         savePreferences(); // Sauvegarder les préférences après ajout
     }
 
+    /**
+     * Charge les préférences horaires du résident depuis un fichier JSON.
+     *
+     * Cette méthode lit le fichier `preferences.json`, filtre les préférences
+     * associées à l'adresse courriel du résident, et les charge dans l'attribut
+     * {@code preferences}.
+     */
     private void loadPreferences() {
         try {
             Path filePath = Path.of("data/preferences.json");
@@ -62,6 +100,12 @@ public class Preference {
         }
     }
 
+    /**
+     * Sauvegarde les préférences horaires du résident dans un fichier JSON.
+     *
+     * Cette méthode met à jour les préférences existantes dans le fichier
+     * ou ajoute une nouvelle entrée si l'adresse courriel n'existe pas encore.
+     */
     private void savePreferences() {
         JSONArray jsonArray = new JSONArray();
 
@@ -124,6 +168,14 @@ public class Preference {
         }
     }
 
+    /**
+     * Supprime une préférence horaire à un index donné.
+     *
+     * Cette méthode retire une préférence de la liste en fonction de l'index
+     * fourni, et sauvegarde les changements dans le fichier JSON.
+     *
+     * @param index L'index de la préférence à supprimer (0 pour la première entrée).
+     */
     public void supprimerPreference(int index) {
         if (index >= 0 && index < preferences.size()) {
             preferences.remove(index); // Supprime l'entrée à l'index donné
@@ -133,26 +185,54 @@ public class Preference {
         }
     }
 
+    /**
+     * Représente une entrée de préférence horaire.
+     *
+     * Chaque préférence est définie par un jour, une heure de début,
+     * et une heure de fin.
+     */
     // Inner class to represent a preference entry
     public static class PreferenceEntry {
         private String jour;
         private LocalTime heureDebut;
         private LocalTime heureFin;
 
+        /**
+         * Initialise une nouvelle entrée de préférence horaire.
+         *
+         * @param jour       Le jour de la semaine.
+         * @param heureDebut L'heure de début.
+         * @param heureFin   L'heure de fin.
+         */
         public PreferenceEntry(String jour, LocalTime heureDebut, LocalTime heureFin) {
             this.jour = jour;
             this.heureDebut = heureDebut;
             this.heureFin = heureFin;
         }
 
+        /**
+         * Retourne le jour de la préférence.
+         *
+         * @return Le jour sous forme de chaîne.
+         */
         public String getJour() {
             return jour;
         }
 
+        /**
+         * Retourne l'heure de début de la préférence.
+         *
+         * @return L'heure de début sous forme d'objet {@link LocalTime}.
+         */
         public LocalTime getHeureDebut() {
             return heureDebut;
         }
 
+        /**
+         * Retourne l'heure de fin de la préférence.
+         *
+         * @return L'heure de fin sous forme d'objet {@link LocalTime}.
+         */
         public LocalTime getHeureFin() {
             return heureFin;
         }

@@ -128,8 +128,6 @@ public class GestionRequete {
         }
     }
 
-
-
     /** FiltrerParType sert à filtrer une liste de requêtes qui possède le filtre
      * de type de travail en caractéristique et à afficher ces requêtes
      * @param typeTravaux type de travail entré par l'utilisateur
@@ -140,7 +138,6 @@ public class GestionRequete {
                 .filter(requete -> requete.getTypeTravaux().equalsIgnoreCase(typeTravaux))
                 .toList();
     }
-
 
     /** FiltrerParQuartier sert à filtrer une liste de requêtes qui possède le filtre
      * de quartier en caractéristique et à afficher ces requêtes

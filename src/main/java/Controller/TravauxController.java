@@ -22,20 +22,22 @@ public class TravauxController {
 
     // URL de l'API pour récupérer les données des travaux
     private static final String API_URL_TRAVAUX = " https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=cc41b532-f12d-40fb-9f55-eb58c9a2b12b";
-
     /**
-     * Récupère et affiche les travaux en fonction du filtre de l'utilisateur.
+     * Récupère et filtre les travaux depuis l'API en fonction du type de filtre et du critère fourni.
      *
-     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour quartier)
-     * @param filtre Le filtre (nom de rue)
-     */
-    /**
-     * Récupère les travaux en fonction du filtre souhaité.
+     * Cette méthode envoie une requête à l'API spécifiée par {@link #API_URL_TRAVAUX}, récupère
+     * les travaux disponibles, et applique un filtre basé sur le type et le critère spécifiés.
      *
-     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour quartier, 2 pour motif)
-     * @param filtre Le filtre (nom de rue ou aucun)
-     * @return JSONArray contenant les travaux filtrés
-     */
+     * @param typeFiltre Le type de filtre à appliquer :
+     *                   <ul>
+     *                     <li>0 : Aucun filtre, retourne tous les travaux.</li>
+     *                     <li>1 : Filtrer par quartier. Le paramètre {@code filtre} doit contenir le nom du quartier.</li>
+     *                     <li>2 : Filtrer par type de travaux. Le paramètre {@code filtre} doit contenir la catégorie de travaux.</li>
+     *                   </ul>
+     * @param filtre     Le critère utilisé pour le filtrage. Peut-être le nom d'un quartier ou d'une catégorie
+     *                   de travaux en fonction du type de filtre.
+     * @return Un tableau JSON (`JSONArray`) contenant les travaux filtrés, ou {@code null} si une erreur survient
+     *         ou si les données de l'API ne peuvent pas être récupérées.*/
     public static JSONArray recupererTravaux(int typeFiltre, String filtre) {
         try {
             JSONObject jsonResponse = getDataFromApi(API_URL_TRAVAUX);
@@ -72,7 +74,6 @@ public class TravauxController {
             return null;
         }
     }
-
 
     /**
      * Récupère un tableau des travaux depuis l'API.

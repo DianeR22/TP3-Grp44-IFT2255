@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 
 /**
  * Gestionnaire des notifications.
+ *
+ * Cette classe gère les notifications, notamment leur ajout, leur filtrage
+ * (vues ou non vues), ainsi que la gestion des abonnements aux quartiers.
  */
 public class NotificationManager {
     private static final List<Notification> notifications = new ArrayList<>();
@@ -19,47 +22,96 @@ public class NotificationManager {
     private static final String FICHIER_RESIDENTS = "data/residents.json";
     private static int nextId = 1;
 
+    /**
+     * Ajoute une nouvelle notification au système.
+     *
+     * @param message  Le message de la notification.
+     * @param quartier Le quartier associé à la notification.
+     */
     public static void ajouterNotification(String message, String quartier) {
         Notification notification = new Notification(nextId++, message, java.time.LocalDateTime.now(), quartier);
         notifications.add(notification);
     }
 
+    /**
+     * Récupère les notifications non vues par l'utilisateur, filtrées par
+     * les quartiers auxquels il est abonné.
+     *
+     * @return Une liste de notifications non vues.
+     */
     public static List<Notification> obtenirNotificationsNonVues() {
         return notifications.stream()
                 .filter(notification -> !notification.isVue() && quartiersAbonnes.contains(notification.getQuartier()))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Récupère les notifications déjà vues par l'utilisateur, filtrées par
+     * les quartiers auxquels il est abonné.
+     *
+     * @return Une liste de notifications vues.
+     */
     public static List<Notification> obtenirNotificationsVues() {
         return notifications.stream()
                 .filter(notification -> notification.isVue() && quartiersAbonnes.contains(notification.getQuartier()))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Compte le nombre de notifications non vues pour les quartiers auxquels
+     * l'utilisateur est abonné.
+     *
+     * @return Le nombre de notifications non vues.
+     */
     public static int compterNotificationsNonVues() {
         return (int) notifications.stream()
                 .filter(notification -> !notification.isVue() && quartiersAbonnes.contains(notification.getQuartier()))
                 .count();
     }
 
+    /**
+     * Marque toutes les notifications comme vues, quelle que soit leur association
+     * avec un quartier ou leur état actuel.
+     */
     public static void marquerToutesCommeVues() {
         notifications.forEach(Notification::marquerCommeVue);
     }
 
+    /**
+     * Ajoute un quartier à la liste des abonnements de l'utilisateur.
+     *
+     * @param quartier Le nom du quartier à ajouter.
+     */
     public static void ajouterQuartier(String quartier) {
         quartiersAbonnes.add(quartier);
     }
 
+    /**
+     * Retire un quartier de la liste des abonnements de l'utilisateur.
+     *
+     * @param quartier Le nom du quartier à retirer.
+     */
     public static void retirerQuartier(String quartier) {
         quartiersAbonnes.remove(quartier);
     }
 
+    /**
+     * Récupère la liste des quartiers auxquels l'utilisateur est abonné.
+     *
+     * @return Un ensemble contenant les noms des quartiers abonnés.
+     */
     public static Set<String> obtenirQuartiersAbonnes() {
         return new HashSet<>(quartiersAbonnes);
     }
 
     /**
-     * Charge les résidents depuis un fichier JSON et les abonne à leur quartier.
+     * Charge les résidents depuis un fichier JSON et les abonne à leur quartier respectif.
+     *
+     * Cette méthode lit un fichier JSON contenant les informations des résidents,
+     * identifie leurs quartiers, et ajoute ces derniers à la liste des abonnements.
+     *
+     * Si le fichier n'existe pas ou si une erreur survient lors de la lecture,
+     * un message d'erreur est affiché.
      */
     public static void chargerEtAbonnerResidents() {
         ObjectMapper objectMapper = new ObjectMapper();

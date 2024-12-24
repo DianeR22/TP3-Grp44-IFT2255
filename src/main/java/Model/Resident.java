@@ -1,18 +1,5 @@
 package Model;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,7 +42,6 @@ public class Resident extends Utilisateur {
         this.adresse = adresse;
         this.codePostal = codePostal;
     }
-
 
     /**
      * Vérifie si deux objets Resident sont égaux en comparant les adresse courriel.
@@ -280,14 +266,26 @@ public class Resident extends Utilisateur {
 
     // Méthodes privées pour obtenir et valider les informations personnelles du résident
 
-    // Méthode pour obtenir le nom ou prénom
+    /**
+     * Demande à l'utilisateur de saisir son nom ou prénom.
+     *
+     * @param type Le type d'information demandé ("nom" ou "prénom").
+     * @return La valeur saisie par l'utilisateur.
+     */
     private String obtenirNom(String type) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Veuillez entrer votre " + type + ".");
         return scanner.nextLine();
     }
 
-    // Méthode pour obtenir la date de naissance
+    /**
+     * Demande à l'utilisateur de saisir sa date de naissance et la valide.
+     *
+     * Cette méthode s'assure que la date de naissance est au format valide (JJ/MM/AAAA)
+     * et que l'utilisateur a au moins 16 ans. Elle redemande l'entrée en cas d'erreur.
+     *
+     * @return La date de naissance valide saisie par l'utilisateur.
+     */
     private String obtenirDateNaissance() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -309,7 +307,14 @@ public class Resident extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider le téléphone
+    /**
+     * Demande à l'utilisateur de saisir son numéro de téléphone et le valide.
+     *
+     * L'utilisateur peut entrer "passer" pour ignorer cette étape.
+     * La méthode vérifie que le numéro est valide ou qu'il a choisi de passer.
+     *
+     * @return Le numéro de téléphone valide ou "passer".
+     */
     private String obtenirTelephone() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -322,7 +327,14 @@ public class Resident extends Utilisateur {
             }
         }
     }
-    // Méthode pour obtenir l'email
+    /**
+     * Demande à l'utilisateur de saisir son adresse courriel et la valide.
+     *
+     * Cette méthode vérifie que l'adresse courriel est au format correct.
+     * En cas d'erreur, elle redemande une nouvelle saisie.
+     *
+     * @return L'adresse courriel valide saisie par l'utilisateur.
+     */
     private String obtenirEmail() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -336,7 +348,20 @@ public class Resident extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider le mot de passe
+    /**
+     * Demande à l'utilisateur de saisir un mot de passe et le valide.
+     *
+     * Le mot de passe doit respecter les règles suivantes :
+     * <ul>
+     *   <li>Entre 8 et 20 caractères.</li>
+     *   <li>Contient au moins un chiffre.</li>
+     *   <li>Contient au moins une lettre majuscule.</li>
+     *   <li>Contient au moins un caractère spécial.</li>
+     * </ul>
+     * En cas d'erreur, la méthode redemande une saisie valide.
+     *
+     * @return Le mot de passe valide saisi par l'utilisateur.
+     */
     private String obtenirMotDePasse() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -350,7 +375,14 @@ public class Resident extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider le code postal
+    /**
+     * Demande à l'utilisateur de saisir un code postal et le valide.
+     *
+     * Le code postal doit respecter le format "A1B 2C3". En cas d'erreur,
+     * la méthode redemande une saisie valide.
+     *
+     * @return Le code postal valide saisi par l'utilisateur.
+     */
     private String obtenirCodePostal() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -364,7 +396,13 @@ public class Resident extends Utilisateur {
         }
     }
 
-    // Méthode pour obtenir et valider l'adresse
+    /**
+     * Demande à l'utilisateur de saisir son adresse et vérifie qu'elle n'est pas vide.
+     *
+     * En cas d'entrée vide, la méthode redemande une saisie valide.
+     *
+     * @return L'adresse valide saisie par l'utilisateur.
+     */
     private String obtenirAdresse() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -378,7 +416,12 @@ public class Resident extends Utilisateur {
         }
     }
 
-    // Méthode pour afficher les informations recueillies
+    /**
+     * Affiche les informations personnelles recueillies auprès de l'utilisateur.
+     *
+     * Cette méthode affiche les informations telles que le nom, le prénom,
+     * la date de naissance, l'adresse courriel, le numéro de téléphone et l'adresse.
+     */
     private void afficherInformations() {
         System.out.println("\nInformations recueillies:");
         System.out.println("Nom: " + nom);
@@ -389,7 +432,15 @@ public class Resident extends Utilisateur {
         System.out.println("Votre adresse: " + adresse);
     }
 
-    // Méthode pour demander au résident s'il souhaite se connecter
+    /**
+     * Demande à l'utilisateur s'il souhaite se connecter après avoir fourni ses informations.
+     *
+     * Si l'utilisateur répond "Oui", la méthode appelle la fonction de connexion.
+     * Sinon, elle termine l'application.
+     *
+     * @param scanner     L'objet {@link Scanner} utilisé pour lire la réponse de l'utilisateur.
+     * @param utilisateur L'objet {@link Utilisateur} représentant l'utilisateur à connecter.
+     */
     private void demanderConnexion(Scanner scanner, Utilisateur utilisateur) {
         System.out.println("\nMerci pour vos informations! Souhaitez-vous vous connecter? (Oui/Non)");
         String reponse = scanner.next();

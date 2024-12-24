@@ -12,10 +12,25 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe de gestion des projets.
+ *
+ * Cette classe permet de sauvegarder, charger et filtrer les projets depuis
+ * un fichier JSON, ainsi que d'obtenir une liste des projets planifiés pour
+ * les trois prochains mois.*/
 public class GestionProjets {
 
     private static final String FILENAME = "data/projets.json";
 
+    /**
+     * Sauvegarde un projet dans le fichier JSON des projets.
+     *
+     * Si le fichier contient déjà des projets, le nouveau projet est ajouté à la liste existante.
+     *
+     * @param projet L'objet {@link Projet} à sauvegarder. Cet objet contient les informations
+     *               telles que le titre, la description, le type de travaux, les quartiers
+     *               et rues affectés, les codes postaux, les dates de début et de fin,
+     *               les horaires, ainsi que le statut.*/
     public static void sauvegarderProjet(Projet projet) {
         JSONArray projetsArray = new JSONArray();
 
@@ -58,6 +73,14 @@ public class GestionProjets {
         }
     }
 
+    /**
+     * Charge les projets depuis un fichier JSON et les convertit en une liste d'objets {@link Projet}.
+     *
+     * Cette méthode lit les données du fichier JSON spécifié par {@code FILENAME},
+     * les parse et les transforme en une liste de projets.
+     *
+     * @return Une liste d'objets {@link Projet} représentant les projets chargés depuis le fichier JSON.
+     *         Retourne une liste vide si le fichier n'existe pas ou en cas d'erreur de lecture.*/
     public static List<Projet> chargerProjets() {
         List<Projet> projets = new ArrayList<>();
         try {
@@ -103,12 +126,43 @@ public class GestionProjets {
                         LocalTime.parse(projetJson.getString("heureDebut")),
                         LocalTime.parse(projetJson.getString("heureFin"))
                 );
+
+                // AJOUT : Lire le champ statut si présent
+                if (projetJson.has("statut")) {
+                    projet.setStatut(projetJson.getString("statut"));
+                }
+
                 projets.add(projet);
             }
         } catch (IOException e) {
             System.out.println("Erreur lors du chargement des projets : " + e.getMessage());
         }
-
         return projets;
+    }
+
+    /**
+     * Récupère une liste des projets planifiés pour les trois prochains mois.
+     *
+     * Cette méthode parcourt les projets chargés depuis le fichier JSON, et filtre
+     * ceux dont la date de début est strictement postérieure à aujourd'hui et inférieure
+     * ou égale à trois mois à partir d'aujourd'hui.
+     *
+     * @return Une liste d'objets {@link Projet} représentant les projets à venir dans les trois prochains mois.*/
+    public static List<Projet> getProjetsAvenirProchains3Mois() {
+        List<Projet> tousLesProjets = chargerProjets();
+        List<Projet> projetsAvenir = new ArrayList<>();
+
+        LocalDate aujourdHui = LocalDate.now();
+        LocalDate dans3Mois = aujourdHui.plusMonths(3);
+
+        for (Projet p : tousLesProjets) {
+            // dateDebut > aujourdHui (strictement futur)
+            // ET dateDebut <= dans3Mois
+            if (p.getDateDebut().isAfter(aujourdHui) &&
+                    (p.getDateDebut().isBefore(dans3Mois) || p.getDateDebut().isEqual(dans3Mois))) {
+                projetsAvenir.add(p);
+            }
+        }
+        return projetsAvenir;
     }
 }

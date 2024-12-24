@@ -4,8 +4,6 @@ import Model.Connexion;
 import Model.Intervenant;
 import Model.Resident;
 import View.ConnexionView;
-import Model.NotificationManager;
-
 
 /**
  * Le contrôleur de la connexion qui gère l'affichage du menu principal
@@ -17,8 +15,6 @@ public class ConnexionController {
      * Affiche le menu principal de la connexion.
      */
     public static void afficherMenuPrincipal(){
-        NotificationManager.chargerEtAbonnerResidents();
-
         ConnexionView.afficherMenuPrincipal();
     }
 

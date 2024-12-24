@@ -51,7 +51,6 @@ public class GestionIntervenants{
         saveIntervenant();
     }
 
-
     // Cette méthode sert à charger les intervenants à la liste d'intervenants du
     // fichier json approprié
 

@@ -2,26 +2,19 @@ package Controller;
 
 import Model.NotificationManager;
 
+import java.util.Set;
+
 /**
  * Contrôleur des notifications.
- * Fournit une interface pour gérer l'affichage et l'interaction avec les notifications.
  */
 public class NotificationController {
 
-    /**
-     * Ajoute une notification lorsqu'un projet est soumis.
-     * @param projetTitre Titre du projet soumis
-     */
-    public static void ajouterNotificationProjetSoumis(String projetTitre) {
+    public static void ajouterNotificationProjetSoumis(String projetTitre, String quartier) {
         String message = "Un nouveau projet a été soumis : " + projetTitre;
-        NotificationManager.ajouterNotification(message);
-        System.out.println("Notification ajoutée : \"" + message + "\"");
+        NotificationManager.ajouterNotification(message, quartier);
+        System.out.println("Notification ajoutée pour le quartier : " + quartier);
     }
 
-    /**
-     * Affiche les notifications en séparant celles non vues de celles vues.
-     * Marque toutes les notifications comme vues après affichage.
-     */
     public static void consulterNotifications() {
         var nonVues = NotificationManager.obtenirNotificationsNonVues();
         var vues = NotificationManager.obtenirNotificationsVues();
@@ -44,11 +37,12 @@ public class NotificationController {
         NotificationManager.marquerToutesCommeVues();
     }
 
-    /**
-     * Récupère le nombre de notifications non vues.
-     * @return Nombre de notifications non vues
-     */
-    public static int obtenirNombreNotificationsNonVues() {
-        return NotificationManager.compterNotificationsNonVues();
+    public static void ajouterAbonnementQuartier(String quartier) {
+        NotificationManager.ajouterQuartier(quartier);
+        System.out.println("Vous êtes maintenant abonné au quartier : " + quartier);
+    }
+
+    public static Set<String> obtenirQuartiersAbonnes() {
+        return NotificationManager.obtenirQuartiersAbonnes();
     }
 }

@@ -25,7 +25,5 @@ public class RequeteTest {
         assertEquals("02/01/2025", requete.getDebut());
 
         GestionRequete.supprimerRequete(GestionRequete.getListeRequetes().size() - 1);
-
-
-}
+    }
 }

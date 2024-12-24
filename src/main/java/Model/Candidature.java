@@ -1,5 +1,10 @@
 package Model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Formatter;
+
 /**
  * Classe représentant une candidature appartenant à un intervenant
  * pour répondre à une requête d'un des résidents.
@@ -36,6 +41,8 @@ public class Candidature {
      */
     private String etat = "En attente";
 
+    // Formatteur pour convertir les chaînes de caractères en LocalDate
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     // Constructeurs
 
     /**
@@ -47,8 +54,8 @@ public class Candidature {
      * @param intervenant   L'intervenant soumettant la candidature.
      */
     public Candidature(String dateDebut, String dateFin, Requete requete, Intervenant intervenant) {
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
+        this.setDateDebut(dateDebut);
+        this.setDateFin(dateFin);
         this.requete = requete;
         this.intervenant = intervenant;
     }
@@ -73,12 +80,11 @@ public class Candidature {
     /**
      * Définit la date de début de la candidature.
      *
-     * @param dateDebut La date de début à définir.
+     * @param dateDebut La date de début (format : yyyy-MM-dd).
      */
     public void setDateDebut(String dateDebut) {
         this.dateDebut = dateDebut;
     }
-
     /**
      * Retourne la date de fin de la candidature.
      *
@@ -89,10 +95,10 @@ public class Candidature {
     }
 
     /**
-     * Définit la date de fin de la candidature.
-     *
-     * @param dateFin La date de fin à définir.
-     */
+    * Définit la date de fin de la candidature.
+    *
+    * @param dateFin La date de fin (format : yyyy-MM-dd).
+    */
     public void setDateFin(String dateFin) {
         this.dateFin = dateFin;
     }

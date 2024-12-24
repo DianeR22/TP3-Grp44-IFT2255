@@ -2,6 +2,7 @@ package Model;
 
 import View.RequeteView;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +90,7 @@ public class GestionRequete {
         GestionRequete.ajouterRequete(requete);
 
         Resident resident = Resident.getResidentConnecte();
-        System.out.println("Le resident connecté est" + resident);
+        System.out.println("Le résident connecté est " + resident);
         if (resident != null) {
             requete.setResident(resident);
         }
@@ -103,6 +104,9 @@ public class GestionRequete {
      */
     public static void saveRequete(){
         ObjectMapper obj = new ObjectMapper();
+
+        // Activer l'indentation pour rendre le fichier JSON lisible
+        obj.enable(SerializationFeature.INDENT_OUTPUT);
         try {
             obj.writeValue(new File(FICHIER_REQUETES), listeRequetes);
             //System.out.println("Requêtes sauvegardées avec succès");

@@ -15,7 +15,9 @@ public class Resident extends Utilisateur {
     // Attributs spécifiques au résident
     private String dateNaissance;
     private String telephone;
-    private String adresse; // Nom de la rue
+    private String adresse;   // Adresse complète
+    private String rue;       // ex "1234 Sainte-Catherine"
+    private String quartier;  // ex "Ville-Marie"
     private String codePostal;
 
     private Scanner scanner;
@@ -39,7 +41,7 @@ public class Resident extends Utilisateur {
         super(nom, prenom, motDePasse, adresseCourriel);
         this.dateNaissance = dateNaissance;
         this.telephone = telephone;
-        this.adresse = adresse;
+        setAdresse(adresse);
         this.codePostal = codePostal;
     }
 
@@ -121,21 +123,52 @@ public class Resident extends Utilisateur {
     }
 
     /**
-     * Retourne l'adresse du résident.
+     * Getter/Setter de l'adresse COMPLETE (ex. "1234 Sainte-Catherine, Ville-Marie").
      *
-     * @return L'adresse du résident.
+     * Dans le setter, on effectue aussi un petit parsing pour remplir rue/quartier.
      */
     public String getAdresse() {
         return adresse;
     }
 
-    /**
-     * Définit l'adresse du résident.
-     *
-     * @param adresse L'adresse à attribuer au résident.
-     */
     public void setAdresse(String adresse) {
         this.adresse = adresse;
+        // Tenter de parser (si le format n'est pas bon, rue/quartier seront vides ou null)
+        parseAdresse(adresse);
+    }
+
+    /**
+     * Retourne uniquement la rue (ex. "1234 Sainte-Catherine"), parsée depuis l'adresse complète.
+     */
+    public String getRue() {
+        return rue;
+    }
+    /**
+     * Retourne uniquement le quartier (ex. "Ville-Marie").
+     */
+    public String getQuartier() {
+        return quartier;
+    }
+
+    /**
+     * parseAdresse : prend la forme "1234 Sainte-Catherine, Ville-Marie" et split.
+     */
+    private void parseAdresse(String adresseComplete) {
+        if (adresseComplete == null || !adresseComplete.contains(",")) {
+            this.rue = null;
+            this.quartier = null;
+            return;
+        }
+        // On cherche la première virgule
+        String[] parts = adresseComplete.split("\\s*,\\s*", 2);
+        if (parts.length == 2) {
+            this.rue = parts[0];        // ex. "1234 Sainte-Catherine"
+            this.quartier = parts[1];   // ex. "Ville-Marie"
+        } else {
+            // Format inattendu => on peut laisser rue/quartier vides
+            this.rue = null;
+            this.quartier = null;
+        }
     }
 
     public String getCodePostal() {
@@ -211,7 +244,6 @@ public class Resident extends Utilisateur {
             }
         }
         return null;
-
     }
 
     public static void deconnecterResident() {
@@ -246,9 +278,9 @@ public class Resident extends Utilisateur {
         // de 8 caractères, une majuscule, un chiffre et un caractère spécial.
         motDePasse = obtenirMotDePasse();
 
-
-        // L'adresse du résident est entrée et permet de l'associer à un quartier de Montréal.
-        adresse = obtenirAdresse();
+        // On obtient l'adresse "1234 Sainte-Catherine, Ville-Marie" et on la valide
+        // via Valider.validerAdresseResident(...).
+        adresse = obtenirAdresseComplete();
 
         // L'utilisateur entre un code postal et ce code est vérifié.
         codePostal = obtenirCodePostal();
@@ -365,7 +397,8 @@ public class Resident extends Utilisateur {
     private String obtenirMotDePasse() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            System.out.println("Veuillez entrer votre mot de passe. Celui-ci doit contenir au minimum 8 caractères et maximum 20. Il doit contenir au moins un chiffre, une majuscule et un caractère spécial");
+            System.out.println("Veuillez entrer votre mot de passe. Celui-ci doit contenir au minimum 8 caractères " +
+                    "et maximum 20. Il doit contenir au moins un chiffre, une majuscule et un caractère spécial");
             String motDePasse = scanner.nextLine();
             if (Valider.validerMDP(motDePasse)) {
                 return motDePasse;
@@ -397,21 +430,18 @@ public class Resident extends Utilisateur {
     }
 
     /**
-     * Demande à l'utilisateur de saisir son adresse et vérifie qu'elle n'est pas vide.
-     *
-     * En cas d'entrée vide, la méthode redemande une saisie valide.
-     *
-     * @return L'adresse valide saisie par l'utilisateur.
+     * Demande une adresse complète du type "1234 Sainte-Catherine, Ville-Marie".
+     * Valide avec Valider.validerAdresseResident(...).
      */
-    private String obtenirAdresse() {
+    private String obtenirAdresseComplete() {
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            System.out.println("Veuillez entrer votre adresse (rue).");
-            String adresse = scanner.nextLine();
-            if (!adresse.isEmpty()) {
-                return adresse;
+            System.out.println("Veuillez entrer votre adresse sous la forme :\n  \"Numéro Rue, Quartier\"");
+            String saisie = scanner.nextLine();
+            if (Valider.validerAdresseResident(saisie)) {
+                return saisie;
             } else {
-                System.out.println("L'adresse ne peut être vide.");
+                System.out.println("Adresse invalide. Ex. '1234 Sainte-Catherine, Ville-Marie'");
             }
         }
     }

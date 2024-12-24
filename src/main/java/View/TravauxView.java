@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import static Controller.TravauxController.recupererTravaux;
-
 /**
  * La classe TravauxView gère l'affichage du menu de recherche des travaux
  * et permet à l'utilisateur résident de filtrer les travaux.
@@ -21,6 +19,8 @@ import static Controller.TravauxController.recupererTravaux;
 public class TravauxView {
 
     // Mapping des catégories de travaux (API) -> exemple
+    // Clé = ce que l'utilisateur va taper ("Travaux routiers"),
+    // Valeur = ce qu'on envoie à l'API ("Réseaux routier - Réfection et travaux corrélatifs")
     private static final Map<String, String> reasonCategoryMap = Map.ofEntries(
             Map.entry("Travaux de construction", "Construction/rénovation sans excavation"),
             Map.entry("Travaux résidentiels", "Trottoirs - Construction"),
@@ -30,7 +30,6 @@ public class TravauxView {
             Map.entry("Travaux de signalisation et éclairage", "Feux de signalisation - Ajout/réparation"),
             Map.entry("Entretien urbain", "Égouts et aqueducs - Inspection et nettoyage"),
             Map.entry("Autres travaux", "Autre")
-            // Ajoutez ici d'autres mappings si nécessaire
     );
 
     /**
@@ -42,7 +41,6 @@ public class TravauxView {
     public static void afficherMenu(Scanner scanner) {
 
         while (true) {
-            // Menu principal pour rechercher les travaux pour le résident
             System.out.println("---- Menu de la recherche/consultation des travaux en cours ----");
             System.out.println("1. Filtrer par quartier");
             System.out.println("2. Filtrer par type de travaux");
@@ -57,18 +55,22 @@ public class TravauxView {
                     afficherTravauxParQuartier(scanner);
                     retour(scanner);
                     break;
+
                 case "2":
                     afficherTravauxParType(scanner);
                     retour(scanner);
                     break;
+
                 case "3":
                     afficherTousLesTravaux();
                     retour(scanner);
                     break;
+
                 case "4":
                     System.out.println("Au revoir !");
                     ResidentController.afficherMenuResident();
                     return;
+
                 default:
                     System.out.println("Option invalide.");
             }
@@ -76,98 +78,179 @@ public class TravauxView {
     }
 
     /**
-     * Affiche les travaux filtrés par quartier.
-     *
-     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     * Affiche la liste des types de travaux disponibles (clés du mapping).
+     * Cette méthode sert de guide pour l'utilisateur.
      */
-    public static void afficherTravauxParQuartier(Scanner scanner){
+    public static void afficherTypesDeTravaux() {
+        System.out.println("Exemples de types de travaux disponibles :");
+        reasonCategoryMap.keySet().forEach(type -> System.out.println("- " + type));
+    }
+
+    /**
+     * Exemple : filtrer par quartier.
+     * On réutilise notre méthode unifiée 'afficherTravauxAvecFiltre' (codeFiltre=1).
+     */
+    private static void afficherTravauxParQuartier(Scanner scanner) {
         System.out.println("Veuillez entrer le quartier souhaité: ");
         String filtreQuartier = scanner.nextLine();
 
-        // 1) Récupérer et filtrer les travaux de l'API
-        JSONArray travauxFiltresAPI = recupererTravaux(1, filtreQuartier);
+        // On passe 1 pour dire "filtre par quartier"
+        afficherTravauxAvecFiltre(1, filtreQuartier);
+    }
+
+    /**
+     * Exemple : filtrer par type,
+     * avec gestion double entre "type local" et "type API".
+     */
+    private static void afficherTravauxParType(Scanner scanner) {
+        // On affiche d'abord les types de travaux possibles
+        afficherTypesDeTravaux();
+        System.out.println("Veuillez entrer le type souhaité (par ex. 'Travaux routiers'): ");
+        String choixTypeUtilisateur = scanner.nextLine();
+        // ex. "Travaux routiers"
+
+        // Vérification si ce type existe dans la map
+        String reasonCategory = reasonCategoryMap.get(choixTypeUtilisateur);
+        // ex. "Réseaux routier - Réfection et travaux corrélatifs"
+
+        if (reasonCategory == null) {
+            System.out.println("Le type de travaux n'est pas valide ou n'est pas répertorié dans le mapping.");
+        } else {
+            // On affiche l'API filtré par la "reasonCategory"
+            // + les projets locaux filtrés par le type "local" (choixTypeUtilisateur)
+            afficherTravauxParTypeDoubleFiltre(choixTypeUtilisateur, reasonCategory);
+        }
+    }
+
+    /**
+     * Affiche tous les travaux (API + projets prévus/en cours),
+     * donc pas de filtre (codeFiltre=0).
+     */
+    private static void afficherTousLesTravaux() {
+        afficherTravauxAvecFiltre(0, null);
+    }
+
+    /**
+     * Méthode principale (version codeFiltre unique)
+     * qui gère l'affichage des travaux (API + locaux) avec un filtre unique.
+     *
+     * @param codeFiltre    0 => pas de filtre (tous), 1 => par quartier, 2 => par type
+     * @param valeurFiltre  la valeur à filtrer (ex: nom du quartier ou "reason_category" pour l'API).
+     *                      Peut être null si codeFiltre=0 (tous).
+     */
+    private static void afficherTravauxAvecFiltre(int codeFiltre, String valeurFiltre) {
+        // 1) Récupérer les travaux de l'API
+        JSONArray travauxAPI = TravauxController.recupererTravaux(codeFiltre, valeurFiltre);
 
         // 2) Récupérer et filtrer les projets locaux
-        List<Projet> projetsFiltres = filtrerProjetsParQuartier(filtreQuartier);
+        List<Projet> projetsFiltres = filtrerProjetsLocaux(codeFiltre, valeurFiltre);
 
-        // 3) Afficher l'ensemble (API + Projets)
-        System.out.println("\n===== TRAVAUX DE L'API FILTRÉS PAR QUARTIER =====");
-        afficherTravauxAPI(travauxFiltresAPI);
+        // 3) Afficher
+        System.out.println("\n===== TRAVAUX DE L'API =====");
+        afficherTravauxAPI(travauxAPI);
 
-        System.out.println("\n===== PROJETS LOCAUX FILTRÉS PAR QUARTIER =====");
+        System.out.println("\n===== PROJETS LOCAUX =====");
         afficherProjetsLocaux(projetsFiltres);
     }
 
     /**
-     * Affiche les travaux filtrés par type de travaux.
+     * Méthode spécialisée pour la recherche par type,
+     * quand on a un "typeLocal" différent du "typeAPI".
      *
-     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     * @param typeLocal ex: "Travaux routiers" (ce que vous stockez dans p.getTypeTravaux())
+     * @param typeAPI   ex: "Réseaux routier - Réfection et travaux corrélatifs" (ce que l'API attend)
      */
-    public static void afficherTravauxParType(Scanner scanner){
-        // Afficher les types de travaux acceptés à l'utilisateur
-        afficherTypesDeTravaux();
-        System.out.println("Veuillez entrer le type souhaité (par ex. 'Travaux routiers'): ");
-        String choixTypeUtilisateur = scanner.nextLine();
+    private static void afficherTravauxParTypeDoubleFiltre(String typeLocal, String typeAPI) {
+        // -- (1) Récupérer les travaux de l'API avec la valeur typeAPI
+        JSONArray travauxAPI = TravauxController.recupererTravaux(2, typeAPI);
 
-        // Vérification si ce type existe dans le mapping
-        String reasonCategory = reasonCategoryMap.get(choixTypeUtilisateur);
+        // -- (2) Récupérer et filtrer les projets locaux avec le typeLocal
+        List<Projet> projetsFiltres = filtrerProjetsParTypeLocal(typeLocal);
 
-        if (reasonCategory != null) {
-            // 1) Filtrer les travaux API
-            JSONArray travauxFiltresAPI = TravauxController.recupererTravaux(2, reasonCategory);
-
-            // 2) Filtrer les projets locaux (on suppose que typeTravaux d’un projet
-            // correspond à la clé du mapping, ex. "Travaux routiers" ou "Travaux de construction", etc.)
-            List<Projet> projetsFiltres = filtrerProjetsParType(choixTypeUtilisateur);
-
-            // 3) Affichage
-            System.out.println("\n===== TRAVAUX DE L'API FILTRÉS PAR TYPE =====");
-            afficherTravauxAPI(travauxFiltresAPI);
-
-            System.out.println("\n===== PROJETS LOCAUX FILTRÉS PAR TYPE =====");
-            afficherProjetsLocaux(projetsFiltres);
-
-        } else {
-            System.out.println("Le type de travaux n'est pas valide ou n'est pas répertorié dans le mapping.");
-        }
-    }
-
-    /**
-     * Affiche tous les travaux (API + projets prévus/en cours).
-     */
-    public static void afficherTousLesTravaux() {
-        // 1) Récupération de tous les travaux de l'API
-        JSONArray travauxAPI = recupererTravaux(0, null);  // 0 pour tous
-
-        // 2) Récupération de tous les projets locaux dont le statut est 'Prévu' ou 'En cours'
-        List<Projet> projetsLocaux = filtrerProjetsSansFiltre();
-
-        // 3) Affichage
-        System.out.println("\n===== TOUS LES TRAVAUX DE L'API =====");
+        // -- (3) Afficher
+        System.out.println("\n===== TRAVAUX DE L'API =====");
         afficherTravauxAPI(travauxAPI);
 
-        System.out.println("\n===== TOUS LES PROJETS LOCAUX (PRÉVU/EN COURS) =====");
-        afficherProjetsLocaux(projetsLocaux);
-    }
-
-    /**
-     * Permet à l'utilisateur de revenir en arrière au menu des travaux ou retourner au menu des résidents.
-     *
-     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
-     */
-    private static void retour(Scanner scanner){
-        System.out.println("\nVoulez-vous revenir au menu des travaux (1) ou retourner au menu des résidents (2)?");
-        String reponse = scanner.nextLine();
-        if (reponse.equalsIgnoreCase("1")) {
-            // ne rien faire, on laissera la boucle principale ré-afficher le menu
-        } else {
-            System.out.println("Retour au menu des résidents!");
-            ResidentController.afficherMenuResident();
-        }
+        System.out.println("\n===== PROJETS LOCAUX =====");
+        afficherProjetsLocaux(projetsFiltres);
     }
 
     /* *******************************************************************************************
-     * Méthodes d'affichage : Travaux issus de l'API
+     *  Méthodes de filtrage de projets
+     * ******************************************************************************************* */
+
+    /**
+     * Filtre unifié : par quartier ou par type (ou pas de filtre),
+     * en fonction de codeFiltre.
+     * On ne garde que ceux dont le statut est "Prévu" ou "En cours".
+     */
+    private static List<Projet> filtrerProjetsLocaux(int codeFiltre, String valeurFiltre) {
+        List<Projet> tousLesProjets = GestionProjets.chargerProjets();
+        List<Projet> resultat = new ArrayList<>();
+
+        for (Projet p : tousLesProjets) {
+            // Vérifier le statut
+            if (p.getStatut() != null && (
+                    p.getStatut().equalsIgnoreCase("Prévu")
+                            || p.getStatut().equalsIgnoreCase("En cours"))) {
+
+                switch (codeFiltre) {
+                    case 0: // pas de filtre => on prend tout
+                        resultat.add(p);
+                        break;
+
+                    case 1: // filtre par quartier
+                        if (p.getQuartiersAffectes() != null) {
+                            for (String q : p.getQuartiersAffectes()) {
+                                if (q.equalsIgnoreCase(valeurFiltre)) {
+                                    resultat.add(p);
+                                    break; // on arrête dès qu'on trouve un match
+                                }
+                            }
+                        }
+                        break;
+
+                    case 2: // filtre par type, on compare direct à valeurFiltre
+                        if (p.getTypeTravaux() != null
+                                && p.getTypeTravaux().equalsIgnoreCase(valeurFiltre)) {
+                            resultat.add(p);
+                        }
+                        break;
+
+                    default:
+                        // Si un nouveau codeFiltre arrive un jour
+                        break;
+                }
+            }
+        }
+        return resultat;
+    }
+
+    /**
+     * Filtre uniquement par type local (ex: "Travaux routiers") + statut "Prévu" ou "En cours".
+     * On ne compare pas à la longue chaîne (e.g. "Réseaux routier - Réfection et travaux corrélatifs"),
+     * donc c'est plus flexible.
+     */
+    private static List<Projet> filtrerProjetsParTypeLocal(String typeRecherche) {
+        List<Projet> tousLesProjets = GestionProjets.chargerProjets();
+        List<Projet> resultat = new ArrayList<>();
+
+        for (Projet p : tousLesProjets) {
+            if (p.getStatut() != null
+                    && (p.getStatut().equalsIgnoreCase("Prévu")
+                    || p.getStatut().equalsIgnoreCase("En cours"))) {
+
+                if (p.getTypeTravaux() != null
+                        && p.getTypeTravaux().equalsIgnoreCase(typeRecherche)) {
+                    resultat.add(p);
+                }
+            }
+        }
+        return resultat;
+    }
+
+    /* *******************************************************************************************
+     *  Méthodes d'affichage : Travaux de l'API + Projets
      * ******************************************************************************************* */
 
     /**
@@ -181,26 +264,24 @@ public class TravauxView {
             return;
         }
 
-        try {
-            for (int i = 0; i < travaux.length(); i++) {
-                JSONObject travail = travaux.getJSONObject(i);
-                String quartier = travail.optString("boroughid", "");
-                String type = travail.optString("reason_category", "");
-                String currentStatus = travail.optString("currentstatus", "");
-                String organizationName = travail.optString("organizationname", "");
-                String submitterCategory = travail.optString("submittercategory", "");
+        for (int i = 0; i < travaux.length(); i++) {
+            JSONObject travail = travaux.getJSONObject(i);
 
-                System.out.println("\n***********************************");
-                System.out.println("Travail ID : " + travail.optInt("_id", -1));
-                System.out.println("Quartier : " + quartier);
-                System.out.println("Statut actuel : " + currentStatus);
-                System.out.println("Motif (reason_category) : " + type);
-                System.out.println("Nom de l'intervenant : " + organizationName);
-                System.out.println("Catégorie de l'intervenant: " + submitterCategory);
-                System.out.println("*************************************");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            int id = travail.optInt("_id", -1);
+            String quartier = travail.optString("boroughid", "");
+            String type = travail.optString("reason_category", "");
+            String currentStatus = travail.optString("currentstatus", "");
+            String organizationName = travail.optString("organizationname", "");
+            String submitterCategory = travail.optString("submittercategory", "");
+
+            System.out.println("\n***********************************");
+            System.out.println("Travail ID : " + id);
+            System.out.println("Quartier : " + quartier);
+            System.out.println("Statut actuel : " + currentStatus);
+            System.out.println("Motif (reason_category) : " + type);
+            System.out.println("Nom de l'intervenant : " + organizationName);
+            System.out.println("Catégorie de l'intervenant : " + submitterCategory);
+            System.out.println("*************************************");
         }
     }
 
@@ -233,74 +314,19 @@ public class TravauxView {
     }
 
     /**
-     * Récupère tous les projets puis filtre sur :
-     * - Statut "Prévu" ou "En cours"
-     */
-    private static List<Projet> filtrerProjetsSansFiltre() {
-        List<Projet> tousLesProjets = GestionProjets.chargerProjets();
-        List<Projet> resultat = new ArrayList<>();
-        for (Projet p : tousLesProjets) {
-            if (p.getStatut() != null &&
-                    (p.getStatut().equalsIgnoreCase("Prévu")
-                            || p.getStatut().equalsIgnoreCase("En cours"))) {
-                resultat.add(p);
-            }
-        }
-        return resultat;
-    }
-
-    /**
-     * Filtre les projets par quartier (et statut "Prévu" ou "En cours").
-     */
-    private static List<Projet> filtrerProjetsParQuartier(String quartierRecherche) {
-        List<Projet> tousLesProjets = GestionProjets.chargerProjets();
-        List<Projet> resultat = new ArrayList<>();
-        for (Projet p : tousLesProjets) {
-            if (p.getStatut() != null &&
-                    (p.getStatut().equalsIgnoreCase("Prévu")
-                            || p.getStatut().equalsIgnoreCase("En cours"))) {
-
-                // Vérifier si le quartier figure dans la liste des quartiersAffectes
-                if (p.getQuartiersAffectes() != null && !p.getQuartiersAffectes().isEmpty()) {
-                    for (String q : p.getQuartiersAffectes()) {
-                        if (q.equalsIgnoreCase(quartierRecherche)) {
-                            resultat.add(p);
-                            break; // on arrête dès qu'on trouve un match
-                        }
-                    }
-                }
-            }
-        }
-        return resultat;
-    }
-
-    /**
-     * Filtre les projets par type (et statut "Prévu" ou "En cours").
-     */
-    private static List<Projet> filtrerProjetsParType(String typeRecherche) {
-        List<Projet> tousLesProjets = GestionProjets.chargerProjets();
-        List<Projet> resultat = new ArrayList<>();
-        for (Projet p : tousLesProjets) {
-            if (p.getStatut() != null &&
-                    (p.getStatut().equalsIgnoreCase("Prévu")
-                            || p.getStatut().equalsIgnoreCase("En cours"))) {
-
-                if (p.getTypeTravaux() != null && p.getTypeTravaux().equalsIgnoreCase(typeRecherche)) {
-                    resultat.add(p);
-                }
-            }
-        }
-        return resultat;
-    }
-    /**
-     * Affiche la liste des types de travaux disponibles.
+     * Permet à l'utilisateur de revenir en arrière au menu des travaux
+     * ou de retourner au menu des résidents.
      *
-     * Cette méthode parcourt et affiche tous les types de travaux définis
-     * dans la clé de la map 'reasonCategoryMap'. Ces types servent d'exemples
-     * pour aider l'utilisateur à sélectionner un type valide.
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
      */
-    public static void afficherTypesDeTravaux() {
-        System.out.println("Exemples de types de travaux disponibles :");
-        reasonCategoryMap.keySet().forEach(type -> System.out.println("- " + type));
+    private static void retour(Scanner scanner) {
+        System.out.println("\nVoulez-vous revenir au menu des travaux (1) ou retourner au menu des résidents (2)?");
+        String reponse = scanner.nextLine();
+        if (reponse.equalsIgnoreCase("2")) {
+            System.out.println("Retour au menu des résidents!");
+            ResidentController.afficherMenuResident();
+        }
+        // Si c’est "1" ou autre, on ne fait rien,
+        // la boucle du menu principal reprendra son cours.
     }
 }

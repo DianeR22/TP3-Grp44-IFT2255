@@ -19,7 +19,7 @@ public class GestionResidentsTest {
                 "TestPassword1",
                 "01/01/1990",
                 "514-123-4567",
-                "Montreal",
+                "123 Rue Papineau, Ville-Marie",
                 "H1E 7Y5"
         );
 

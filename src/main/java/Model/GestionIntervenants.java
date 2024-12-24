@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -113,11 +114,9 @@ public class GestionIntervenants{
     // les informations essentielles. Elle ajoute la candidature à la liste des
     // candidatures et au fichier json correspondant.
     */
-    public static void soumettreCandidature(){
-        // Récupérer le input de l'utilisateur
+    public static void soumettreCandidature() {
         Scanner scanner = new Scanner(System.in);
 
-        // Affichage de toutes les requêtes
         System.out.println("Voici la liste des requêtes de travail: ");
         List<Requete> listeRequetes = GestionRequete.getListeRequetes();
 
@@ -126,43 +125,61 @@ public class GestionIntervenants{
             return;
         }
 
-        // Affichage des titres des requêtes de façon numérotée
         for (int i = 0; i < listeRequetes.size(); i++) {
             System.out.println((i + 1) + ". " + listeRequetes.get(i).getTitreTravail());
         }
 
         System.out.println("Entrer le numéro de la requête que vous souhaitez:");
         int index = scanner.nextInt();
-
         scanner.nextLine();
 
-        // Valider l'index
         if (index < 1 || index > listeRequetes.size()) {
             System.out.println("Choix invalide. Retour au menu principal.");
             return;
         }
 
-        // Récupérer la requête choisie dans la liste
-        Requete requeteChoisie = listeRequetes.get(index-1);
+        int tentatives = 0;
+        final int MAX_TENTATIVES = 3;
+        boolean datesValides = false;
+        String dateDebut = null;
+        String dateFin = null;
 
-        // Demander les dates
-        System.out.print("Entrez la date de début (format : YYYY/MM/DD) : ");
-        String dateDebut = scanner.nextLine();
+        while (tentatives < MAX_TENTATIVES) {
+            try {
+                System.out.print("Entrez la date de début (format : YYYY-MM-DD) : ");
+                dateDebut = scanner.nextLine().trim();
 
-        System.out.print("Entrez la date de fin (format : YYYY/MM/DD) : ");
-        String dateFin = scanner.nextLine();
+                System.out.print("Entrez la date de fin (format : YYYY-MM-DD) : ");
+                dateFin = scanner.nextLine().trim();
 
-        // Récupérer l'intervenant connecté
+                if (GestionCandidatures.validerDates(dateDebut, dateFin)) {
+                    datesValides = true;
+                    break;
+                }
+            } catch (Exception e) {
+                // Aucun message d'erreur supplémentaire ici
+            }
+
+            tentatives++;
+            if (tentatives < MAX_TENTATIVES) {
+                System.out.println("Veuillez réessayer. Tentative " + tentatives + " sur " + MAX_TENTATIVES + ".");
+            }
+        }
+
+        if (!datesValides) {
+            System.out.println("Tentatives échouées. Veuillez réessayer plus tard.");
+            return;
+        }
+
         Intervenant intervenant = Intervenant.getIntervenantConnecte();
+        if (intervenant == null) {
+            System.out.println("Erreur : Aucun intervenant connecté.");
+            return;
+        }
 
-        // Créer une instance de candidature
+        Requete requeteChoisie = listeRequetes.get(index - 1);
         Candidature candidature = new Candidature(dateDebut, dateFin, requeteChoisie, intervenant);
-        // Ajouter la candidature à la liste de candidatures
         GestionCandidatures.ajouterCandidature(candidature);
-        // Sauvegarder la candidature
-        GestionCandidatures.saveCandidature();
-
-        System.out.println("Votre candidature a été soumise avec succès pour la requête: requete.getTitreTravail()");
     }
 
     /** Méthode permettant de supprimer une candidature. Elle affiche les candidatures
@@ -212,5 +229,4 @@ public class GestionIntervenants{
         // Charger la liste des candidatures actuelle après suppression
         GestionCandidatures.saveCandidature();
     }
-
 }

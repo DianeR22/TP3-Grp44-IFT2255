@@ -5,24 +5,40 @@ import Model.Requete;
 import Model.Resident;
 import View.RequeteView;
 
+/**
+ * Contrôleur pour la gestion des requêtes. Permet d'obtenir les informations
+ * des requêtes en demandant ces informatinos dans RequeteView,
+ * de soumettre une requête et d'afficher toutes les requêtes.
+ */
 public class RequeteController {
 
-
-    // Faire appel à obtenirinformationRequete de la vue de Requete pour
-    // collecter les informations nécessaires
+    /**
+     * Appelle la méthode obtenirInformationsRequete de la vue Requete pour
+     * collecter les informations à la nouvelle d'une requête.
+     */
     public static void obtenirInformationsRequete(){
         RequeteView.obtenirInformationsRequete();
     }
 
-    // Faire appel à soumettreRequete de la classe modèle Requete pour ajouter
-    // la requete à la liste des requêtes
+    /**
+     * Appelle la méthode soumettreRequete de la classe modèle GestionRequete
+     * pour ajouter une nouvelle requête à la liste des requêtes et au json des requêtes.
+     *
+     * @param titreTravail Le titre du travail.
+     * @param description Une description du travail.
+     * @param typeTravail Le type de travail demandé.
+     * @param dateDebut La date de début du travail.
+     */
     public static void soumettreRequete(String titreTravail, String description, String typeTravail, String dateDebut){
-       GestionRequete.soumettreRequete(titreTravail, description, typeTravail, dateDebut);
+        GestionRequete.soumettreRequete(titreTravail, description, typeTravail, dateDebut);
     }
 
-    // Faire appel à afficherRequetes de la vue Requete pour afficher la liste des
-    // requêtes
+    /**
+     * Appelle la méthode afficherRequetes de la vue Requete pour afficher la liste
+     * de toutes les requêtes.
+     */
     public static void afficherRequetes() {
-        RequeteView.afficherRequetes();}
+        RequeteView.afficherRequetes();
+    }
 }
 

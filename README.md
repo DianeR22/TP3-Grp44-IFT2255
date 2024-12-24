@@ -1,33 +1,58 @@
-# TP2-IFT2255-Groupe 44
+Application maVille - Gestion de travaux publics et privés
+Description brève: MaVille est une application en ligne de commande qui permet aux résidents et aux intervenants d'accéder à diverses fonctionnalités 
+telles que la consultation des travaux en cours ou à venir, la soumission de requêtes, le suivi des progrès des travaux, la consultation des entraves routières, etc. 
+L'objectif de l'application est de faciliter la communication entre les citoyens et les autorités publiques ou privées, tout en favorisant l'inclusion et la participation
+active des résidents dans la gestion des travaux.
 
-Ce livrable se concentre sur la conception de l’application Ma Ville, application servant à recevoir de l'information concernant les travaux de Montréal 
-en tant que résident et à proposer des projets en tant qu'intervenant. La conception est focalisée sur l'architechture qui va être ici MVC, le choix de design, 
-un diagramme de classes, des diagrammes de séquence ainsi qu'une implémentation plus avancée que celle du livrable 1. 
-Notre implémentation pour ce livrable permettra de se connecter à l'application, de consulter les travaux et entraves (résident), de soumettre une requête de travail (résident) 
-ainsi que consulter la liste des requêtes du côté des intervenants. Des tests unitaires ont aussi été développé pour ses fonctionnalités pour assurer le bon fonctionnement de notre application 
-dont les fonctionnalités seront améliorées au prochain livrable.
-Des mises à jours ont été apportées aux exigences discutées dans le premier livrable, notamment au niveau des diagrammes de cas d’utilisation ainsi que diagrammes de flux d’activités. 
-L'analyse a aussi été mise à jour. Enfin, vers la fin de notre rapport, des indications sur l’utilisation du prototype sont offertes et ce, dans le but d’avoir une idée de ce que Ma Ville 
-offrira comme expérience utilisateur.
+Liste des fonctionnalités de l'application par rôle:
+Rôle du résident:
+- Inscription
+- Consulter les travaux en cours ou à venir : Avoir accès aux travaux publics ou privés.
+- Rechercher des travaux : Filtrer les travaux par titre, quartier ou par type.
+- Recevoir des notifications : Recevoir des notifications par défaut sur les projets du quartier du résident. 
+- Participer à la planification : Permettre une planification participative des travaux.
+- Soumettre une requête : Le résident peut soumettre des requêtes pour signaler des besoins spécifiques en terme de travaux.
+- Suivi de requêtes : Suivi de l'état des requêtes soumises.
+- Consulter les entraves routières : Obtenir des informations sur les entraves routière. Possible de les filtrer
+  par rue ou par un travail en particulier.
+  
+Rôle de l'intervenant:
+- Inscription
+- Consulter les requêtes : Gestion et suivi des requêtes soumises par les résidents.
+- Soumission de candidature: soumettre sa candidature à une requête, il peut la supprimer.
+- Planifier les travaux : Soumettre des projets de travaux
+- Mettre à jour les information d'un projet : Modifier les informations d'un projet
 
-Au niveau de la structure du rapport où tous les éléments décrits plus hauts sont
-présents, vous trouverez en premier lieu la présentation de notre équipe ensuite 
-au niveau du cadre du projet: une introduction du projet, l'échéancier de notre 
-distribution de tâches,les exigences avec le glossaire, le diagramme de cas 
-d'utilisation, les scénarios puis les diagrammes d'activités.
+Organisation du répertoire: 
+/src : Le code source du projet.
+README.md : Fichier de documentation du projet. 
+javadoc.zip : documentation javaDoc
+jaCoco.zip :  documentation jaCoco pour les tests
 
-Pour ensuite trouver la partie analyse comportant tout ce qui est risques, besoins fonctionnels et non-fonctionnels, solution de stockage et d'intégration.
+Données de l'application:
 
-La partie conception viendra après pour présenter non seulement l'architecture, mais aussi un diagramme de classes, des diagrammes de séquences
-puis une justification du choix de design.
+1. Données des travaux : Les travaux sont identifiés par un ID unique et incluent des informations comme le quartier,
+le motif (type de projet), le nom de l'intervenant, les dates de début et de fin, une description du projet, etc. Les données proviennent
+d'une API publique sur les travaux à Montréal et peuvent être filtrées par type ou quartier.
+2. Les entraves sont des impactes des travaux publics, qui comprennent des informations comme la rue,
+le type d'impact, le type d'entrave, les dates de début et de fin, etc. Ces données proviennent d'une API
+publique de la ville de Montréal pour fournir des informations adéquates.
+3. Les projets : des travaux créés par les utilisateurs. Ils incluent des informations comme que l'ID du projet, le nom, le type,
+le statut, les dates de début et de fin, etc.
+4. Données utilisateurs : le nom, le type (résident ou intervenant), l'adresse e-mail, le mot de passe,
+et l'historique des travaux et entraves consultés, permettant de suivre les actions de l'utilisateur.
+Les données de l'application sont stockées dans des fichiers json. Les travaux et entraves ne sont pas stockées étant donné qu'ils
+proviennt d'une API. Il y a donc des fichiers pour résidents, intervenants, projets, candidatures, un fichier reason_category qui sert à
+extraire les types de travaux de l'API et permet d'associer ces types aux types proposés aux utilisateurs (comme travaux routiers par exemple qui est liée
+à Réseaux routier - Réfection et travaux corrélatif).
 
-En dernier lieu, on trouvera une précision sur comment utiliser le prototype qu'on a fait ! 
+Pour installer le projet: utiliser la java version la plus récente et faire: Add as a library pour ajouter la librairie json qui se trouve dans le directory libs.
+Instruction pour lancer l'application : 
+1. cd /chemin/vers/le/dossier/application.jar
+2. java -jar application.jar
 
-Nous avons mis notre coeur et temps dans ce devoir 2, j'espère qu'il vous plaira tout comme le 1er devoir ! 
-
-N'hésitez pas à laisser des remarques, on est prenants ! Merci d'ailleurs pour le feedback instructif du devoir 1
-
-Pour nous contacter à travers nos emails : 
-reem.habib.1@umontreal.ca
-maria.alitouche@umontreal.ca
-mohammed.amine.el.masdouki@umontreal.ca
+Pour exécuter les codes sur intellij: 
+Assurez-vous que  : 
+Java est installé.
+Maven est installé.
+Vous pouvez utiliser le terminal et entrer la commande: mvn test

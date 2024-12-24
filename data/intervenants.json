@@ -22,5 +22,21 @@
     "motDePasse": "Travail@2024",
     "type": "Particulier",
     "identifiantVille": "11223344"
+  },
+  {
+  "nom": "Nguyen",
+  "prenom": "Anh",
+  "adresseCourriel": "anh.nguyen@gmail.com",
+  "motDePasse": "Travail!2024",
+  "type": "Particulier",
+  "identifiantVille": "55667788"
+},
+  {
+    "nom": "Diaz",
+    "prenom": "Carlos",
+    "adresseCourriel": "carlos.diaz@gmail.com",
+    "motDePasse": "Travau@2024",
+    "type": "Entreprise publique",
+    "identifiantVille": "99887766"
   }
 ]

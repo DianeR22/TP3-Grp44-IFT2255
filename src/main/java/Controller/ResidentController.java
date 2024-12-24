@@ -9,20 +9,49 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+/**
+ * Contrôleur pour la gestion des fonctionnalités liées aux résidents.
+ *
+ * Cette classe gère les interactions des résidents avec l'application,
+ * notamment l'ajout, la suppression et l'affichage de leurs préférences
+ * horaires, ainsi que la navigation dans les menus associés.
+ */
 public class ResidentController {
 
     private static final String[] JOURS_DE_LA_SEMAINE = {
             "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"
     };
 
+    /**
+     * Affiche le menu principal des résidents.
+     *
+     * Cette méthode redirige vers la vue associée aux résidents pour leur permettre
+     * d'interagir avec les fonctionnalités disponibles, comme la gestion des travaux
+     * ou la modification de leurs préférences.
+     */
     public static void afficherMenuResident() {
         ResidentView.afficherMenuResident();
     }
 
+
+    /**
+     * Ajoute une nouvelle préférence horaire pour un résident.
+     *
+     * Cette méthode demande à l'utilisateur de fournir :
+     * <ul>
+     *   <li>Un jour de la semaine.</li>
+     *   <li>Une heure de début (entre 08:00 et 17:00).</li>
+     *   <li>Une heure de fin (entre 08:00 et 17:00, après l'heure de début).</li>
+     * </ul>
+     * Une fois validées, ces informations sont ajoutées à la liste des préférences
+     * du résident, et sauvegardées dans le modèle.
+     *
+     * @param resident L'objet {@link Resident} correspondant à l'utilisateur connecté.
+     */
     public static void ajouterPreference(Resident resident) {
         Scanner scanner = new Scanner(System.in);
 
-        // Étape 1 : Récupérer le jour de la semaine
+        // Récupérer le jour de la semaine
         String jour = null;
         while (true) {
             System.out.println("Veuillez entrer le jour de votre préférence (ex: Lundi, Mardi, etc.):");
@@ -44,7 +73,7 @@ public class ResidentController {
             }
         }
 
-        // Étape 2 : Récupérer l'heure de début
+        // Récupérer l'heure de début
         LocalTime heureDebut = null;
         while (true) {
             System.out.println("Veuillez entrer l'heure de début de votre préférence (format: HH:mm):");
@@ -64,7 +93,7 @@ public class ResidentController {
             }
         }
 
-        // Étape 3 : Récupérer l'heure de fin
+        // Récupérer l'heure de fin
         LocalTime heureFin = null;
         while (true) {
             System.out.println("Veuillez entrer l'heure de fin de votre préférence (format: HH:mm):");
@@ -86,13 +115,22 @@ public class ResidentController {
             }
         }
 
-        // Étape 4 : Ajouter la préférence au modèle et sauvegarder
+        // Ajouter la préférence au modèle et save
         Preference preference = new Preference(resident.getAdresseCourriel());
         preference.ajouterPreference(jour, heureDebut, heureFin);
 
         System.out.println("Préférence ajoutée avec succès !");
     }
 
+    /**
+     * Affiche les préférences horaires actuelles du résident.
+     *
+     * Cette méthode récupère les préférences associées au résident connecté
+     * et les affiche dans un format lisible. Si aucune préférence n'est trouvée,
+     * un message approprié est affiché.
+     *
+     * @param resident L'objet {@link Resident} correspondant à l'utilisateur connecté.
+     */
     public static void afficherPreferences(Resident resident) {
         System.out.println("\nVos préférences actuelles :");
         Preference preference = new Preference(resident.getAdresseCourriel());
@@ -110,6 +148,16 @@ public class ResidentController {
         }
     }
 
+    /**
+     * Supprime une préférence horaire pour un résident.
+     *
+     * Cette méthode affiche les préférences actuelles du résident, puis
+     * demande à l'utilisateur de sélectionner la préférence à supprimer
+     * par son numéro. La préférence sélectionnée est ensuite supprimée
+     * et les changements sont sauvegardés.
+     *
+     * @param resident L'objet {@link Resident} correspondant à l'utilisateur connecté.
+     */
     public static void supprimerPreference(Resident resident) {
         Scanner scanner = new Scanner(System.in);
         Preference preference = new Preference(resident.getAdresseCourriel());

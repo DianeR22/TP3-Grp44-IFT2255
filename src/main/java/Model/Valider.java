@@ -262,10 +262,28 @@ public class Valider {
         return Arrays.stream(JOURS_DE_LA_SEMAINE).anyMatch(j -> j.equalsIgnoreCase(jour));
     }
 
+    /**
+     * Vérifie si une heure donnée se trouve dans une plage horaire spécifique.
+     *
+     * @param heure         L'heure à valider.
+     * @param debutJournee  L'heure de début de la plage horaire.
+     * @param finJournee    L'heure de fin de la plage horaire.
+     * @return {@code true} si l'heure est comprise entre {@code debutJournee} et {@code finJournee} (inclus),
+     *         sinon {@code false}.
+     */
     public static boolean validerDansPlage(LocalTime heure, LocalTime debutJournee, LocalTime finJournee) {
         return !heure.isBefore(debutJournee) && !heure.isAfter(finJournee);
     }
 
+    /**
+     * Vérifie si une heure donnée se trouve dans la plage horaire standard de la journée.
+     *
+     * La plage horaire est définie entre 08:00 et 17:00.
+     *
+     * @param heure L'heure à valider.
+     * @return {@code true} si l'heure est comprise entre 08:00 et 17:00 (inclus),
+     *         sinon {@code false}.
+     */
     public static boolean validerHeureDansPlage(LocalTime heure) {
         LocalTime debutJournee = LocalTime.of(8, 0);
         LocalTime finJournee = LocalTime.of(17, 0);
@@ -273,6 +291,20 @@ public class Valider {
         return validerDansPlage(heure, debutJournee, finJournee);
     }
 
+    /**
+     * Vérifie si une plage horaire définie par une heure de début et une heure de fin
+     * est valide et respecte les contraintes de la journée.
+     *
+     * Les contraintes sont les suivantes :
+     * <ul>
+     *   <li>Les heures doivent être comprises entre 08:00 et 17:00 (inclus).</li>
+     *   <li>L'heure de fin doit être strictement postérieure à l'heure de début.</li>
+     * </ul>
+     *
+     * @param heureDebut L'heure de début de la plage.
+     * @param heureFin   L'heure de fin de la plage.
+     * @return {@code true} si la plage horaire est valide, sinon {@code false}.
+     */
     public static boolean validerPlageHoraire(LocalTime heureDebut, LocalTime heureFin) {
         LocalTime debutJournee = LocalTime.of(8, 0);
         LocalTime finJournee = LocalTime.of(17, 0);

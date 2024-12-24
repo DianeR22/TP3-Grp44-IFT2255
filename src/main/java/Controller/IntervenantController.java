@@ -10,24 +10,62 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Contrôleur pour la gestion des fonctionnalités liées aux intervenants.
+ *
+ * Cette classe gère les interactions avec les intervenants, y compris la soumission
+ * de projets, le suivi et la gestion des candidatures, ainsi que la détection
+ * de conflits avec les préférences des résidents.
+ */
+
 public class IntervenantController {
 
+    /**
+     * Affiche le menu principal des intervenants.
+     *
+     * Cette méthode redirige vers la vue associée aux intervenants
+     * pour leur permettre d'interagir avec les fonctionnalités de l'application.
+     */
     public static void afficherMenuIntervenant() {
         IntervenantView.afficherMenuIntervenant();
     }
 
+    /**
+     * Affiche le menu de gestion des requêtes pour les intervenants.
+     *
+     * Cette méthode redirige vers la vue des requêtes, où les intervenants peuvent
+     * consulter, répondre ou gérer les requêtes soumises.
+     */
     public static void afficherMenuRequete() {
         RequeteView.afficherMenuRequete();
     }
 
+    /**
+     * Permet à un intervenant de soumettre sa candidature.
+     *
+     * Cette méthode utilise la classe {@link GestionIntervenants} pour
+     * gérer le processus de soumission de candidature.
+     */
     public static void soumettreCandidature() {
         GestionIntervenants.soumettreCandidature();
     }
 
+    /**
+     * Permet à un intervenant de supprimer sa candidature existante.
+     *
+     * Cette méthode utilise la classe {@link GestionIntervenants} pour
+     * gérer le processus de suppression de candidature.
+     */
     public static void supprimerCandidature() {
         GestionIntervenants.supprimerCandidature();
     }
 
+
+    /**
+     * Permet à un intervenant de suivre la candidature d'un résident.
+     *
+     * Cette méthode utilise la classe {@link GestionCandidatures} pour
+     * gérer le processus de suivi de la candidature. **/
     public static void suivreCandidature(Intervenant intervenant) {
         if (intervenant != null) {
             GestionCandidatures.suiviCandidature(intervenant);
@@ -36,6 +74,11 @@ public class IntervenantController {
         }
     }
 
+    /**
+     * Permet à un intervenant de soumettre son projet.
+     *
+     * Cette méthode solicite les informations nécessaires pour soumettre un
+     * projet (titre, description, type de travaux, et quartiers affectés).**/
     public static void soumettreProjet() {
         Scanner scanner = new Scanner(System.in);
 
@@ -124,12 +167,24 @@ public class IntervenantController {
             GestionProjets.sauvegarderProjet(projet);
             System.out.println("Projet soumis avec succès !");
             // Ajouter une notification pour ce projet
-            System.out.println("Sauvegarde du projet : " + titre + " dans le quartier : " + quartiers);
+            NotificationController.ajouterNotificationProjetSoumis(titre);
         } else {
             System.out.println("Erreur lors de la création du projet. Veuillez vérifier les informations fournies.");
         }
     }
 
+    /**
+     * Demande à l'utilisateur de fournir une date valide avec un nombre limité de tentatives.
+     *
+     * Cette méthode affiche une invite pour demander une date au format `YYYY-MM-DD`,
+     * et tente de parser la saisie de l'utilisateur. Après trois tentatives infructueuses,
+     * elle retourne {@code null}.
+     *
+     * @param prompt  Le message d'invite à afficher à l'utilisateur.
+     * @param scanner L'objet {@link Scanner} utilisé pour lire les entrées utilisateur.
+     * @return La date saisie par l'utilisateur sous forme d'objet {@link LocalDate}, ou {@code null}
+     *         si le format est invalide après trois tentatives.
+     */
     private static LocalDate retryDate(String prompt, Scanner scanner) {
         int attempts = 0;
         while (attempts < 3) {
@@ -145,6 +200,18 @@ public class IntervenantController {
         return null;
     }
 
+    /**
+     * Demande à l'utilisateur de fournir une heure valide avec un nombre limité de tentatives.
+     *
+     * Cette méthode affiche une invite pour demander une heure au format `HH:mm`,
+     * et tente de parser la saisie de l'utilisateur. Après trois tentatives infructueuses,
+     * elle retourne {@code null}.
+     *
+     * @param prompt  Le message d'invite à afficher à l'utilisateur.
+     * @param scanner L'objet {@link Scanner} utilisé pour lire les entrées utilisateur.
+     * @return L'heure saisie par l'utilisateur sous forme d'objet {@link LocalTime}, ou {@code null}
+     *         si le format est invalide après trois tentatives.
+     */
     private static LocalTime retryTime(String prompt, Scanner scanner) {
         int attempts = 0;
         while (attempts < 3) {
@@ -160,6 +227,13 @@ public class IntervenantController {
         return null;
     }
 
+    /**
+     * Recherche les préférences des résidents pour les rues et les codes postaux fournis.
+     *
+     * @param rues          Les rues affectées par les préférences.
+     * @param codesPostaux Les codes postaux affectés par les préférences.
+     * @return Une liste des préférences des résidents qui conflitent avec les préférences des rues
+     * et les résidents.**/
     private static List<Preference.PreferenceEntry> trouverConflitsResidents(List<String> rues, List<String> codesPostaux) {
         List<Preference.PreferenceEntry> preferencesConflits = new ArrayList<>();
         List<Resident> residents = GestionResidents.chargerResidentsDepuisFichier();
@@ -179,7 +253,6 @@ public class IntervenantController {
                 }
             }
         }
-
         return preferencesConflits;
     }
 }

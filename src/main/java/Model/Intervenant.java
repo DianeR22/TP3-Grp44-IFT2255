@@ -39,7 +39,6 @@ public class Intervenant extends Utilisateur {
 
     }
 
-
     /**
      * Vérifie l'égalité de l'intervenant avec un autre objet en utilisant l'adresse courriel.
      *
@@ -168,7 +167,6 @@ public class Intervenant extends Utilisateur {
             }
         }
         return null;
-
     }
 
     public static void deconnecterResident() {
@@ -327,5 +325,4 @@ public class Intervenant extends Utilisateur {
             System.exit(0);
         }
     }
-
 }

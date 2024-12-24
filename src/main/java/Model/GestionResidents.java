@@ -107,6 +107,5 @@ public class GestionResidents{
             return null;
         }
     }
-
 }
 

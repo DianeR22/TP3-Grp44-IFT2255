@@ -79,9 +79,4 @@ public class GestionTravaux {
             ecrireJsonDansFichier(categoriesJson, FICHIER_TRAVAUX);
         }
     }
-
-
-
-
-
 }

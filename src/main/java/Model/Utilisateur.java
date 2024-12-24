@@ -216,7 +216,5 @@ public abstract class Utilisateur {
         } else if (this instanceof Intervenant) {
             IntervenantController.afficherMenuIntervenant();
         }
-
     }
-
 }

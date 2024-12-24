@@ -19,14 +19,15 @@ public class GestionResidentsTest {
                 "TestPassword1",
                 "01/01/1990",
                 "514-123-4567",
-                "Montreal"
+                "Montreal",
+                "H1E 7Y5"
         );
 
         // Ajout résident
         GestionResidents.ajouterResident(resident);
 
         // Vérifier que le résident a bien été ajouté à la liste
-        assertTrue("Le résident devrait être ajouté à la liste",
+        assertTrue("Le résident devrait être ajouté",
                 GestionResidents.getListeResidents().contains(resident)
         );
 

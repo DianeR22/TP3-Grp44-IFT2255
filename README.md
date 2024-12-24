@@ -24,6 +24,10 @@ Rôle de l'intervenant:
 - Mettre à jour les information d'un projet : Modifier les informations d'un projet
 
 Organisation du répertoire: 
+/src : Le code source du projet.
+README.md : Fichier de documentation du projet. 
+javadoc.zip : documentation javaDoc
+jaCoco.zip :  documentation jaCoco pour les tests
 
 Données de l'application:
 

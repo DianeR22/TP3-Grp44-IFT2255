@@ -158,37 +158,76 @@ public class Valider {
     }
 
     /**
-     * Vérifie les conflits entre un projet et les préférences horaires des résidents.
-     * (Exemple d'une méthode ancienne, vous pouvez l'adapter ou la retirer selon vos besoins.)
+     * Vérifie si deux plages horaires se chevauchent.
+     *
+     * @param debutProjet Heure de début du projet.
+     * @param finProjet Heure de fin du projet.
+     * @param debutPref Heure de début de la préférence.
+     * @param finPref Heure de fin de la préférence.
+     * @return true si les plages horaires se chevauchent, false sinon.
      */
-    public static List<Preference.PreferenceEntry> verifierConflits(Projet projet) {
-        List<Preference.PreferenceEntry> conflits = new ArrayList<>();
-        // ...
-        // (À adapter ou conserver selon votre code actuel)
-        return conflits;
+    private static boolean isHoraireConflit(LocalTime debutProjet, LocalTime finProjet,
+                                            LocalTime debutPref, LocalTime finPref) {
+        return (debutProjet.isBefore(finPref) && finProjet.isAfter(debutPref));
     }
 
     /**
-     * Vérifie si une plage horaire [heureDebut, heureFin] est entre 08:00 et 17:00.
+     * Valide si le jour est un jour valide de la semaine.
+     *
+     * @param jour Le jour à valider.
+     * @return true si le jour est valide, false sinon.
      */
-    public static boolean validerPlageHoraire(LocalTime heureDebut, LocalTime heureFin) {
-        LocalTime debutJournee = LocalTime.of(8, 0);
-        LocalTime finJournee = LocalTime.of(17, 0);
-
-        // Validate both start and end times individually and ensure start < end
-        return validerDansPlage(heureDebut, debutJournee, finJournee)
-                && validerDansPlage(heureFin, debutJournee, finJournee)
-                && heureFin.isAfter(heureDebut);
+    public static boolean validerJour(String jour) {
+        return Arrays.stream(JOURS_DE_LA_SEMAINE).anyMatch(j -> j.equalsIgnoreCase(jour));
     }
 
-    private static boolean validerDansPlage(LocalTime heure, LocalTime debutJournee, LocalTime finJournee) {
+    /**
+     * Vérifie si une heure donnée se trouve dans une plage horaire spécifique.
+     *
+     * @param heure         L'heure à valider.
+     * @param debutJournee  L'heure de début de la plage horaire.
+     * @param finJournee    L'heure de fin de la plage horaire.
+     * @return {@code true} si l'heure est comprise entre {@code debutJournee} et {@code finJournee} (inclus),
+     *         sinon {@code false}.
+     */
+    public static boolean validerDansPlage(LocalTime heure, LocalTime debutJournee, LocalTime finJournee) {
         return !heure.isBefore(debutJournee) && !heure.isAfter(finJournee);
     }
 
     /**
-     * Valide un jour de la semaine (Lundi, Mardi, etc.).
+     * Vérifie si une heure donnée se trouve dans la plage horaire standard de la journée.
+     *
+     * La plage horaire est définie entre 08:00 et 17:00.
+     *
+     * @param heure L'heure à valider.
+     * @return {@code true} si l'heure est comprise entre 08:00 et 17:00 (inclus),
+     *         sinon {@code false}.
      */
-    public static boolean validerJour(String jour) {
-        return Arrays.stream(JOURS_DE_LA_SEMAINE).anyMatch(j -> j.equalsIgnoreCase(jour));
+    public static boolean validerHeureDansPlage(LocalTime heure) {
+        LocalTime debutJournee = LocalTime.of(8, 0);
+        LocalTime finJournee = LocalTime.of(17, 0);
+        return validerDansPlage(heure, debutJournee, finJournee);
+    }
+    /**
+     * Vérifie si une plage horaire définie par une heure de début et une heure de fin
+     * est valide et respecte les contraintes de la journée.
+     *
+     * Les contraintes sont les suivantes :
+     * <ul>
+     *   <li>Les heures doivent être comprises entre 08:00 et 17:00 (inclus).</li>
+     *   <li>L'heure de fin doit être strictement postérieure à l'heure de début.</li>
+     * </ul>
+     *
+     * @param heureDebut L'heure de début de la plage.
+     * @param heureFin   L'heure de fin de la plage.
+     * @return {@code true} si la plage horaire est valide, sinon {@code false}.
+     */
+    public static boolean validerPlageHoraire(LocalTime heureDebut, LocalTime heureFin) {
+        LocalTime debutJournee = LocalTime.of(8, 0);
+        LocalTime finJournee = LocalTime.of(17, 0);
+        // Validate both start and end times individually and ensure start < end
+        return validerDansPlage(heureDebut, debutJournee, finJournee) &&
+                validerDansPlage(heureFin, debutJournee, finJournee) &&
+                heureFin.isAfter(heureDebut);
     }
 }

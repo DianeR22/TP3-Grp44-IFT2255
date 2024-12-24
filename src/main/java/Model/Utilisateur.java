@@ -17,8 +17,6 @@ public abstract class Utilisateur {
     protected String motDePasse;
     protected String adresseCourriel;
 
-    private static Utilisateur utilisateur;
-
     /**
      * Constructeur avec arguments pour initialiser un utilisateur.
      *
@@ -123,7 +121,7 @@ public abstract class Utilisateur {
      *
      * @param utilisateur L'utilisateur s'inscrit.
      */
-    public abstract void inscription(Utilisateur utilisateur);
+    protected abstract void inscription(Utilisateur utilisateur);
 
     /**
      * Permet à un utilisateur de se connecter en entrant son adresse courriel et mot de passe.
@@ -133,7 +131,7 @@ public abstract class Utilisateur {
      * @param utilisateur L'utilisateur qui tente de se connecter.
      */
 
-    public void connexion(Utilisateur utilisateur) {
+    protected void connexion(Utilisateur utilisateur) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Vous êtes sur la page de connexion!");
 
@@ -166,7 +164,7 @@ public abstract class Utilisateur {
         }
 
         // Après 3 mauvaises tentatives
-        System.out.println("Vous avez échoué à vous connecter après 3 tentatives. Veuillez réessayer plus tard. Le programme va maintenant se terminer.");
+        System.out.println("Vous avez échoué à vous connecter après 3 tentatives. Veuillez réessayer plus tard.");
         System.exit(0);
     }
 
@@ -178,7 +176,7 @@ public abstract class Utilisateur {
      * @param mdp Le mot de passe à vérifier.
      * @return true si l'adresse courriel et le mot de passe correspondent à un résident ou intervenant valide, false sinon.
      */
-    boolean verifierConnexion(String email, String mdp){
+    private boolean verifierConnexion(String email, String mdp){
 
         // Récupérer les listes des résidents et des intervenants
         List<Resident> residents = GestionResidents.getListeResidents();
@@ -210,7 +208,7 @@ public abstract class Utilisateur {
      * Afficher un menu adapté au type d'utilisateur (résident ou intervenant) après une connexion réussie.
      * Selon le type d'utilisateur, la méthode adéquate est appelée.
      */
-    void afficherMenu(){
+    private void afficherMenu(){
         if (this instanceof Resident) {
             ResidentController.afficherMenuResident();
         } else if (this instanceof Intervenant) {

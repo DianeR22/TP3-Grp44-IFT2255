@@ -15,8 +15,6 @@ import java.net.URL;
  * Classe qui permet de récupérer des données via une API.
  */
 public class ServiceAPI {
-    private static final String OUTPUT_FILE = "data/reason_categories.json";
-
     /**
      * Méthode pour récupérer les données depuis l'API.
      *

@@ -5,6 +5,8 @@ import Model.Requete;
 import Model.Resident;
 import View.RequeteView;
 
+import java.util.List;
+
 /**
  * Contrôleur pour la gestion des requêtes. Permet d'obtenir les informations
  * des requêtes en demandant ces informatinos dans RequeteView,
@@ -39,6 +41,19 @@ public class RequeteController {
      */
     public static void afficherRequetes() {
         RequeteView.afficherRequetes();
+    }
+
+    public static List<Requete> filtrerParType(String type) {
+        return GestionRequete.filtrerParType(type);
+
+    }
+
+    public static List<Requete> filtrerParQuartier(String quartier) {
+        return GestionRequete.filtrerParQuartier(quartier);
+    }
+
+    public static List<Requete> filtrerParDate(String dateDebut) {
+        return GestionRequete.filtrerParDate(dateDebut);
     }
 }
 

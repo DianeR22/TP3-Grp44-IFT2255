@@ -90,17 +90,17 @@ public class RequeteView {
             case 1:
                 System.out.print("Entrez le type de travail : ");
                 String type = scanner.nextLine();
-                requetesFiltrees = GestionRequete.filtrerParType(type);
+                requetesFiltrees = RequeteController.filtrerParType(type);
                 break;
             case 2:
                 System.out.print("Entrez le quartier: ");
                 String quartier = scanner.nextLine();
-                requetesFiltrees = GestionRequete.filtrerParQuartier(quartier);
+                requetesFiltrees = RequeteController.filtrerParQuartier(quartier);
                 break;
             case 3:
                 System.out.print("Entrez la date de début (format YYYY/MM/DD) : ");
                 String dateDebut = scanner.nextLine();
-                requetesFiltrees = GestionRequete.filtrerParDate(dateDebut);
+                requetesFiltrees = RequeteController.filtrerParDate(dateDebut);
                 break;
             default:
                 System.out.println("Choix invalide. Retour au menu précédent.");

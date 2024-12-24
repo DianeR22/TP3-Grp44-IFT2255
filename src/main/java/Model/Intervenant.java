@@ -11,6 +11,7 @@ public class Intervenant extends Utilisateur {
     // // Attributs spécifiques à l'intervenant
     private String type;
     private String identifiantVille;
+
     private Intervenant intervenant;
 
     // Variable statique pour l'intervenant connecté

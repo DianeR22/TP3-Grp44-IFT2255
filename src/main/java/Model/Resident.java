@@ -18,7 +18,6 @@ public class Resident extends Utilisateur {
     private String adresse; // Nom de la rue
     private String codePostal;
 
-    private Scanner scanner;
     private Resident resident;
     private static Resident residentConnecte;
 
@@ -146,14 +145,6 @@ public class Resident extends Utilisateur {
         this.codePostal = codePostal;
     }
 
-    /**
-     * Définit un scanner du résident.
-     *
-     * @param scanner Le scanner à attribuer au résident.
-     */
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
 
     /**
      * Retourne le résident.

@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 public class Valider {
 
     // Expressions regulières (regex) utilisées pour valider des chaînes de caractères (date, numéro de tel, courriel, mdp, identifiant)
-
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static Pattern PHONE_PATTERN = Pattern.compile("^\\d{3}[-. ]?\\d{3}[-. ]?\\d{4}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
@@ -173,7 +172,7 @@ public class Valider {
         TRAVAUX_DE_GAZ_OU_ELECTRICITE("Travaux de gaz ou électricité"),
         CONSTRUCTION_OU_RENOVATION("Construction ou rénovation"),
         ENTRETIEN_PAYSAGER("Entretien paysager"),
-        TRAVAUX_LIES_AUX_TRANSPORTS_EN_COMMUNS("Travaux liés aux transports en commun"),
+        TRAVAUX_LIES_AUX_TRANSPORTS_EN_COMMUN("Travaux liés aux transports en commun"),
         TRAVAUX_DE_SIGNALISATION_ET_ECLAIRAGE("Travaux de signalisation et éclairage"),
         TRAVAUX_SOUTERRAINS("Travaux souterrains"),
         TRAVAUX_RESIDENTIELS("Travaux résidentiels"),

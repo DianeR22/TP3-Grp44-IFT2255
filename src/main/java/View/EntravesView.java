@@ -103,7 +103,7 @@ public class EntravesView {
      */
     public static void afficherEntraves(JSONArray entraves) {
         if (entraves == null || entraves.length() == 0) {
-            System.out.println("Aucune entrave à afficher.");
+            System.out.println("Aucune entrave correspondante.");
             return;
         }
 

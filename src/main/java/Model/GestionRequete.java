@@ -89,7 +89,6 @@ public class GestionRequete {
         GestionRequete.ajouterRequete(requete);
 
         Resident resident = Resident.getResidentConnecte();
-        System.out.println("Le resident connecté est" + resident);
         if (resident != null) {
             requete.setResident(resident);
         }

@@ -1,6 +1,7 @@
 package Model;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -48,5 +49,39 @@ public class GestionRequeteTest{
         // Nettoyer les données en supprimant les requêtes ajoutées
         GestionRequete.supprimerRequete(GestionRequete.getListeRequetes().size() - 1); // Supprimer requête 2
         GestionRequete.supprimerRequete(GestionRequete.getListeRequetes().size() - 1); // Supprimer requête 1
+    }
+
+    @Test
+    public void filtrerParQuartierAucunResultat() {
+        GestionRequete.chargeRequetes();
+
+        // on prend une ville inéxistante
+        String fakeQuartier = "InexistantVille";
+
+        // Filtrer
+        List<Requete> resultat = GestionRequete.filtrerParQuartier(fakeQuartier);
+
+        assertEquals(0, resultat.size());
+    }
+
+    @Test
+    public void soumettreRequete() {
+
+        // Charger les requêtes
+        GestionRequete.chargeRequetes();
+        // Créer une requête avec des caractéristiques données
+        GestionRequete.soumettreRequete("Réparation de route", "Routes endommagées à cause de nids de poules", "Travaux routiers", "02/01/2025");
+
+
+        // Récupérer la requête en dernier index de la liste
+        Requete requete = GestionRequete.getListeRequetes().get(GestionRequete.getListeRequetes().size() - 1);
+
+        // Tester les caractéristiques attendues de la requête
+        Assert.assertEquals("Réparation de route", requete.getTitreTravail());
+        Assert.assertEquals("Routes endommagées à cause de nids de poules", requete.getDescription());
+        Assert.assertEquals("Travaux routiers", requete.getTypeTravaux());
+        Assert.assertEquals("02/01/2025", requete.getDebut());
+
+        GestionRequete.supprimerRequete(GestionRequete.getListeRequetes().size() - 1);
     }
 }

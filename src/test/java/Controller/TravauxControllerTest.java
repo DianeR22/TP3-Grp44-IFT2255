@@ -1,12 +1,8 @@
 package Controller;
 
-import View.TravauxView;
-import org.junit.Before;
 import org.junit.Test;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.util.Scanner;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.*;
@@ -53,6 +49,4 @@ public class TravauxControllerTest {
         assertNotNull("Les travaux ne devraient pas être nuls.", travauxNonFiltres);
         assertEquals("Tous les travaux devraient être inclus.", travauxNonFiltres.length(), travauxNonFiltres.length());
     }
-
-
 }

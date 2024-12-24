@@ -516,7 +516,7 @@
     <header class="report-header">
         <div class="title-section">
             <div>
-                <h1 class="report-title">Rapport du livrable 2</h1>
+                <h1 class="report-title">Rapport du livrable 3</h1>
                 <p class="report-summary">
                     <em><b> Court résumé du rapport </b></em> &ndash; Ce livrable se concentre sur la conception de 
                     l’application Ma Ville, application servant à recevoir de l'information concernant les travaux 
@@ -1973,107 +1973,11 @@
 
                 <div>
                     <h3 class="subsection-title">Architecture : MVC</h3>
-                    <li> <b>Utilisateurs de l'application: </b> </li>
-                        <li><u>Résidents: </u>Principal utilisateur de l'application MaVille, qui peut exercer ces fonctionnalités: </li>
-                        <ul>
-                            <li> S'inscrire à l'application MaVille en tant que résident</li>
-                            <li> Modifier son profil </li>
-                            <li> Se connecter sur l'appli en tant que résident </li>
-                            <li> Rechercher des travaux que ça soit par type ou quartier</li>
-                            <li> Consulter les travaux en cours ou à venir (jusqu'à 3 mois)</li>
-                            <li> Consulter les entraves routières causées par les travaux</li>
-                            <li> Soumettre des requêtes de travaux résidentielles</li>
-                            <li> Faire le suivi des requêtes soumises</li>
-                            <li> Personnaliser les notifications</li>
-                        </ul>
-
-                        <li><u>Intervenants: </u>la Ville, ses partenaires, les promoteurs immobiliers, les entrepreneurs privés et les particuliers qui peuvent :</li>
-                        <ul>
-                            <li>S'inscrire à l'application MaVille en tant qu'intervenant</li>
-                            <li> Modifier son profil </li>
-                            <li>Se connecter sur l'appli en tant qu'intervenant</li>
-                            <li>Soumettre de nouveaux projets de travaux</li>
-                            <li> Consulter les requêtes de travail soumises par les résidents</li>
-                            <li> Consulter les préférences des horaires des résidents</li>
-                            <li> Soumettre sa candidature pour une requête de travail</li>
-                            <li> Mettre à jour les informations sur les projets en cours</li>
-                        </ul>
-
-                    <li> <b> Moyen de communication avec l'application : </b></li>
-                    <p>Les utilisateurs intéragissent via des interfaces graphiques qui sont les vues dans notre modèle MVC.
-                        Les interactions passent par les Controllers, qui agissent comme intermédiaires pour faire passer les requêtes des utilisateurs 
-                        au Model où see fait le traitement des données. Les vues de notre modèle sont: </p>
-                    <ul>
-                        <li>ResidentView: Gère l'interface pour les résidents</li>
-                        <li>IntervenantView : Gère l'interface pour les intervenants</li>
-                        <li>ConnexionView : Gère l'inscription et la connexion</li>
-                        <li>TravauxView : Affiche les informations relatives aux travaux </li>
-                        <li>EntravesView : Affiche les informations relatives aux entraves</li>
-                        <li>RequeteView :  Affiche les informations relatives aux requêtes</li>
-                    </ul>
-
-                    <li> <b>Composantes liées au style d'architecture choisi dans le contexte de l'application : </b> </li>
-                    <p> L'architecture choisie est MVC (Modèle-Vue-Contrôleur) qui assure une séparation claire des responsabilités de chacune des classes :</p>
-                    <li><u>Modèle (Model) : Contient les classes responsables des données et de la logique métier </u></li>
-                    <ul>
-                        <li> Entités principales: Résident, Intervenant, Requête, Travaux</li>
-                        <li> GestionResidents, GestionIntervenants, GestionRequete : Contiennent les règles métiers, 
-                            comme la gestion des résidents/intervenants et celle des requêtes 
-                        </li>
-                        <li> ServiceAPI : Interagit avec des services externes comme les API fournies par la ville de Montréal 
-                            pour les entraves et travaux
-                        </li> 
-                    </ul>
-
-                    <li> <u> Vue (View) :</u> Fournit l'interface utilisateur :</li>
-                    <p> Comme vu dans la section plus haut de moyen de communication avec l'application, nous retrouvons plusieurs
-                        vue qui permettent à chacune des entités du Modèle d'intéragir avec l'application
-                    </p>
-
-                    <li> <u> Contrôleur (Controller) :</u> Interagit entre la Vue et le Modèle :</li>
-                    <p> Nous avons différents contrôleurs tels que ConnexionController, EntravesController, 
-                        ResidentController... puis chacun traite les demandes qui ont un rapport avec, valide les données puis met à jour le Modèle 
-                    </p>
-                    
-                    <li><b>Composantes additionnelles jouant un rôle clé dans l'application : </b></li>
-                    <ul> 
-                        <li><u> ServiceAPI :</u> Permet l'intégration avec les services externes de la ville (API fournies par 
-                            Montréal pour les travaux et entraves) 
-                            <ul>
-                                <li> Structure d'API mentionnée : 
-                                    <ul>
-                                        <li><u>Liste des travaux en cours : </u></li>
-                                        <p> ID du travail, arrondissement, motif du travail, catégorie de l'intervenant, nom de l'intervenant </p>
-                                        <li><u>Liste des entraves : </u></li>
-                                        <p> ID du travail, identifiant de la rue, nom de la rue, impact des travaux</p>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li><u> Validation des données : </u></li>
-                        <p> Valider (classe présente avec les Modèles): classe créée pour valider les données saisies par les utilisateurs 
-                            avant de les enregistrer ou de les transmettre </p>
-                    </ul>
-
-                    <li><b>Espace de stockage (pas de base de données dans notre cas) :</b></li>
-                    <p> L'application nécessite un espace de stockage pour: </p>
-                    <ul> 
-                        <li> Résidents: Données personnelles, requêtes soumises, réponses aux candidatures, préférences</li>
-                        <li> Intervenants : Données personnelles, projets soumis, candidatures déposées</li>
-                        <li> Travaux : Détails des projets en cours ou planifiés (titre, description, type, dates de début/fin, statut, horaire, rues/quartiers affectés)</li>
-                        <li> Requêtes : Requêtes soumises par les résidents (titre, description, type, état)</li>
-                    </ul>
-                    <p> Ce qui est utilisé dans notre application ce sont des fichiers json qui comporte ces infos y'en a un dédié
-                        aux résidents, un autre pour les intervenants, un autre pour les requêtes puis un final pour les candidatures
-                    </p> 
-                    
-                    <li><b>Services externes/API : </b></li>
-                    <p> L'application utilise les services externes de la ville de Montréal pour obtenir les infos sur les travaux et entraves. <br>
-                    On utilise aussi l'API ServiceAPI (intègre les services externes) pour récupérer et mettre à jour ces infos qui sont utilisées par 
-                    <br>TravauxController pour afficher les travaux dans la Vue et EntravesController pour les entraves dans la Vue.
-                    </p>
+                    <div>
+                    <img class="class-diagram" src="diagrammes/architecture.svg" alt="Architecture">
+                    </div>
                 </div>
+                
             </section>
 
             <h3 class="subsection-title">Diagramme de Classes</h3>

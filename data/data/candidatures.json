@@ -1,0 +1,71 @@
+[ {
+  "dateDebut" : "2020-01-01",
+  "dateFin" : "2019-01-01",
+  "requete" : {
+    "titreTravail" : "Réparation des nids de poule",
+    "description" : "Réparer les nids de poule sur la rue principale",
+    "typeTravaux" : "TRAVAUX ROUTIERS",
+    "debut" : "05/01/2025",
+    "etat" : "Ouverte",
+    "intervenant" : null,
+    "resident" : {
+      "nom" : "Gauthier",
+      "prenom" : "Thomas",
+      "motDePasse" : "DonneeS321%",
+      "adresseCourriel" : "thomas.gauthier@gmail.com",
+      "dateNaissance" : "10/12/1998",
+      "telephone" : "438-246-1357",
+      "adresse" : "Montreal, Hochelaga",
+      "rue" : "Montreal",
+      "quartier" : "Hochelaga",
+      "codePostal" : null,
+      "resident" : null
+    }
+  },
+  "intervenant" : {
+    "nom" : "Akloul",
+    "prenom" : "Marie",
+    "motDePasse" : "Securit3%",
+    "adresseCourriel" : "marie.akloul@gmail.com",
+    "type" : "Entreprise publique",
+    "identifiantVille" : "12345678",
+    "intervenant" : null
+  },
+  "messageResident" : null,
+  "etat" : "En attente"
+}, {
+  "dateDebut" : "2025-01-12",
+  "dateFin" : "2025-05-12",
+  "requete" : {
+    "titreTravail" : "Entretien des jardins communautaires",
+    "description" : "Nettoyage et plantation de fleurs dans les jardins communautaires",
+    "typeTravaux" : "ENTRETIEN PAYSAGER",
+    "debut" : "01/05/2025",
+    "etat" : "Ouverte",
+    "intervenant" : null,
+    "resident" : {
+      "nom" : "Sophie",
+      "prenom" : "Lemian",
+      "motDePasse" : "Travau@2024",
+      "adresseCourriel" : "sophie.lemian@gmail.com",
+      "dateNaissance" : "10/08/1990",
+      "telephone" : "438-555-8765",
+      "adresse" : "3456 Avenue du Parc, Outremont",
+      "rue" : "Avenue du Parc",
+      "quartier" : "Outremont",
+      "codePostal" : "H2V 4E8",
+      "resident" : null
+    }
+  },
+  "intervenant" : {
+    "nom" : "Desjardins",
+    "prenom" : "Jean",
+    "motDePasse" : "Travaux!2023",
+    "adresseCourriel" : "jean.desjardins@gmail.com",
+    "type" : "Entrepreneur privé",
+    "identifiantVille" : "87654321",
+    "intervenant" : null
+  },
+  "messageResident" : null,
+  "etat" : "En attente"
+} ]

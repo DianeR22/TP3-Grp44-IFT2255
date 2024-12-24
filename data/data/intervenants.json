@@ -1,0 +1,42 @@
+[
+  {
+    "nom": "Akloul",
+    "prenom": "Marie",
+    "adresseCourriel": "marie.akloul@gmail.com",
+    "motDePasse": "Securit3%",
+    "type": "Entreprise publique",
+    "identifiantVille": "12345678"
+  },
+  {
+    "nom": "Desjardins",
+    "prenom": "Jean",
+    "adresseCourriel": "jean.desjardins@gmail.com",
+    "motDePasse": "Travaux!2023",
+    "type": "Entrepreneur privé",
+    "identifiantVille": "87654321"
+  },
+  {
+    "nom": "Ibrir",
+    "prenom": "Amine",
+    "adresseCourriel": "amine.ibrir@gmail.com",
+    "motDePasse": "Travail@2024",
+    "type": "Particulier",
+    "identifiantVille": "11223344"
+  },
+  {
+  "nom": "Nguyen",
+  "prenom": "Anh",
+  "adresseCourriel": "anh.nguyen@gmail.com",
+  "motDePasse": "Travail!2024",
+  "type": "Particulier",
+  "identifiantVille": "55667788"
+},
+  {
+    "nom": "Diaz",
+    "prenom": "Carlos",
+    "adresseCourriel": "carlos.diaz@gmail.com",
+    "motDePasse": "Travau@2024",
+    "type": "Entreprise publique",
+    "identifiantVille": "99887766"
+  }
+]

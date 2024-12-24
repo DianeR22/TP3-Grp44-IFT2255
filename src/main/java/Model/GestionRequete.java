@@ -57,13 +57,12 @@ public class GestionRequete {
      * @param index index de la requête dans la liste
      */
     public static void supprimerRequete(int index){
-        int size = listeRequetes.size();
-        System.out.println(size);
-        // Trouver l'index de la requête à supprimer
-        if (index >=0 && index <= size) {
             Requete requeteSupprimee = listeRequetes.get(index);
             // Supprimer la requête de la liste
-            listeRequetes.remove(requeteSupprimee);
+            listeRequetes.remove(index);
+
+            // Sauvegarder les requêtes de la liste dans le json des requêtes
+            saveRequete();
 
             // Dissocier le résident de la requête
         if (requeteSupprimee.getResident() != null) {
@@ -71,9 +70,7 @@ public class GestionRequete {
         }
         System.out.println("Requête supprimée avec succès!");
 
-        // Sauvegarder les requêtes de la liste dans le json des requêtes
-        saveRequete();
-    }}
+    }
 
     // Méthode pour vider la liste des requêtes
     public static void viderListe() { listeRequetes.clear();

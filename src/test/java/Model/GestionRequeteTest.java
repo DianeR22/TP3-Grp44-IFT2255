@@ -14,7 +14,7 @@ public class GestionRequeteTest{
 
         Requete requete = new Requete("Égouts", "Problème de canalisation", "Travaux souterrains", "05/08/2025");
 
-        // / Ajouter la requête à la gestion des requêtes
+        // / Ajouter la requête 
         GestionRequete.ajouterRequete(requete);
 
         Requete nouvelleRequete = GestionRequete.getListeRequetes().get(GestionRequete.getListeRequetes().size() - 1);

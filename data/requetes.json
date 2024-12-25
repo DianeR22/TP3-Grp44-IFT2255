@@ -1,1 +1,101 @@
-[ ]
+[ {
+  "titreTravail" : "Réparation des nids de poule",
+  "description" : "Réparer les nids de poule sur la rue principale",
+  "typeTravaux" : "TRAVAUX ROUTIERS",
+  "debut" : "05/01/2025",
+  "etat" : "Ouverte",
+  "intervenant" : null,
+  "resident" : {
+    "nom" : "Gauthier",
+    "prenom" : "Thomas",
+    "motDePasse" : "DonneeS321%",
+    "adresseCourriel" : "thomas.gauthier@gmail.com",
+    "dateNaissance" : "10/12/1998",
+    "telephone" : "438-246-1357",
+    "adresse" : "1234 Rue Sainte-Catherine Ouest, Ville-Marie",
+    "rue" : "Rue Sainte-Catherine Ouest",
+    "quartier" : "Ville-Marie",
+    "codePostal" : null,
+    "resident" : null
+  }
+}, {
+  "titreTravail" : "Réparation du réseau d'égouts",
+  "description" : "Réparer une fuite sur la conduite principale d'égout sous la rue principale",
+  "typeTravaux" : "TRAVAUX SOUTERRAINS",
+  "debut" : "03/12/2024",
+  "etat" : "Ouverte",
+  "intervenant" : null,
+  "resident" : {
+    "nom" : "Dupont",
+    "prenom" : "Bob",
+    "motDePasse" : "M0tdepasse24$",
+    "adresseCourriel" : "bob.dupont@gmail.com",
+    "dateNaissance" : "15/02/2001",
+    "telephone" : "514-667-4567",
+    "adresse" : "4567 Boulevard Saint-Laurent, Plateau-Mont-Royal",
+    "rue" : "Boulevard Saint-Laurent",
+    "quartier" : "Plateau-Mont-Royal",
+    "codePostal" : null,
+    "resident" : null
+  }
+}, {
+  "titreTravail" : "Entretien du parc local",
+  "description" : "Tondre la pelouse et nettoyer les installations dans le parc central du quartier",
+  "typeTravaux" : "ENTRETIEN PAYSAGER",
+  "debut" : "10/03/2025",
+  "etat" : "Ouverte",
+  "intervenant" : null,
+  "resident" : {
+    "nom" : "Habib",
+    "prenom" : "Marie",
+    "motDePasse" : "Securit3%",
+    "adresseCourriel" : "marie.habib@gmail.com",
+    "dateNaissance" : "20/05/1967",
+    "telephone" : "514-987-0000",
+    "adresse" : "7890 Rue Jean-Talon Est, Saint-Léonard",
+    "rue" : "7890 Rue Jean-Talon Est",
+    "quartier" : "Saint-Léonard",
+    "codePostal" : "H1S 1M8",
+    "resident" : null
+  }
+}, {
+  "titreTravail" : "Installation de nouveaux lampadaires",
+  "description" : "Installer des lampadaires économes en énergie le long de l'Avenue du Parc",
+  "typeTravaux" : "TRAVAUX DE SIGNALISATION ET ÉCLAIRAGE",
+  "debut" : "20/04/2025",
+  "etat" : "Ouverte",
+  "intervenant" : null,
+  "resident" : {
+    "nom" : "Sophie",
+    "prenom" : "Lemian",
+    "motDePasse" : "Travau@2024",
+    "adresseCourriel" : "sophie.lemian@gmail.com",
+    "dateNaissance" : "10/08/1990",
+    "telephone" : "438-555-8765",
+    "adresse" : "3456 Avenue du Parc, Outremont",
+    "rue" : "3456 Avenue du Parc",
+    "quartier" : "Outremont",
+    "codePostal" : "H2V 4E8",
+    "resident" : null
+  }
+}, {
+  "titreTravail" : "Réparation d'une fuite de gaz",
+  "description" : "Réparer une fuite de gaz sur la Rue Sherbrooke Est",
+  "typeTravaux" : "TRAVAUX DE GAZ OU ÉLECTRICITÉ",
+  "debut" : "15/02/2025",
+  "etat" : "Ouverte",
+  "intervenant" : null,
+  "resident" : {
+    "nom" : "Daiby",
+    "prenom" : "Rayan",
+    "motDePasse" : "Travail@2024",
+    "adresseCourriel" : "rayan.daiby@gmail.com",
+    "dateNaissance" : "05/06/1992",
+    "telephone" : "514-987-6543",
+    "adresse" : "5678 Rue Sherbrooke Est, Mercier-Hochelaga-Maisonneuve",
+    "rue" : "5678 Rue Sherbrooke Est",
+    "quartier" : "Mercier-Hochelaga-Maisonneuve",
+    "codePostal" : "H1N 1A1",
+    "resident" : null
+  }
+}]

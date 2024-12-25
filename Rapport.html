@@ -554,7 +554,7 @@
                     </div> 
                     <span>Discord: @maria_5701</span>
                     <a href="mailto:prenom.nom@umontreal.ca">maria.alitouche@umontreal.ca</a>
-                    <span class="member-role"> Chargée du prototype et tests unitaires </span>
+                    <span class="member-role"> Implémentation + Tests + Update Conception + Documentation </span>
                 </li>
                 <li class="member">
                     <div class="member-identification">
@@ -563,8 +563,7 @@
                     </div> 
                     <span>Discord: @diane555</span>
                     <a href="mailto:prenom.nom@umontreal.ca">reem.habib.1@umontreal.ca</a>
-                    <span class="member-role"> Chargée du cadre, diagramme de CUs</span>
-                    <span class="member-role"> Architecture et Justification du choix de design </span>
+                    <span class="member-role"> Implémentation + Tests + Update Conception + Documentation </span>
                 </li>
                 <li class="member">
                     <div class="member-identification">
@@ -573,8 +572,7 @@
                     </div> 
                     <span>Discord: @itsMOMO</span>
                     <a href="mailto:prenom.nom@umontreal.ca">mohammed.amine.el.masdouki@umontreal.ca</a>
-                    <span class="member-role">Chargé de l'analyse, diagrammes d'activités</span>
-                     <span class="member-role"> Diagramme de classes et diagrammes de séquence </span>
+                     <span class="member-role"> Rien. </span>
                     
                 </li>
             </ul>
@@ -588,8 +586,9 @@
                     <li class="nav-item">
                         <h3 class="nav-item-title"><a class="nav-item-title__link" href="#plan">Cadre du projet</a></h3>
                         <ul class="bare-list nav-item-details">
-                            <li class="dash">Introduction</li>
-                            <li class="dash">Échéancier</li>
+                            <li class="dash"> Introduction</li>
+                            <li class="dash"> Échéancier</li>
+                            <li class="dash"> Distribution claire des rôles </li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -659,11 +658,42 @@
                    MAEM                                         ############## ( Diagramme de classes + séquences)
                    MA                                           ####################################### (Implémentation et tests)
                    MA, RH, MAEM                                         ############ (Rédaction du rapport TP2)
-                                                                  ######      ###   ###   ##   ##   ## (Documentation)
+                   MA, RH                                                           ############## (Update de la conception)
+                   RH, MA                                                            ######################## (Implementation + tests)
+                   MA, RH                                                                             ################### (Documenation)
                             </pre>  
                 </p>
             </section>
 
+            <h3 class="subsection-title">Distribution claire des rôles VS ce qu'on a fini par faire</h3>
+                <p>
+                    <em>Présentation de comment on s'était départagé les tâches pour ce librable 3</em>
+                </p>
+                <p>
+                    Maria Alitouche: Implémentation de Soumettre/soustraire sa candidature, Faire le suivi de sa candidature, Chercher/filtrer les entraves par rue, faire le suivi <br>
+                    d'une requêtee de travail, écriture de tests unitaires
+                </p>
+                <p>
+                    Reem Habib: Implémentation de Consulter les travaux en cours, Consulter les travaux à venir, Modifier ses préférences horaires, Soumettre un projet, écriture de <br>
+                    tests unitaires, mis à jour de l'architecture et diagramme de CU
+                </p>
+                <p>
+                    Mohammed Amine El Masdouki: Implémenation de Voir ses notifications, Modifier statut du projet, l'écriture de 6 tests unitaires, la mise à jour des diagrammes <br>
+                    de séquences et du diagramme de classe.
+                </p>
+                <p> ------------------------<em>VS CE QU'ON A FINI PAR FAIRE: </em>------------------</p>
+                <p>
+                    Maria Alitouche: Implémentation de Soumettre/soustraire sa candidature, Faire le suivi de sa candidature, Chercher/filtrer les entraves par rue, faire le suivi <br>
+                    d'une requêtee de travail, écriture de tests unitaires, mis à jour des diagrammes de séquence et du diagramme de classe, JaCoCo
+                </p>
+                <p>
+                    Reem Habib: Implémentation de Consulter les travaux en cours, Consulter les travaux à venir, Modifier ses préférences horaires, Soumettre un projet, écriture de <br>
+                    tests unitaires, mis à jour de l'architecture et diagramme de CU, vidéo pour documentation, JavaDoc
+                </p>
+                <p>
+                    Mohammed Amine El Masdouki: Rien. Il a essayé de faire hier Notifications mais ça ne marchait pas on a dû l'enlever avant la remise vu que ça plantait l'application
+                </p>
+                
             <section class="main-section">
                 <h2 id="requirements" class="section-title">Exigences</h2>
                 <p>
@@ -1287,6 +1317,40 @@
                     </div>
                 </div>
 
+                <!-- CU : Consulter les entraves routières -->
+                <div class="scenario" id="cu-1">
+                    <div class="scenario-meta">
+                        <h4 class="cu-name">
+                            <strong>CU:</strong> Consulter les entraves routières
+                        </h4>
+                        <p class="cu-goal">
+                            <strong>Objectif:</strong> Un résident veut consulter les entraves routières de la ville 
+                        </p>
+                        
+                        <hr>
+
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Acteurs</h5>
+                            <ul class="bare-list cu-actors">
+                                <li class="cu-actor">Résident(Principal)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Préconditions</h5>
+                            <ul class="bare-list cu-conditions">
+                                <li class="dash">Aucune.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="cu-part">
+                            <h5 class="cu-part-title">Postconditions</h5>
+                            <ul class="bare-list cu-conditions">
+                                <li class="dash">Le résident s'est renseigné par rapport aux entraves routières.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
                 <!-- CUS concernant les intervenants -->
                 <h3> Scénarios concernant les intervenants </h3>
 

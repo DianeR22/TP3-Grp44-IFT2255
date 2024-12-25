@@ -51,8 +51,16 @@ Instruction pour lancer l'application :
 1. cd /chemin/vers/le/dossier/application.jar
 2. java -jar application.jar
 
-Pour exécuter les tests sur intellij: 
-Assurez-vous que  : 
-Java est installé (version la plus récente)
-Maven est installé
-Vous pouvez utiliser le terminal et entrer la commande: mvn test
+Pour exécuter les tests dans le terminal:
+Assurez-vous d'abord d'avoir installé la version la plus récente de java, c'est-à-dire la 23. Aussi, assurez-vous d'installer Maven (Apache Maven 3.9.9). 
+
+Comment télécharger Maven: 
+1. Rdv sur la page officielle de Maven et téléchargez la version binaire (exemple, apache-maven-3.9.9-bin.zip).
+2. Ajoutez Maven au path : allez dans Ce PC -> clique droit sur propriétés (properties) -­> Paramètres système avancés (Advanced system settings) ->  Variables d'environnement (Environment Variables) -> Variables système  (System variables) -> trouvez la variable Path et sélectionnez-la -> cliquez sur Modifier (Edit) ->
+Cliquez sur Nouveau (New) -> ajoutez le chemin vers le dossier bin de Maven et cliquez sur OK.
+3. Vérifiez l'installation avec mvn -v dans le terminal.
+4. Vous pouvez maintenant exécuter les tests!
+   Commandes: 
+   - cd /chemin/vers/le/dossier/ (chemin du dossier du projet)
+   - mvn test 
+Voilà!

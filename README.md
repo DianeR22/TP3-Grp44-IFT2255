@@ -51,8 +51,8 @@ Instruction pour lancer l'application :
 1. cd /chemin/vers/le/dossier/application.jar
 2. java -jar application.jar
 
-Pour exécuter les codes sur intellij: 
+Pour exécuter les tests sur intellij: 
 Assurez-vous que  : 
-Java est installé.
-Maven est installé.
+Java est installé (version la plus récente)
+Maven est installé
 Vous pouvez utiliser le terminal et entrer la commande: mvn test

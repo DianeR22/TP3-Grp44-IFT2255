@@ -166,8 +166,7 @@ public class IntervenantController {
         if (projet != null) {
             GestionProjets.sauvegarderProjet(projet);
             System.out.println("Projet soumis avec succès !");
-            // Ajouter une notification pour ce projet
-            NotificationController.ajouterNotificationProjetSoumis(titre);
+
         } else {
             System.out.println("Erreur lors de la création du projet. Veuillez vérifier les informations fournies.");
         }

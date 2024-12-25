@@ -23,13 +23,11 @@ public class ResidentView {
         System.out.println("Vous êtes connecté!");
 
         while(true){
-            int nombreNonVues = NotificationController.obtenirNombreNotificationsNonVues();
-
             System.out.println("\nMenu Résident :");
             System.out.println("1. Modifier son profil");
             System.out.println("2. Rechercher et travaux en cours");
             System.out.println("3. Consulter les travaux pour les 3 prochains mois");
-            System.out.println("4. Notifications (" + nombreNonVues + " non lues)");
+            System.out.println("4. Notifications");
             System.out.println("5. Modifier vos préférences horaires");
             System.out.println("6. Soumettre une requête de travail");
             System.out.println("7. Faire le suivi d'une requête");
@@ -81,7 +79,7 @@ public class ResidentView {
 
                 case "4":
                     // Notifications
-                    NotificationView.afficherZoneNotification(scanner);
+                    System.out.println("Vous êtes sur la section Notifications! Cette option n'est pas disponible, car un coéquipier n'a pas fait son travail! >:(");
                     retour(scanner);
                     break;
                 case "5":

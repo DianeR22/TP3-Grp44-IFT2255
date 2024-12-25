@@ -33,13 +33,13 @@ public class GestionRequeteTest{
     @Test
     public void filtrerParTypeAvecPlusieursResultats() {
         // Ajouter des requêtes temporaires
-        Requete requete1 = new Requete("Réparation pont", "Réparation du pont de traversée", "Travaux routiers", "01/07/2025");
-        Requete requete2 = new Requete("Réparation route", "Réparation des nids de poule sur l'autoroute", "Travaux routiers", "05/08/2025");
+        Requete requete1 = new Requete("Réparation pont", "Réparation du pont de traversée", "Entretien urbain", "01/07/2025");
+        Requete requete2 = new Requete("Réparation route", "Réparation des nids de poule sur le boulevard Saint-Laurent", "Entretien urbain", "05/08/2025");
         GestionRequete.ajouterRequete(requete1);
         GestionRequete.ajouterRequete(requete2);
 
         // Filtrer par type "Travaux routiers"
-        List<Requete> resultat = GestionRequete.filtrerParType("Travaux routiers");
+        List<Requete> resultat = GestionRequete.filtrerParType("Entretien urbain");
 
         // Vérifications
         assertEquals(2, resultat.size());

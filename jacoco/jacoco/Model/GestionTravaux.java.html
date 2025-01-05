@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestionTravaux.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">GestionTravaux.java</span></div><h1>GestionTravaux.java</h1><pre class="source lang-java linenums">package Model;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+/**
+ * La classe GestionTravaux permet de gérer les travaux en prenant les catégories de
+ * travaux depuis une API externe et en les sauvegardant dans un fichier JSON.
+ * Cela permet de mapper ces catégories à notre liste de type de travaux utilisée
+ * lors de la recherche de travaux par exemple.
+ */
+<span class="nc" id="L16">public class GestionTravaux {</span>
+
+    // Chemin du fichier pour les catégories des travaux
+    private static final String FICHIER_TRAVAUX = &quot;data/reason_categories.json&quot;;
+    // Lien vers l'API des travaux
+    private static final String API_URL_TRAVAUX = &quot; https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=cc41b532-f12d-40fb-9f55-eb58c9a2b12b&quot;;
+
+    /**
+     * Cette méthode permet de récupérer tous les types de travail (catégories) de l'API des travaux de façon distincte.
+     * Elle prend les données, puis les retourne en forme de JSONObject.
+     *
+     * @return Un JSONObject contenant les catégories extraites de l'API, ou null en cas d'erreur.
+     */
+    public static JSONObject extraireReasonCategories(){
+        // Récupérer les données
+<span class="fc" id="L31">        JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_TRAVAUX);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (jsonResponse == null) {</span>
+<span class="nc" id="L33">            System.out.println(&quot;Impossible de récupérer les données de l'API.&quot;);</span>
+<span class="nc" id="L34">            return null;</span>
+        }
+        // Parcourir le json et extraire l'objet result ainsi que records qui est le tableau d'objets
+<span class="fc" id="L37">        JSONArray records = jsonResponse.getJSONObject(&quot;result&quot;).getJSONArray(&quot;records&quot;);</span>
+
+        // Initialiser un ensemble pour garder les types (ou catégories) distincts
+<span class="fc" id="L40">        Set&lt;String&gt; uniqueCategories = new HashSet&lt;&gt;();</span>
+
+        // Parcourir le tableau d'objets et récupérer les catégories
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = 0; i &lt; records.length(); i++) {</span>
+<span class="fc" id="L44">            JSONObject record = records.getJSONObject(i);</span>
+<span class="fc" id="L45">            String reasonCategory = record.optString(&quot;reason_category&quot;, &quot;&quot;);</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">            if (!reasonCategory.isEmpty()) {</span>
+<span class="fc" id="L47">                uniqueCategories.add(reasonCategory);</span>
+            }
+        }
+        // Placer les données récoltées dans le json
+<span class="fc" id="L51">        JSONObject result = new JSONObject();</span>
+<span class="fc" id="L52">        result.put(&quot;categories&quot;, uniqueCategories);</span>
+<span class="fc" id="L53">        return result;</span>
+    }
+
+    /**
+     * Cette méthode permet d'écrire un JSONObject dans un fichier JSON.
+     *
+     * @param jsonObject Le JSONObject à écrire.
+     * @param cheminFichier Le chemin du fichier dans lequel sauvegarder les données.
+     */
+    public static void ecrireJsonDansFichier(JSONObject jsonObject, String cheminFichier) {
+<span class="fc" id="L63">        try (FileWriter file = new FileWriter(cheminFichier)) {</span>
+<span class="fc" id="L64">            file.write(jsonObject.toString(4));</span>
+<span class="fc" id="L65">            file.flush();</span>
+<span class="fc" id="L66">            System.out.println(&quot;Fichier JSON créé avec succès à : &quot; + cheminFichier);</span>
+<span class="nc" id="L67">        } catch (IOException e) {</span>
+<span class="nc" id="L68">            System.out.println(&quot;Erreur lors de l'écriture du fichier JSON : &quot; + e.getMessage());</span>
+<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Cette méthode extrait les catégories de travaux via l'API et les sauvegarde dans un fichier JSON.
+     * Elle est appelée depuis la classe MaVilleApp.
+     */
+    public static void sauvegarderCategoriesDansFichier() {
+<span class="fc" id="L77">        JSONObject categoriesJson = extraireReasonCategories();</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (categoriesJson != null) {</span>
+<span class="fc" id="L79">            ecrireJsonDansFichier(categoriesJson, FICHIER_TRAVAUX);</span>
+        }
+<span class="fc" id="L81">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

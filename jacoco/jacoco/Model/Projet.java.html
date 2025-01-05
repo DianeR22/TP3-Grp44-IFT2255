@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Projet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Projet.java</span></div><h1>Projet.java</h1><pre class="source lang-java linenums">package Model;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
+/**
+ * Représente un projet de travaux avec ses détails.
+ *
+ * Cette classe contient des informations sur un projet, telles que
+ * le titre, la description, le type de travaux, les quartiers et rues
+ * affectés, les dates et horaires, ainsi que le statut du projet.
+ */
+public class Projet {
+    private String titre;
+    private String description;
+    private String typeTravaux;
+    private List&lt;String&gt; quartiersAffectes; // Corrigé : List&lt;String&gt;
+    private List&lt;String&gt; ruesAffectees;
+    private List&lt;String&gt; codesPostauxAffectes;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+    private LocalTime heureDebut;
+    private LocalTime heureFin;
+    private String statut; // Prévu, En cours, Terminé
+
+    /**
+     * Initialise un nouveau projet avec les informations fournies.
+     *
+     * @param titre               Le titre du projet.
+     * @param description         La description du projet.
+     * @param typeTravaux         Le type de travaux effectués.
+     * @param quartiersAffectes   La liste des quartiers affectés.
+     * @param ruesAffectees       La liste des rues affectées.
+     * @param codesPostauxAffectes La liste des codes postaux affectés.
+     * @param dateDebut           La date de début des travaux.
+     * @param dateFin             La date de fin des travaux.
+     * @param heureDebut          L'heure de début des travaux chaque jour.
+     * @param heureFin            L'heure de fin des travaux chaque jour.
+     */
+    public Projet(String titre, String description, String typeTravaux, List&lt;String&gt; quartiersAffectes,
+                  List&lt;String&gt; ruesAffectees, List&lt;String&gt; codesPostauxAffectes,
+                  LocalDate dateDebut, LocalDate dateFin,
+<span class="fc" id="L44">                  LocalTime heureDebut, LocalTime heureFin) {</span>
+<span class="fc" id="L45">        this.titre = titre;</span>
+<span class="fc" id="L46">        this.description = description;</span>
+<span class="fc" id="L47">        this.typeTravaux = typeTravaux;</span>
+<span class="fc" id="L48">        this.quartiersAffectes = quartiersAffectes;</span>
+<span class="fc" id="L49">        this.ruesAffectees = ruesAffectees;</span>
+<span class="fc" id="L50">        this.codesPostauxAffectes = codesPostauxAffectes;</span>
+<span class="fc" id="L51">        this.dateDebut = dateDebut;</span>
+<span class="fc" id="L52">        this.dateFin = dateFin;</span>
+<span class="fc" id="L53">        this.heureDebut = heureDebut;</span>
+<span class="fc" id="L54">        this.heureFin = heureFin;</span>
+<span class="fc" id="L55">        this.statut = &quot;Prévu&quot;; // Par défaut</span>
+<span class="fc" id="L56">    }</span>
+
+    // Getters et setters
+
+    /**
+     * Retourne le titre du projet.
+     *
+     * @return Le titre du projet.
+     */
+    public String getTitre() {
+<span class="fc" id="L66">        return titre;</span>
+    }
+
+    /**
+     * Modifie le titre du projet.
+     *
+     * @param titre Le nouveau titre du projet.
+     */
+    public void setTitre(String titre) {
+<span class="nc" id="L75">        this.titre = titre;</span>
+<span class="nc" id="L76">    }</span>
+
+    /**
+     * Retourne la description du projet.
+     *
+     * @return La description du projet.
+     */
+    public String getDescription() {
+<span class="fc" id="L84">        return description;</span>
+    }
+
+    /**
+     * Modifie la description du projet.
+     *
+     * @param description La nouvelle description du projet.
+     */
+    public void setDescription(String description) {
+<span class="nc" id="L93">        this.description = description;</span>
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * Retourne le type de travaux effectués.
+     *
+     * @return Le type de travaux.
+     */
+    public String getTypeTravaux() {
+<span class="fc" id="L102">        return typeTravaux;</span>
+    }
+
+    /**
+     * Modifie le type de travaux effectués.
+     *
+     * @param typeTravaux Le nouveau type de travaux.
+     */
+    public void setTypeTravaux(String typeTravaux) {
+<span class="nc" id="L111">        this.typeTravaux = typeTravaux;</span>
+<span class="nc" id="L112">    }</span>
+
+    /**
+     * Retourne la liste des quartiers affectés par le projet.
+     *
+     * @return Une liste de quartiers affectés.
+     */
+    public List&lt;String&gt; getQuartiersAffectes() {
+<span class="fc" id="L120">        return quartiersAffectes;</span>
+    }
+
+    /**
+     * Modifie la liste des quartiers affectés par le projet.
+     *
+     * @param quartiersAffectes La nouvelle liste de quartiers affectés.
+     */
+    public void setQuartiersAffectes(List&lt;String&gt; quartiersAffectes) {
+<span class="nc" id="L129">        this.quartiersAffectes = quartiersAffectes;</span>
+<span class="nc" id="L130">    }</span>
+
+    /**
+     * Retourne la liste des rues affectées par le projet.
+     *
+     * @return Une liste de rues affectées.
+     */
+    public List&lt;String&gt; getRuesAffectees() {
+<span class="fc" id="L138">        return ruesAffectees;</span>
+    }
+
+    /**
+     * Modifie la liste des rues affectées par le projet.
+     *
+     * @param ruesAffectees La nouvelle liste de rues affectées.
+     */
+    public void setRuesAffectees(List&lt;String&gt; ruesAffectees) {
+<span class="nc" id="L147">        this.ruesAffectees = ruesAffectees;</span>
+<span class="nc" id="L148">    }</span>
+
+    /**
+     * Retourne la liste des codes postaux affectés par le projet.
+     *
+     * @return Une liste de codes postaux affectés.
+     */
+    public List&lt;String&gt; getCodesPostauxAffectes() {
+<span class="fc" id="L156">        return codesPostauxAffectes;</span>
+    }
+
+    /**
+     * Modifie la liste des codes postaux affectés par le projet.
+     *
+     * @param codesPostauxAffectes La nouvelle liste de codes postaux affectés.
+     */
+    public void setCodesPostauxAffectes(List&lt;String&gt; codesPostauxAffectes) {
+<span class="nc" id="L165">        this.codesPostauxAffectes = codesPostauxAffectes;</span>
+<span class="nc" id="L166">    }</span>
+
+    /**
+     * Retourne la date de début des travaux.
+     *
+     * @return La date de début.
+     */
+    public LocalDate getDateDebut() {
+<span class="fc" id="L174">        return dateDebut;</span>
+    }
+
+    /**
+     * Modifie la date de début des travaux.
+     *
+     * @param dateDebut La nouvelle date de début.
+     */
+    public void setDateDebut(LocalDate dateDebut) {
+<span class="nc" id="L183">        this.dateDebut = dateDebut;</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * Retourne la date de fin des travaux.
+     *
+     * @return La date de fin.
+     */
+    public LocalDate getDateFin() {
+<span class="fc" id="L192">        return dateFin;</span>
+    }
+
+    /**
+     * Modifie la date de fin des travaux.
+     *
+     * @param dateFin La nouvelle date de fin.
+     */
+    public void setDateFin(LocalDate dateFin) {
+<span class="nc" id="L201">        this.dateFin = dateFin;</span>
+<span class="nc" id="L202">    }</span>
+
+    /**
+     * Retourne l'heure de début des travaux chaque jour.
+     *
+     * @return L'heure de début.
+     */
+    public LocalTime getHeureDebut() {
+<span class="fc" id="L210">        return heureDebut;</span>
+    }
+
+    /**
+     * Modifie l'heure de début des travaux chaque jour.
+     *
+     * @param heureDebut La nouvelle heure de début.
+     */
+    public void setHeureDebut(LocalTime heureDebut) {
+<span class="nc" id="L219">        this.heureDebut = heureDebut;</span>
+<span class="nc" id="L220">    }</span>
+
+    /**
+     * Retourne l'heure de fin des travaux chaque jour.
+     *
+     * @return L'heure de fin.
+     */
+    public LocalTime getHeureFin() {
+<span class="fc" id="L228">        return heureFin;</span>
+    }
+
+    /**
+     * Modifie l'heure de fin des travaux chaque jour.
+     *
+     * @param heureFin La nouvelle heure de fin.
+     */
+    public void setHeureFin(LocalTime heureFin) {
+<span class="nc" id="L237">        this.heureFin = heureFin;</span>
+<span class="nc" id="L238">    }</span>
+
+    /**
+     * Retourne le statut du projet.
+     *
+     * @return Le statut du projet.
+     */
+    public String getStatut() {
+<span class="fc" id="L246">        return statut;</span>
+    }
+
+    /**
+     * Modifie le statut du projet.
+     *
+     * @param statut Le nouveau statut du projet.
+     */
+    public void setStatut(String statut) {
+<span class="fc" id="L255">        this.statut = statut;</span>
+<span class="fc" id="L256">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

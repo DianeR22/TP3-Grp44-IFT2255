@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Preference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Preference.java</span></div><h1>Preference.java</h1><pre class="source lang-java linenums">package Model;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Gère les préférences horaires des résidents.
+ *
+ * Cette classe permet de charger, sauvegarder, ajouter, et supprimer des
+ * préférences horaires associées à une adresse courriel spécifique.
+ * Les préférences sont stockées dans un fichier JSON.
+ */
+public class Preference {
+    private String email; // Email du résident
+    private List&lt;PreferenceEntry&gt; preferences; // Liste des préférences
+
+    /**
+     * Initialise une instance de préférences pour un résident donné.
+     *
+     * Le constructeur charge automatiquement les préférences existantes
+     * associées à l'adresse courriel fournie.
+     *
+     * @param email L'adresse courriel du résident.
+     */
+<span class="nc" id="L33">    public Preference(String email) {</span>
+<span class="nc" id="L34">        this.email = email;</span>
+<span class="nc" id="L35">        this.preferences = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L36">        loadPreferences(); // Charger les préférences existantes pour cet email</span>
+<span class="nc" id="L37">    }</span>
+
+    public String getEmail() {
+<span class="nc" id="L40">        return email;</span>
+    }
+
+    /**
+     * Retourne l'adresse courriel associée aux préférences.
+     *
+     * @return L'adresse courriel sous forme de chaîne.
+     */
+    public List&lt;PreferenceEntry&gt; getPreferences() {
+<span class="nc" id="L49">        return preferences;</span>
+    }
+
+    /**
+     * Ajoute une nouvelle préférence horaire pour le résident.
+     *
+     * Cette méthode ajoute une préférence composée d'un jour,
+     * d'une heure de début et d'une heure de fin à la liste,
+     * et sauvegarde les préférences mises à jour dans le fichier JSON.
+     *
+     * @param jour        Le jour de la semaine pour la préférence (ex. &quot;Lundi&quot;).
+     * @param heureDebut  L'heure de début de la préférence.
+     * @param heureFin    L'heure de fin de la préférence.
+     */
+    public void ajouterPreference(String jour, LocalTime heureDebut, LocalTime heureFin) {
+<span class="nc" id="L64">        PreferenceEntry preferenceEntry = new PreferenceEntry(jour, heureDebut, heureFin);</span>
+<span class="nc" id="L65">        preferences.add(preferenceEntry);</span>
+<span class="nc" id="L66">        savePreferences(); // Sauvegarder les préférences après ajout</span>
+<span class="nc" id="L67">    }</span>
+
+    /**
+     * Charge les préférences horaires du résident depuis un fichier JSON.
+     *
+     * Cette méthode lit le fichier `preferences.json`, filtre les préférences
+     * associées à l'adresse courriel du résident, et les charge dans l'attribut
+     * {@code preferences}.
+     */
+    private void loadPreferences() {
+        try {
+<span class="nc" id="L78">            Path filePath = Path.of(&quot;data/preferences.json&quot;);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (!Files.exists(filePath)) return; // Pas de fichier existant</span>
+
+<span class="nc" id="L81">            String jsonString = Files.readString(filePath);</span>
+<span class="nc" id="L82">            JSONArray jsonArray = new JSONArray(jsonString);</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            for (int i = 0; i &lt; jsonArray.length(); i++) {</span>
+<span class="nc" id="L85">                JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                if (jsonObject.getString(&quot;email&quot;).equals(email)) {</span>
+<span class="nc" id="L87">                    JSONArray prefArray = jsonObject.getJSONArray(&quot;preferences&quot;);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                    for (int j = 0; j &lt; prefArray.length(); j++) {</span>
+<span class="nc" id="L89">                        JSONObject prefObject = prefArray.getJSONObject(j);</span>
+<span class="nc" id="L90">                        String jour = prefObject.getString(&quot;jour&quot;);</span>
+<span class="nc" id="L91">                        LocalTime heureDebut = LocalTime.parse(prefObject.getString(&quot;heureDebut&quot;));</span>
+<span class="nc" id="L92">                        LocalTime heureFin = LocalTime.parse(prefObject.getString(&quot;heureFin&quot;));</span>
+<span class="nc" id="L93">                        preferences.add(new PreferenceEntry(jour, heureDebut, heureFin));</span>
+                    }
+<span class="nc" id="L95">                    break;</span>
+                }
+            }
+<span class="nc" id="L98">        } catch (IOException e) {</span>
+<span class="nc" id="L99">            System.out.println(&quot;Erreur lors du chargement des préférences : &quot; + e.getMessage());</span>
+<span class="nc" id="L100">        }</span>
+<span class="nc" id="L101">    }</span>
+
+    /**
+     * Sauvegarde les préférences horaires du résident dans un fichier JSON.
+     *
+     * Cette méthode met à jour les préférences existantes dans le fichier
+     * ou ajoute une nouvelle entrée si l'adresse courriel n'existe pas encore.
+     */
+    private void savePreferences() {
+<span class="nc" id="L110">        JSONArray jsonArray = new JSONArray();</span>
+
+        try {
+            // Lire les préférences existantes si le fichier existe
+<span class="nc" id="L114">            Path filePath = Path.of(&quot;data/preferences.json&quot;);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (Files.exists(filePath)) {</span>
+<span class="nc" id="L116">                String jsonString = Files.readString(filePath);</span>
+<span class="nc" id="L117">                jsonArray = new JSONArray(jsonString);</span>
+            }
+<span class="nc" id="L119">        } catch (IOException e) {</span>
+<span class="nc" id="L120">            System.out.println(&quot;Erreur lors de la lecture du fichier JSON : &quot; + e.getMessage());</span>
+<span class="nc" id="L121">        }</span>
+
+<span class="nc" id="L123">        boolean emailExists = false;</span>
+
+        // Mettre à jour ou ajouter les préférences pour l'email actuel
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        for (int i = 0; i &lt; jsonArray.length(); i++) {</span>
+<span class="nc" id="L127">            JSONObject jsonObject = jsonArray.getJSONObject(i);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (jsonObject.getString(&quot;email&quot;).equals(email)) {</span>
+<span class="nc" id="L129">                emailExists = true;</span>
+
+                // Remplacer les préférences existantes
+<span class="nc" id="L132">                JSONArray prefArray = new JSONArray();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                for (PreferenceEntry entry : preferences) {</span>
+<span class="nc" id="L134">                    JSONObject prefObject = new JSONObject();</span>
+<span class="nc" id="L135">                    prefObject.put(&quot;jour&quot;, entry.getJour());</span>
+<span class="nc" id="L136">                    prefObject.put(&quot;heureDebut&quot;, entry.getHeureDebut().toString());</span>
+<span class="nc" id="L137">                    prefObject.put(&quot;heureFin&quot;, entry.getHeureFin().toString());</span>
+<span class="nc" id="L138">                    prefArray.put(prefObject);</span>
+<span class="nc" id="L139">                }</span>
+<span class="nc" id="L140">                jsonObject.put(&quot;preferences&quot;, prefArray);</span>
+<span class="nc" id="L141">                break;</span>
+            }
+        }
+
+        // Si l'email n'existe pas, ajouter une nouvelle entrée
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (!emailExists) {</span>
+<span class="nc" id="L147">            JSONObject newEntry = new JSONObject();</span>
+<span class="nc" id="L148">            newEntry.put(&quot;email&quot;, email);</span>
+
+<span class="nc" id="L150">            JSONArray prefArray = new JSONArray();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            for (PreferenceEntry entry : preferences) {</span>
+<span class="nc" id="L152">                JSONObject prefObject = new JSONObject();</span>
+<span class="nc" id="L153">                prefObject.put(&quot;jour&quot;, entry.getJour());</span>
+<span class="nc" id="L154">                prefObject.put(&quot;heureDebut&quot;, entry.getHeureDebut().toString());</span>
+<span class="nc" id="L155">                prefObject.put(&quot;heureFin&quot;, entry.getHeureFin().toString());</span>
+<span class="nc" id="L156">                prefArray.put(prefObject);</span>
+<span class="nc" id="L157">            }</span>
+<span class="nc" id="L158">            newEntry.put(&quot;preferences&quot;, prefArray);</span>
+<span class="nc" id="L159">            jsonArray.put(newEntry);</span>
+        }
+
+        // Sauvegarder les préférences mises à jour
+<span class="nc" id="L163">        try (FileWriter file = new FileWriter(&quot;data/preferences.json&quot;)) {</span>
+<span class="nc" id="L164">            file.write(jsonArray.toString(4)); // Indentation pour la lisibilité</span>
+<span class="nc" id="L165">            file.flush();</span>
+<span class="nc" id="L166">        } catch (IOException e) {</span>
+<span class="nc" id="L167">            System.out.println(&quot;Erreur lors de l'écriture dans le fichier JSON : &quot; + e.getMessage());</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">    }</span>
+
+    /**
+     * Supprime une préférence horaire à un index donné.
+     *
+     * Cette méthode retire une préférence de la liste en fonction de l'index
+     * fourni, et sauvegarde les changements dans le fichier JSON.
+     *
+     * @param index L'index de la préférence à supprimer (0 pour la première entrée).
+     */
+    public void supprimerPreference(int index) {
+<span class="nc bnc" id="L180" title="All 4 branches missed.">        if (index &gt;= 0 &amp;&amp; index &lt; preferences.size()) {</span>
+<span class="nc" id="L181">            preferences.remove(index); // Supprime l'entrée à l'index donné</span>
+<span class="nc" id="L182">            savePreferences(); // Sauvegarde les changements dans le fichier JSON</span>
+        } else {
+<span class="nc" id="L184">            System.out.println(&quot;Index invalide. Aucune préférence supprimée.&quot;);</span>
+        }
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * Représente une entrée de préférence horaire.
+     *
+     * Chaque préférence est définie par un jour, une heure de début,
+     * et une heure de fin.
+     */
+    // Inner class to represent a preference entry
+    public static class PreferenceEntry {
+        private String jour;
+        private LocalTime heureDebut;
+        private LocalTime heureFin;
+
+        /**
+         * Initialise une nouvelle entrée de préférence horaire.
+         *
+         * @param jour       Le jour de la semaine.
+         * @param heureDebut L'heure de début.
+         * @param heureFin   L'heure de fin.
+         */
+<span class="nc" id="L207">        public PreferenceEntry(String jour, LocalTime heureDebut, LocalTime heureFin) {</span>
+<span class="nc" id="L208">            this.jour = jour;</span>
+<span class="nc" id="L209">            this.heureDebut = heureDebut;</span>
+<span class="nc" id="L210">            this.heureFin = heureFin;</span>
+<span class="nc" id="L211">        }</span>
+
+        /**
+         * Retourne le jour de la préférence.
+         *
+         * @return Le jour sous forme de chaîne.
+         */
+        public String getJour() {
+<span class="nc" id="L219">            return jour;</span>
+        }
+
+        /**
+         * Retourne l'heure de début de la préférence.
+         *
+         * @return L'heure de début sous forme d'objet {@link LocalTime}.
+         */
+        public LocalTime getHeureDebut() {
+<span class="nc" id="L228">            return heureDebut;</span>
+        }
+
+        /**
+         * Retourne l'heure de fin de la préférence.
+         *
+         * @return L'heure de fin sous forme d'objet {@link LocalTime}.
+         */
+        public LocalTime getHeureFin() {
+<span class="nc" id="L237">            return heureFin;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

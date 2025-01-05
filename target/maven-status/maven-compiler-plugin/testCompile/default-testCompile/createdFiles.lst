@@ -1,0 +1,7 @@
+Model/GestionResidentsTest.class
+Model/ValiderTest.class
+Controller/TravauxControllerTest.class
+Controller/EntravesControllerTest.class
+Controller/IntervenantControllerTest.class
+Model/GestionProjetsTest.class
+Model/GestionTravauxTest.class

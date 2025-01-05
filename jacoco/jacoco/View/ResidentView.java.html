@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResidentView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">View</a> &gt; <span class="el_source">ResidentView.java</span></div><h1>ResidentView.java</h1><pre class="source lang-java linenums">package View;
+
+import Controller.*;
+import Model.GestionProjets;
+import Model.GestionRequete;
+import Model.Projet;
+import Model.Resident;
+
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * La classe ResidentView gère l'affichage du menu et l'interaction du résident
+ * avec l'application.
+ */
+<span class="nc" id="L16">public class ResidentView {</span>
+
+    /**
+     * Méthode qui affiche le menu d'un résident et permet à l'utilisateur de choisir parmi
+     * des options de gestion des travaux et des requêtes.
+     */
+    public static void afficherMenuResident() {
+<span class="nc" id="L23">        System.out.println(&quot;Vous êtes connecté!&quot;);</span>
+
+        while(true){
+           // int nombreNonVues = NotificationController.obtenirNombreNotificationsNonVues();
+
+<span class="nc" id="L28">            System.out.println(&quot;\nMenu Résident :&quot;);</span>
+<span class="nc" id="L29">            System.out.println(&quot;1. Modifier son profil&quot;);</span>
+<span class="nc" id="L30">            System.out.println(&quot;2. Rechercher et consulter travaux en cours&quot;);</span>
+<span class="nc" id="L31">            System.out.println(&quot;3. Consulter les travaux pour les 3 prochains mois&quot;);</span>
+<span class="nc" id="L32">            System.out.println(&quot;4. Notifications&quot;); //(&quot; + nombreNonVues + &quot; non lues)&quot;</span>
+<span class="nc" id="L33">            System.out.println(&quot;5. Modifier vos préférences horaires&quot;);</span>
+<span class="nc" id="L34">            System.out.println(&quot;6. Soumettre une requête de travail&quot;);</span>
+<span class="nc" id="L35">            System.out.println(&quot;7. Faire le suivi d'une requête&quot;);</span>
+<span class="nc" id="L36">            System.out.println(&quot;8. Consulter les entraves routières.&quot;);</span>
+<span class="nc" id="L37">            System.out.println(&quot;9. Retourner au menu principal&quot;);</span>
+
+            // Récupérer le input de l'utilisateur
+<span class="nc" id="L40">            Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L41">            String input = scanner.nextLine();</span>
+
+            // Traitement de l'option choisie
+<span class="nc bnc" id="L44" title="All 10 branches missed.">            switch (input) {</span>
+                case &quot;1&quot;:
+                    // Modifier le profil (non définie ici)
+<span class="nc" id="L47">                    System.out.println(&quot;Vous êtes sur la section : Modifier son profil ! &quot; +</span>
+                            &quot;Cette option n'est pas encore implémentée!&quot;);
+<span class="nc" id="L49">                    retour(scanner);</span>
+<span class="nc" id="L50">                    break;</span>
+                case &quot;2&quot;:
+                    // Option pour rechercher et consulter les travaux en cours
+<span class="nc" id="L53">                    System.out.println(&quot;Vous êtes sur la section : Rechercher et consulter travaux en cours !&quot;);</span>
+<span class="nc" id="L54">                    TravauxController.afficherMenu(scanner);</span>
+<span class="nc" id="L55">                    retour(scanner);</span>
+<span class="nc" id="L56">                    break;</span>
+                case &quot;3&quot;:
+<span class="nc" id="L58">                    System.out.println(&quot;Vous êtes sur la section : Consulter les travaux à venir dans les 3 prochains mois !&quot;);</span>
+
+<span class="nc" id="L60">                    List&lt;Projet&gt; projetsAvenir = GestionProjets.getProjetsAvenirProchains3Mois();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">                    if (projetsAvenir.isEmpty()) {</span>
+<span class="nc" id="L62">                        System.out.println(&quot;Aucun projet à venir dans les 3 prochains mois.&quot;);</span>
+                    } else {
+<span class="nc" id="L64">                        System.out.println(&quot;Voici les projets qui débuteront dans les 3 prochains mois :&quot;);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                        for (Projet p : projetsAvenir) {</span>
+<span class="nc" id="L66">                            System.out.println(&quot;----------------------------------&quot;);</span>
+<span class="nc" id="L67">                            System.out.println(&quot;Titre : &quot; + p.getTitre());</span>
+<span class="nc" id="L68">                            System.out.println(&quot;Description : &quot; + p.getDescription());</span>
+<span class="nc" id="L69">                            System.out.println(&quot;Type de travaux : &quot; + p.getTypeTravaux());</span>
+<span class="nc" id="L70">                            System.out.println(&quot;Rues affectées :&quot;+ p.getRuesAffectees());</span>
+<span class="nc" id="L71">                            System.out.println(&quot;Quartiers affectés : &quot; + p.getQuartiersAffectes());</span>
+<span class="nc" id="L72">                            System.out.println(&quot;Date de début : &quot; + p.getDateDebut());</span>
+<span class="nc" id="L73">                            System.out.println(&quot;Date de fin : &quot; + p.getDateFin());</span>
+<span class="nc" id="L74">                            System.out.println(&quot;Heure de début : &quot; + p.getHeureDebut());</span>
+<span class="nc" id="L75">                            System.out.println(&quot;Heure de fin : &quot; + p.getHeureFin());</span>
+<span class="nc" id="L76">                            System.out.println(&quot;----------------------------------&quot;);</span>
+<span class="nc" id="L77">                        }</span>
+                    }
+<span class="nc" id="L79">                    retour(scanner);</span>
+<span class="nc" id="L80">                    break;</span>
+
+                case &quot;4&quot;:
+                    // Notifications
+                   // NotificationView.afficherZoneNotification(scanner);
+<span class="nc" id="L85">                    retour(scanner);</span>
+<span class="nc" id="L86">                    break;</span>
+                case &quot;5&quot;:
+                    // Modifier les préférences horaires
+<span class="nc" id="L89">                    System.out.println(&quot;Vous êtes sur la section : Modifier vos préférences horaires !&quot;);</span>
+<span class="nc" id="L90">                    Resident res = Resident.getResidentConnecte();</span>
+<span class="nc" id="L91">                    PreferenceView.afficherMenuPreferences(res);</span>
+<span class="nc" id="L92">                    retour(scanner);</span>
+<span class="nc" id="L93">                    break;</span>
+                case &quot;6&quot;:
+                    // Soumettre une requête de travail
+<span class="nc" id="L96">                    System.out.println(&quot;Vous êtes sur la section : Soumettre une requête de travail !&quot;);</span>
+<span class="nc" id="L97">                    RequeteController.obtenirInformationsRequete();</span>
+<span class="nc" id="L98">                    retour(scanner);</span>
+<span class="nc" id="L99">                    break;</span>
+                case &quot;7&quot;:
+                    // Faire suivi
+<span class="nc" id="L102">                    System.out.println(&quot;Vous êtes sur la section : Faire le suivi d'une requête !&quot;);</span>
+<span class="nc" id="L103">                    Resident resident = Resident.getResidentConnecte();</span>
+<span class="nc" id="L104">                    GestionRequete.suiviRequete(resident);</span>
+<span class="nc" id="L105">                    retour(scanner);</span>
+<span class="nc" id="L106">                    break;</span>
+                case &quot;8&quot;:
+                    // Consulter les entraves
+<span class="nc" id="L109">                    EntraveController.afficherMenu(scanner);</span>
+<span class="nc" id="L110">                    retour(scanner);</span>
+<span class="nc" id="L111">                    break;</span>
+                case &quot;9&quot;:
+<span class="nc" id="L113">                    ConnexionController.afficherMenuPrincipal();</span>
+<span class="nc" id="L114">                    break;</span>
+                default:
+<span class="nc" id="L116">                    System.out.println(&quot;Option invalide. Veuillez essayer à nouveau.&quot;);</span>
+            }
+<span class="nc" id="L118">        }</span>
+    }
+
+    /**
+     * Méthode permettant à l'utilisateur de revenir
+     * au menu des résidents ou retourner au menu principal.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
+    private static void retour(Scanner scanner){
+<span class="nc" id="L128">        System.out.println(&quot;Voulez-vous revenir au menu des résidents (1) ou retourner au menu principal (2)? Veuillez repondre par 1 ou par 2.&quot;);</span>
+<span class="nc" id="L129">        String reponse = scanner.nextLine();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (reponse.equalsIgnoreCase(&quot;1&quot;)) {</span>
+            //
+        } else{
+<span class="nc" id="L133">            System.out.println(&quot;Retour au menu principal!&quot;);</span>
+<span class="nc" id="L134">            ConnexionController.afficherMenuPrincipal();</span>
+        }
+<span class="nc" id="L136">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

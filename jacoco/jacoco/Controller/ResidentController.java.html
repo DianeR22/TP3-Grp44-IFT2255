@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResidentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Controller</a> &gt; <span class="el_source">ResidentController.java</span></div><h1>ResidentController.java</h1><pre class="source lang-java linenums">package Controller;
+
+import Model.Resident;
+import Model.Preference;
+import View.ResidentView;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+
+/**
+ * Contrôleur pour la gestion des fonctionnalités liées aux résidents.
+ *
+ * Cette classe gère les interactions des résidents avec l'application,
+ * notamment l'ajout, la suppression et l'affichage de leurs préférences
+ * horaires, ainsi que la navigation dans les menus associés.
+ */
+<span class="nc" id="L19">public class ResidentController {</span>
+
+<span class="nc" id="L21">    private static final String[] JOURS_DE_LA_SEMAINE = {</span>
+            &quot;Lundi&quot;, &quot;Mardi&quot;, &quot;Mercredi&quot;, &quot;Jeudi&quot;, &quot;Vendredi&quot;, &quot;Samedi&quot;, &quot;Dimanche&quot;
+    };
+
+    /**
+     * Affiche le menu principal des résidents.
+     *
+     * Cette méthode redirige vers la vue associée aux résidents pour leur permettre
+     * d'interagir avec les fonctionnalités disponibles, comme la gestion des travaux
+     * ou la modification de leurs préférences.
+     */
+    public static void afficherMenuResident() {
+<span class="nc" id="L33">        ResidentView.afficherMenuResident();</span>
+<span class="nc" id="L34">    }</span>
+
+
+    /**
+     * Ajoute une nouvelle préférence horaire pour un résident.
+     *
+     * Cette méthode demande à l'utilisateur de fournir :
+     * &lt;ul&gt;
+     *   &lt;li&gt;Un jour de la semaine.&lt;/li&gt;
+     *   &lt;li&gt;Une heure de début (entre 08:00 et 17:00).&lt;/li&gt;
+     *   &lt;li&gt;Une heure de fin (entre 08:00 et 17:00, après l'heure de début).&lt;/li&gt;
+     * &lt;/ul&gt;
+     * Une fois validées, ces informations sont ajoutées à la liste des préférences
+     * du résident, et sauvegardées dans le modèle.
+     *
+     * @param resident L'objet {@link Resident} correspondant à l'utilisateur connecté.
+     */
+    public static void ajouterPreference(Resident resident) {
+<span class="nc" id="L52">        Scanner scanner = new Scanner(System.in);</span>
+
+        // Récupérer le jour de la semaine
+<span class="nc" id="L55">        String jour = null;</span>
+        while (true) {
+<span class="nc" id="L57">            System.out.println(&quot;Veuillez entrer le jour de votre préférence (ex: Lundi, Mardi, etc.):&quot;);</span>
+<span class="nc" id="L58">            jour = scanner.nextLine().trim();</span>
+<span class="nc" id="L59">            boolean jourValide = false;</span>
+
+            // Vérifier si le jour est valide
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            for (String j : JOURS_DE_LA_SEMAINE) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (j.equalsIgnoreCase(jour)) {</span>
+<span class="nc" id="L64">                    jourValide = true;</span>
+<span class="nc" id="L65">                    break;</span>
+                }
+            }
+
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (jourValide) {</span>
+<span class="nc" id="L70">                break; // Sortir de la boucle si le jour est valide</span>
+            } else {
+<span class="nc" id="L72">                System.out.println(&quot;Jour invalide. Veuillez entrer un jour valide.&quot;);</span>
+            }
+<span class="nc" id="L74">        }</span>
+
+        // Récupérer l'heure de début
+<span class="nc" id="L77">        LocalTime heureDebut = null;</span>
+        while (true) {
+<span class="nc" id="L79">            System.out.println(&quot;Veuillez entrer l'heure de début de votre préférence (format: HH:mm):&quot;);</span>
+<span class="nc" id="L80">            String heureDebutInput = scanner.nextLine().trim();</span>
+            try {
+<span class="nc" id="L82">                heureDebut = LocalTime.parse(heureDebutInput, DateTimeFormatter.ofPattern(&quot;HH:mm&quot;));</span>
+                // Validate that it is within the range
+<span class="nc" id="L84">                LocalTime heureMin = LocalTime.of(8, 0);  // 08:00</span>
+<span class="nc" id="L85">                LocalTime heureMax = LocalTime.of(17, 0); // 17:00</span>
+<span class="nc bnc" id="L86" title="All 4 branches missed.">                if (heureDebut.isBefore(heureMin) || heureDebut.isAfter(heureMax)) {</span>
+<span class="nc" id="L87">                    System.out.println(&quot;L'heure de début doit être entre 08:00 et 17:00. Veuillez réessayer.&quot;);</span>
+                } else {
+<span class="nc" id="L89">                    break; // Exit the loop if the time is valid</span>
+                }
+<span class="nc" id="L91">            } catch (DateTimeParseException e) {</span>
+<span class="nc" id="L92">                System.out.println(&quot;Format d'heure invalide. Veuillez réessayer avec le format HH:mm&quot;);</span>
+<span class="nc" id="L93">            }</span>
+<span class="nc" id="L94">        }</span>
+
+        // Récupérer l'heure de fin
+<span class="nc" id="L97">        LocalTime heureFin = null;</span>
+        while (true) {
+<span class="nc" id="L99">            System.out.println(&quot;Veuillez entrer l'heure de fin de votre préférence (format: HH:mm):&quot;);</span>
+<span class="nc" id="L100">            String heureFinInput = scanner.nextLine().trim();</span>
+            try {
+<span class="nc" id="L102">                heureFin = LocalTime.parse(heureFinInput, DateTimeFormatter.ofPattern(&quot;HH:mm&quot;));</span>
+                // Validate that it is within the range
+<span class="nc" id="L104">                LocalTime heureMin = LocalTime.of(8, 0);  // 08:00</span>
+<span class="nc" id="L105">                LocalTime heureMax = LocalTime.of(17, 0); // 17:00</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">                if (heureFin.isBefore(heureMin) || heureFin.isAfter(heureMax)) {</span>
+<span class="nc" id="L107">                    System.out.println(&quot;L'heure de fin doit être entre 08:00 et 17:00. Veuillez réessayer.&quot;);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                } else if (!heureFin.isAfter(heureDebut)) {</span>
+<span class="nc" id="L109">                    System.out.println(&quot;L'heure de fin doit être après l'heure de début. Veuillez réessayer.&quot;);</span>
+                } else {
+<span class="nc" id="L111">                    break; // Exit the loop if the time is valid</span>
+                }
+<span class="nc" id="L113">            } catch (DateTimeParseException e) {</span>
+<span class="nc" id="L114">                System.out.println(&quot;Format d'heure invalide. Veuillez réessayer avec le format HH:mm&quot;);</span>
+<span class="nc" id="L115">            }</span>
+<span class="nc" id="L116">        }</span>
+
+        // Ajouter la préférence au modèle et save
+<span class="nc" id="L119">        Preference preference = new Preference(resident.getAdresseCourriel());</span>
+<span class="nc" id="L120">        preference.ajouterPreference(jour, heureDebut, heureFin);</span>
+
+<span class="nc" id="L122">        System.out.println(&quot;Préférence ajoutée avec succès !&quot;);</span>
+<span class="nc" id="L123">    }</span>
+
+    /**
+     * Affiche les préférences horaires actuelles du résident.
+     *
+     * Cette méthode récupère les préférences associées au résident connecté
+     * et les affiche dans un format lisible. Si aucune préférence n'est trouvée,
+     * un message approprié est affiché.
+     *
+     * @param resident L'objet {@link Resident} correspondant à l'utilisateur connecté.
+     */
+    public static void afficherPreferences(Resident resident) {
+<span class="nc" id="L135">        System.out.println(&quot;\nVos préférences actuelles :&quot;);</span>
+<span class="nc" id="L136">        Preference preference = new Preference(resident.getAdresseCourriel());</span>
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (preference.getPreferences().isEmpty()) {</span>
+<span class="nc" id="L139">            System.out.println(&quot;Aucune préférence trouvée.&quot;);</span>
+        } else {
+<span class="nc" id="L141">            int index = 1;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            for (Preference.PreferenceEntry entry : preference.getPreferences()) {</span>
+<span class="nc" id="L143">                System.out.println(index + &quot;. Jour : &quot; + entry.getJour() +</span>
+<span class="nc" id="L144">                        &quot;, Heure de début : &quot; + entry.getHeureDebut() +</span>
+<span class="nc" id="L145">                        &quot;, Heure de fin : &quot; + entry.getHeureFin());</span>
+<span class="nc" id="L146">                index++;</span>
+<span class="nc" id="L147">            }</span>
+        }
+<span class="nc" id="L149">    }</span>
+
+    /**
+     * Supprime une préférence horaire pour un résident.
+     *
+     * Cette méthode affiche les préférences actuelles du résident, puis
+     * demande à l'utilisateur de sélectionner la préférence à supprimer
+     * par son numéro. La préférence sélectionnée est ensuite supprimée
+     * et les changements sont sauvegardés.
+     *
+     * @param resident L'objet {@link Resident} correspondant à l'utilisateur connecté.
+     */
+    public static void supprimerPreference(Resident resident) {
+<span class="nc" id="L162">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L163">        Preference preference = new Preference(resident.getAdresseCourriel());</span>
+
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (preference.getPreferences().isEmpty()) {</span>
+<span class="nc" id="L166">            System.out.println(&quot;Aucune préférence à supprimer.&quot;);</span>
+<span class="nc" id="L167">            return;</span>
+        }
+
+<span class="nc" id="L170">        afficherPreferences(resident); // Affiche les préférences avant suppression</span>
+
+<span class="nc" id="L172">        System.out.println(&quot;\nEntrez le numéro de la préférence que vous souhaitez supprimer :&quot;);</span>
+<span class="nc" id="L173">        int choix = scanner.nextInt();</span>
+<span class="nc" id="L174">        scanner.nextLine(); // Consomme la nouvelle ligne</span>
+
+<span class="nc bnc" id="L176" title="All 4 branches missed.">        if (choix &lt; 1 || choix &gt; preference.getPreferences().size()) {</span>
+<span class="nc" id="L177">            System.out.println(&quot;Numéro invalide. Aucune préférence supprimée.&quot;);</span>
+        } else {
+<span class="nc" id="L179">            preference.supprimerPreference(choix - 1); // Supprimer la préférence par index</span>
+<span class="nc" id="L180">            System.out.println(&quot;Préférence supprimée avec succès !&quot;);</span>
+        }
+<span class="nc" id="L182">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Candidature.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Candidature.java</span></div><h1>Candidature.java</h1><pre class="source lang-java linenums">package Model;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Formatter;
+
+/**
+ * Classe représentant une candidature appartenant à un intervenant
+ * pour répondre à une requête d'un des résidents.
+ */
+public class Candidature {
+    // Attributs d'une candidature
+    /**
+     * La date de début proposée pour la candidature.
+     */
+    private String dateDebut;
+
+    /**
+     * La date de fin proposée pour la candidature.
+     */
+    private String dateFin;
+
+    /**
+     * La requête associée à cette candidature.
+     */
+    private Requete requete;
+
+    /**
+     * L'intervenant qui soumet la candidature.
+     */
+    private Intervenant intervenant;
+
+    /**
+     * Un message optionnel laissé par le résident pour l'intervenant qui propose la candidature.
+     */
+    private String messageResident;
+
+    /**
+     * L'état actuel de la candidature (par défaut : &quot;En attente&quot;).
+     */
+<span class="nc" id="L42">    private String etat = &quot;En attente&quot;;</span>
+
+    // Formatteur pour convertir les chaînes de caractères en LocalDate
+<span class="nc" id="L45">    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+    // Constructeurs
+
+    /**
+     * Constructeur de la classe Candidature avec des paramètres.
+     *
+     * @param dateDebut     La date de début proposée.
+     * @param dateFin       La date de fin proposée.
+     * @param requete       La requête associée à une candidature.
+     * @param intervenant   L'intervenant soumettant la candidature.
+     */
+<span class="nc" id="L56">    public Candidature(String dateDebut, String dateFin, Requete requete, Intervenant intervenant) {</span>
+<span class="nc" id="L57">        this.setDateDebut(dateDebut);</span>
+<span class="nc" id="L58">        this.setDateFin(dateFin);</span>
+<span class="nc" id="L59">        this.requete = requete;</span>
+<span class="nc" id="L60">        this.intervenant = intervenant;</span>
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * Constructeur par défaut de la classe Candidature.
+     */
+<span class="nc" id="L66">    public Candidature() {</span>
+<span class="nc" id="L67">    }</span>
+
+    // Getters et setters
+
+    /**
+     * Retourne la date de début de la candidature.
+     *
+     * @return La date de début.
+     */
+    public String getDateDebut() {
+<span class="nc" id="L77">        return dateDebut;</span>
+    }
+
+    /**
+     * Définit la date de début de la candidature.
+     *
+     * @param dateDebut La date de début (format : yyyy-MM-dd).
+     */
+    public void setDateDebut(String dateDebut) {
+<span class="nc" id="L86">        this.dateDebut = dateDebut;</span>
+<span class="nc" id="L87">    }</span>
+    /**
+     * Retourne la date de fin de la candidature.
+     *
+     * @return La date de fin.
+     */
+    public String getDateFin() {
+<span class="nc" id="L94">        return dateFin;</span>
+    }
+
+    /**
+    * Définit la date de fin de la candidature.
+    *
+    * @param dateFin La date de fin (format : yyyy-MM-dd).
+    */
+    public void setDateFin(String dateFin) {
+<span class="nc" id="L103">        this.dateFin = dateFin;</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Retourne la requête associée à la candidature.
+     *
+     * @return La requête.
+     */
+    public Requete getRequete() {
+<span class="nc" id="L112">        return requete;</span>
+    }
+
+    /**
+     * Définit la requête associée à la candidature.
+     *
+     * @param requete La requête à associer.
+     */
+    public void setRequete(Requete requete) {
+<span class="nc" id="L121">        this.requete = requete;</span>
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * Retourne l'intervenant ayant soumis la candidature.
+     *
+     * @return L'intervenant.
+     */
+    public Intervenant getIntervenant() {
+<span class="nc" id="L130">        return intervenant;</span>
+    }
+
+    /**
+     * Définit l'intervenant qui soumet la candidature.
+     *
+     * @param intervenant L'intervenant à définir.
+     */
+    public void setIntervenant(Intervenant intervenant) {
+<span class="nc" id="L139">        this.intervenant = intervenant;</span>
+<span class="nc" id="L140">    }</span>
+
+    /**
+     * Retourne le message laissé par le résident pour l'intervenant qui soumet sa candidature.
+     *
+     * @return Le message du résident.
+     */
+    public String getMessageResident() {
+<span class="nc" id="L148">        return messageResident;</span>
+    }
+
+    /**
+     * Définit le message laissé par le résident pour cette candidature.
+     *
+     * @param messageResident Le message à définir.
+     */
+    public void setMessageResident(String messageResident) {
+<span class="nc" id="L157">        this.messageResident = messageResident;</span>
+<span class="nc" id="L158">    }</span>
+
+    /**
+     * Retourne l'état actuel de la candidature.
+     *
+     * @return L'état de la candidature.
+     */
+    public String getEtat() {
+<span class="nc" id="L166">        return etat;</span>
+    }
+
+    /**
+     * Définit un nouvel état pour la candidature.
+     *
+     * @param nouvelEtat Le nouvel état à définir.
+     */
+    public void setEtat(String nouvelEtat) {
+<span class="nc" id="L175">        this.etat = nouvelEtat;</span>
+<span class="nc" id="L176">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

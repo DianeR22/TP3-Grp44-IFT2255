@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestionProjets.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">GestionProjets.java</span></div><h1>GestionProjets.java</h1><pre class="source lang-java linenums">package Model;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Classe de gestion des projets.
+ *
+ * Cette classe permet de sauvegarder, charger et filtrer les projets depuis
+ * un fichier JSON, ainsi que d'obtenir une liste des projets planifiés pour
+ * les trois prochains mois.*/
+<span class="nc" id="L21">public class GestionProjets {</span>
+
+    private static final String FILENAME = &quot;data/projets.json&quot;;
+
+    /**
+     * Sauvegarde un projet dans le fichier JSON des projets.
+     *
+     * Si le fichier contient déjà des projets, le nouveau projet est ajouté à la liste existante.
+     *
+     * @param projet L'objet {@link Projet} à sauvegarder. Cet objet contient les informations
+     *               telles que le titre, la description, le type de travaux, les quartiers
+     *               et rues affectés, les codes postaux, les dates de début et de fin,
+     *               les horaires, ainsi que le statut.*/
+    public static void sauvegarderProjet(Projet projet) {
+<span class="fc" id="L35">        JSONArray projetsArray = new JSONArray();</span>
+
+        try {
+            // Read existing projects from the file
+<span class="fc" id="L39">            Path filePath = Path.of(FILENAME);</span>
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">            if (Files.exists(filePath)) {</span>
+<span class="fc" id="L41">                String jsonString = Files.readString(filePath);</span>
+<span class="fc" id="L42">                projetsArray = new JSONArray(jsonString);</span>
+            }
+<span class="nc" id="L44">        } catch (IOException e) {</span>
+<span class="nc" id="L45">            System.out.println(&quot;Erreur lors de la lecture du fichier projets.json : &quot; + e.getMessage());</span>
+<span class="fc" id="L46">        }</span>
+
+        // Convert the project to JSON and add it to the array
+<span class="fc" id="L49">        JSONObject projetJson = new JSONObject();</span>
+<span class="fc" id="L50">        projetJson.put(&quot;titre&quot;, projet.getTitre());</span>
+<span class="fc" id="L51">        projetJson.put(&quot;description&quot;, projet.getDescription());</span>
+<span class="fc" id="L52">        projetJson.put(&quot;typeTravaux&quot;, projet.getTypeTravaux());</span>
+
+        // Convert quartiersAffectes and ruesAffectees to JSONArray
+<span class="fc" id="L55">        JSONArray quartiersArray = new JSONArray(projet.getQuartiersAffectes());</span>
+<span class="fc" id="L56">        JSONArray ruesArray = new JSONArray(projet.getRuesAffectees());</span>
+<span class="fc" id="L57">        projetJson.put(&quot;quartiersAffectes&quot;, quartiersArray);</span>
+<span class="fc" id="L58">        projetJson.put(&quot;ruesAffectees&quot;, ruesArray);</span>
+<span class="fc" id="L59">        projetJson.put(&quot;codesPostauxAffectes&quot;, projet.getCodesPostauxAffectes());</span>
+<span class="fc" id="L60">        projetJson.put(&quot;dateDebut&quot;, projet.getDateDebut().toString());</span>
+<span class="fc" id="L61">        projetJson.put(&quot;dateFin&quot;, projet.getDateFin().toString());</span>
+<span class="fc" id="L62">        projetJson.put(&quot;heureDebut&quot;, projet.getHeureDebut().toString());</span>
+<span class="fc" id="L63">        projetJson.put(&quot;heureFin&quot;, projet.getHeureFin().toString());</span>
+<span class="fc" id="L64">        projetJson.put(&quot;statut&quot;, projet.getStatut());</span>
+<span class="fc" id="L65">        projetsArray.put(projetJson);</span>
+
+        // Save the updated projects array back to the file
+<span class="fc" id="L68">        try (FileWriter file = new FileWriter(FILENAME)) {</span>
+<span class="fc" id="L69">            file.write(projetsArray.toString(4)); // Pretty print JSON</span>
+<span class="fc" id="L70">            file.flush();</span>
+<span class="nc" id="L71">        } catch (IOException e) {</span>
+<span class="nc" id="L72">            System.out.println(&quot;Erreur lors de l'écriture dans le fichier projets.json : &quot; + e.getMessage());</span>
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Charge les projets depuis un fichier JSON et les convertit en une liste d'objets {@link Projet}.
+     *
+     * Cette méthode lit les données du fichier JSON spécifié par {@code FILENAME},
+     * les parse et les transforme en une liste de projets.
+     *
+     * @return Une liste d'objets {@link Projet} représentant les projets chargés depuis le fichier JSON.
+     *         Retourne une liste vide si le fichier n'existe pas ou en cas d'erreur de lecture.*/
+    public static List&lt;Projet&gt; chargerProjets() {
+<span class="fc" id="L85">        List&lt;Projet&gt; projets = new ArrayList&lt;&gt;();</span>
+        try {
+<span class="fc" id="L87">            Path filePath = Path.of(FILENAME);</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">            if (!Files.exists(filePath)) return projets;</span>
+
+<span class="fc" id="L90">            String jsonString = Files.readString(filePath);</span>
+<span class="fc" id="L91">            JSONArray projetsArray = new JSONArray(jsonString);</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            for (int i = 0; i &lt; projetsArray.length(); i++) {</span>
+<span class="fc" id="L94">                JSONObject projetJson = projetsArray.getJSONObject(i);</span>
+
+                // Convert quartiersAffectes and ruesAffectees from JSONArray to List&lt;String&gt;
+<span class="fc" id="L97">                List&lt;String&gt; quartiersAffectes = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L98">                JSONArray quartiersArray = projetJson.getJSONArray(&quot;quartiersAffectes&quot;);</span>
+<span class="fc bfc" id="L99" title="All 2 branches covered.">                for (int j = 0; j &lt; quartiersArray.length(); j++) {</span>
+<span class="fc" id="L100">                    quartiersAffectes.add(quartiersArray.getString(j));</span>
+                }
+
+<span class="fc" id="L103">                List&lt;String&gt; ruesAffectees = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L104">                JSONArray ruesArray = projetJson.getJSONArray(&quot;ruesAffectees&quot;);</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">                for (int j = 0; j &lt; ruesArray.length(); j++) {</span>
+<span class="fc" id="L106">                    ruesAffectees.add(ruesArray.getString(j));</span>
+                }
+
+<span class="fc" id="L109">                List&lt;String&gt; codesPostaux = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">                if (projetJson.has(&quot;codesPostauxAffectes&quot;)) {</span>
+<span class="fc" id="L111">                    JSONArray codesPostauxArray = projetJson.getJSONArray(&quot;codesPostauxAffectes&quot;);</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">                    for (int j = 0; j &lt; codesPostauxArray.length(); j++) {</span>
+<span class="fc" id="L113">                        codesPostaux.add(codesPostauxArray.getString(j));</span>
+                    }
+                }
+
+<span class="fc" id="L117">                Projet projet = new Projet(</span>
+<span class="fc" id="L118">                        projetJson.getString(&quot;titre&quot;),</span>
+<span class="fc" id="L119">                        projetJson.getString(&quot;description&quot;),</span>
+<span class="fc" id="L120">                        projetJson.getString(&quot;typeTravaux&quot;),</span>
+                        quartiersAffectes,
+                        ruesAffectees,
+                        codesPostaux,
+<span class="fc" id="L124">                        LocalDate.parse(projetJson.getString(&quot;dateDebut&quot;)),</span>
+<span class="fc" id="L125">                        LocalDate.parse(projetJson.getString(&quot;dateFin&quot;)),</span>
+<span class="fc" id="L126">                        LocalTime.parse(projetJson.getString(&quot;heureDebut&quot;)),</span>
+<span class="fc" id="L127">                        LocalTime.parse(projetJson.getString(&quot;heureFin&quot;))</span>
+                );
+
+                // AJOUT : Lire le champ statut si présent
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                if (projetJson.has(&quot;statut&quot;)) {</span>
+<span class="fc" id="L132">                    projet.setStatut(projetJson.getString(&quot;statut&quot;));</span>
+                }
+
+<span class="fc" id="L135">                projets.add(projet);</span>
+            }
+<span class="nc" id="L137">        } catch (IOException e) {</span>
+<span class="nc" id="L138">            System.out.println(&quot;Erreur lors du chargement des projets : &quot; + e.getMessage());</span>
+<span class="fc" id="L139">        }</span>
+<span class="fc" id="L140">        return projets;</span>
+    }
+
+    /**
+     * Récupère une liste des projets planifiés pour les trois prochains mois.
+     *
+     * Cette méthode parcourt les projets chargés depuis le fichier JSON, et filtre
+     * ceux dont la date de début est strictement postérieure à aujourd'hui et inférieure
+     * ou égale à trois mois à partir d'aujourd'hui.
+     *
+     * @return Une liste d'objets {@link Projet} représentant les projets à venir dans les trois prochains mois.*/
+    public static List&lt;Projet&gt; getProjetsAvenirProchains3Mois() {
+<span class="fc" id="L152">        List&lt;Projet&gt; tousLesProjets = chargerProjets();</span>
+<span class="fc" id="L153">        List&lt;Projet&gt; projetsAvenir = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L155">        LocalDate aujourdHui = LocalDate.now();</span>
+<span class="fc" id="L156">        LocalDate dans3Mois = aujourdHui.plusMonths(3);</span>
+
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        for (Projet p : tousLesProjets) {</span>
+            // dateDebut &gt; aujourdHui (strictement futur)
+            // ET dateDebut &lt;= dans3Mois
+<span class="fc bfc" id="L161" title="All 2 branches covered.">            if (p.getDateDebut().isAfter(aujourdHui) &amp;&amp;</span>
+<span class="pc bpc" id="L162" title="1 of 4 branches missed.">                    (p.getDateDebut().isBefore(dans3Mois) || p.getDateDebut().isEqual(dans3Mois))) {</span>
+<span class="fc" id="L163">                projetsAvenir.add(p);</span>
+            }
+<span class="fc" id="L165">        }</span>
+<span class="fc" id="L166">        return projetsAvenir;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServiceAPI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">ServiceAPI.java</span></div><h1>ServiceAPI.java</h1><pre class="source lang-java linenums">package Model;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+
+/**
+ * Classe qui permet de récupérer des données via une API.
+ */
+<span class="nc" id="L17">public class ServiceAPI {</span>
+    private static final String OUTPUT_FILE = &quot;data/reason_categories.json&quot;;
+
+    /**
+     * Méthode pour récupérer les données depuis l'API.
+     *
+     * @param URL l'URL de l'API
+     * @return Un objet {@link JSONObject} contenant les données reçues de l'API.
+     *         Retourne null si erreur
+     */
+    public static JSONObject getDataFromApi(String URL) {
+        try {
+            // Connexion à l'API
+<span class="fc" id="L30">            URL url = new URL(URL);</span>
+            // HttpURLConnection est créé et utilisé pour faire une requête GET
+<span class="fc" id="L32">            HttpURLConnection connec = (HttpURLConnection) url.openConnection();</span>
+<span class="fc" id="L33">            connec.setRequestMethod(&quot;GET&quot;);</span>
+<span class="fc" id="L34">            connec.setConnectTimeout(5000);</span>
+<span class="fc" id="L35">            connec.setReadTimeout(5000);</span>
+
+            // Vérifier le code de réponse de l'API (200 = OK)
+<span class="fc" id="L38">            int status = connec.getResponseCode();</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">            if (status == HttpURLConnection.HTTP_OK) {</span>
+                // Lire la réponse ligne par ligne avec un buffer
+<span class="fc" id="L41">                BufferedReader input = new BufferedReader(new InputStreamReader(connec.getInputStream()));</span>
+<span class="fc" id="L42">                StringBuilder content = new StringBuilder();</span>
+                String inputLine;
+                // On ajoute chaque ligne à un stringBuilder pour reconstruire la réponse
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                while ((inputLine = input.readLine()) != null) {</span>
+<span class="fc" id="L46">                    content.append(inputLine);</span>
+                }
+<span class="fc" id="L48">                input.close();</span>
+<span class="fc" id="L49">                connec.disconnect();</span>
+
+                // Retourner un objet JSON (usage d'une librairie présente
+                // dans le directory libs
+<span class="fc" id="L53">                return new JSONObject(content.toString());</span>
+            } else {
+<span class="nc" id="L55">                System.out.println(&quot;Erreur: &quot; + status);</span>
+<span class="nc" id="L56">                connec.disconnect();</span>
+            }
+<span class="nc" id="L58">        } catch (Exception e) {</span>
+<span class="nc" id="L59">            e.printStackTrace();</span>
+<span class="nc" id="L60">        }</span>
+<span class="nc" id="L61">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

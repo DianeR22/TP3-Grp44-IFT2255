@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TravauxController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Controller</a> &gt; <span class="el_source">TravauxController.java</span></div><h1>TravauxController.java</h1><pre class="source lang-java linenums">package Controller;
+
+import Model.ServiceAPI;
+import View.TravauxView;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Scanner;
+
+import static Model.ServiceAPI.getDataFromApi;
+
+/**
+ * Contrôleur pour la gestion et l'affichage des travaux en cours ou à venir.
+ * &lt;p&gt;
+ * Cette classe interagit avec une API externe pour récupérer les données des travaux,
+ * puis les affiche ou les filtre selon différents critères.
+ * Elle utilise également la vue {@link TravauxView} pour l'affichage de l'interface utilisateur.
+ * &lt;/p&gt;
+ */
+<span class="nc" id="L20">public class TravauxController {</span>
+
+    /**
+     * Affiche le menu des travaux en cours ou à venir.
+     *
+     * @param scanner L'objet Scanner utilisé pour la saisie utilisateur
+     */
+    public static void afficherMenu(Scanner scanner){
+<span class="nc" id="L28">        TravauxView.afficherMenu(scanner);</span>
+<span class="nc" id="L29">    }</span>
+
+    // URL de l'API pour récupérer les données des travaux
+    private static final String API_URL_TRAVAUX = &quot; https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=cc41b532-f12d-40fb-9f55-eb58c9a2b12b&quot;;
+    /**
+     * Récupère et filtre les travaux depuis l'API en fonction du type de filtre et du critère fourni.
+     *
+     * Cette méthode envoie une requête à l'API spécifiée par {@link #API_URL_TRAVAUX}, récupère
+     * les travaux disponibles, et applique un filtre basé sur le type et le critère spécifiés.
+     *
+     * @param typeFiltre Le type de filtre à appliquer :
+     *                   &lt;ul&gt;
+     *                     &lt;li&gt;0 : Aucun filtre, retourne tous les travaux.&lt;/li&gt;
+     *                     &lt;li&gt;1 : Filtrer par quartier. Le paramètre {@code filtre} doit contenir le nom du quartier.&lt;/li&gt;
+     *                     &lt;li&gt;2 : Filtrer par type de travaux. Le paramètre {@code filtre} doit contenir la catégorie de travaux.&lt;/li&gt;
+     *                   &lt;/ul&gt;
+     * @param filtre     Le critère utilisé pour le filtrage. Peut-être le nom d'un quartier ou d'une catégorie
+     *                   de travaux en fonction du type de filtre.
+     * @return Un tableau JSON ({@link JSONArray}) contenant les travaux filtrés, ou {@code null} si une erreur survient
+     *         ou si les données de l'API ne peuvent pas être récupérées.*/
+    public static JSONArray recupererTravaux(int typeFiltre, String filtre) {
+        try {
+<span class="fc" id="L51">            JSONObject jsonResponse = getDataFromApi(API_URL_TRAVAUX);</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            if (jsonResponse == null) {</span>
+<span class="nc" id="L53">                System.out.println(&quot;Impossible de récupérer les données de l'API.&quot;);</span>
+<span class="nc" id="L54">                return null;</span>
+            }
+
+            // Parcourir le json et extraire l'objet result ainsi que records qui est le tableau d'objets
+<span class="fc" id="L58">            JSONArray records = jsonResponse.getJSONObject(&quot;result&quot;).getJSONArray(&quot;records&quot;);</span>
+<span class="fc" id="L59">            JSONArray travauxFiltres = new JSONArray();</span>
+
+            // Parcourir tous les travaux et ajouter ceux qui correspondent au filtre
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            for (int i = 0; i &lt; records.length(); i++) {</span>
+<span class="fc" id="L63">                JSONObject travail = records.getJSONObject(i);</span>
+<span class="fc" id="L64">                String quartier = travail.getString(&quot;boroughid&quot;);</span>
+<span class="fc" id="L65">                String type = travail.getString(&quot;reason_category&quot;);</span>
+
+<span class="fc bfc" id="L67" title="All 4 branches covered.">                if ((typeFiltre == 0) ||</span>
+<span class="fc bfc" id="L68" title="All 4 branches covered.">                        (typeFiltre == 1 &amp;&amp; quartier.equalsIgnoreCase(filtre)) ||</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">                        (typeFiltre == 2 &amp;&amp; type.equalsIgnoreCase(filtre))) {</span>
+<span class="fc" id="L70">                    travauxFiltres.put(travail); // Ajouter le travail filtré</span>
+                }
+            }
+
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">            if (travauxFiltres.length() == 0) {</span>
+<span class="nc" id="L75">                System.out.println(&quot;\nAucun travail trouvé avec ce filtre.&quot;);</span>
+            }
+
+<span class="fc" id="L78">            return travauxFiltres; // Retourne le JSONArray avec les travaux filtrés</span>
+
+<span class="nc" id="L80">        } catch (Exception e) {</span>
+<span class="nc" id="L81">            e.printStackTrace();</span>
+<span class="nc" id="L82">            return null;</span>
+        }
+    }
+
+    /**
+     * Récupère la liste complète des travaux depuis l'API, sans appliquer de filtre.
+     * &lt;p&gt;
+     * Cette méthode utilise {@link ServiceAPI#getDataFromApi(String)} pour envoyer une requête
+     * à l'URL spécifiée, puis récupère le tableau de travaux (&quot;records&quot;) de la réponse JSON.
+     * &lt;/p&gt;
+     *
+     * @return Un tableau JSON ({@link JSONArray}) contenant tous les travaux. Si l'API est inaccessible
+     *         ou si une erreur se produit, un tableau JSON vide est retourné.
+     */
+    public static JSONArray getTravaux() {
+        // Récupérer les données des travaux en appelant getDataFromApi
+<span class="fc" id="L98">        JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_TRAVAUX);</span>
+
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        if (jsonResponse != null) {</span>
+            // Récupérer la liste des travaux à partir de la réponse JSON
+<span class="fc" id="L102">            JSONArray travaux = jsonResponse.getJSONObject(&quot;result&quot;).getJSONArray(&quot;records&quot;);</span>
+<span class="fc" id="L103">            return travaux;</span>
+        } else {
+<span class="nc" id="L105">            System.out.println(&quot;Impossible de récupérer les données des travaux.&quot;);</span>
+<span class="nc" id="L106">            return new JSONArray(); // Retourner un tableau vide en cas d'erreur</span>
+        }
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

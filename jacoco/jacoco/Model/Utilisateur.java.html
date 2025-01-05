@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utilisateur.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Utilisateur.java</span></div><h1>Utilisateur.java</h1><pre class="source lang-java linenums">package Model;
+
+import Controller.IntervenantController;
+import Controller.ResidentController;
+
+import java.util.List;
+import java.util.Scanner;
+/**
+ * Classe abstraite d'un utilisateur dans le système. Elle possède les
+ * informations et méthodes qui sont communes à un résident et un intervenant, comme
+ * la connexion et l'inscription par exemple.
+ */
+public abstract class Utilisateur {
+    // Attributs communs d'un résident et d'un intervenant
+    protected String nom;
+    protected String prenom;
+    protected String motDePasse;
+    protected String adresseCourriel;
+
+    private static Utilisateur utilisateur;
+
+    /**
+     * Constructeur avec arguments pour initialiser un utilisateur.
+     *
+     * @param nom Le nom de l'utilisateur.
+     * @param prenom Le prénom de l'utilisateur.
+     * @param motDePasse Le mot de passe de l'utilisateur.
+     * @param adresseCourriel L'adresse courriel de l'utilisateur.
+     */
+<span class="fc" id="L30">    public Utilisateur(String nom, String prenom, String motDePasse, String adresseCourriel) {</span>
+<span class="fc" id="L31">        this.nom = nom;</span>
+<span class="fc" id="L32">        this.prenom = prenom;</span>
+<span class="fc" id="L33">        this.motDePasse = motDePasse;</span>
+<span class="fc" id="L34">        this.adresseCourriel = adresseCourriel;</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Constructeur sans argument pour permettre l'initialisation d'un utilisateur sans attributs initiaux.
+     */
+<span class="fc" id="L40">    public Utilisateur() {</span>
+
+<span class="fc" id="L42">    }</span>
+
+
+    //Getter et setter
+
+    /**
+     * Récupère le nom de l'utilisateur.
+     *
+     * @return Le nom de l'utilisateur.
+     */
+    public String getNom() {
+<span class="fc" id="L53">        return nom;</span>
+    }
+
+    /**
+     * Définit le nom de l'utilisateur.
+     *
+     * @param nom Le nouveau nom de l'utilisateur.
+     */
+    public void setNom(String nom) {
+<span class="fc" id="L62">        this.nom = nom;</span>
+<span class="fc" id="L63">    }</span>
+    /**
+     * Récupère le prénom de l'utilisateur.
+     *
+     * @return Le prénom de l'utilisateur.
+     */
+    public String getPrenom() {
+<span class="fc" id="L70">        return prenom;</span>
+    }
+
+    /**
+     * Définit le prénom de l'utilisateur.
+     *
+     * @param prenom Le nouveau prénom de l'utilisateur.
+     */
+    public void setPrenom(String prenom) {
+<span class="fc" id="L79">        this.prenom = prenom;</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * Récupère le mot de passe de l'utilisateur.
+     *
+     * @return Le mot de passe de l'utilisateur.
+     */
+    public String getMotDePasse() {
+<span class="fc" id="L88">        return motDePasse;</span>
+    }
+
+    /**
+     * Définit le mot de passe de l'utilisateur.
+     *
+     * @param motDePasse Le nouveau mot de passe de l'utilisateur.
+     */
+    public void setMotDePasse(String motDePasse) {
+<span class="fc" id="L97">        this.motDePasse = motDePasse;</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Récupère l'adresse courriel de l'utilisateur.
+     *
+     * @return L'adresse courriel de l'utilisateur.
+     */
+    public String getAdresseCourriel() {
+<span class="fc" id="L106">        return adresseCourriel;</span>
+    }
+
+    /**
+     * Définit l'adresse courriel de l'utilisateur.
+     *
+     * @param adresseCourriel  Le nouvel adresse courriel de l'utilisateur.
+     */
+    public void setAdresseCourriel(String adresseCourriel) {
+<span class="fc" id="L115">        this.adresseCourriel = adresseCourriel;</span>
+<span class="fc" id="L116">    }</span>
+
+
+
+    /**
+     * Méthode abstraite d'inscription que les classes filles doivent implémenter
+     * pour gérer l'inscription des utilisateurs.
+     *
+     * @param utilisateur L'utilisateur s'inscrit.
+     */
+    public abstract void inscription(Utilisateur utilisateur);
+
+    /**
+     * Permet à un utilisateur de se connecter en entrant son adresse courriel et mot de passe.
+     * L'utilisateur peut essayer de se connecter trois fois. En cas de 3 mauvaises tentatives,
+     * le programme se termine.
+     *
+     * @param utilisateur L'utilisateur qui tente de se connecter.
+     */
+
+    public void connexion(Utilisateur utilisateur) {
+<span class="nc" id="L137">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L138">        System.out.println(&quot;Vous êtes sur la page de connexion!&quot;);</span>
+
+
+<span class="nc" id="L141">        int tentative = 0;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        while (tentative &lt; 3) {</span>
+<span class="nc" id="L143">            System.out.println(&quot;Veuillez entrer votre adresse courriel.&quot;);</span>
+<span class="nc" id="L144">            adresseCourriel = scanner.next();</span>
+<span class="nc" id="L145">            System.out.println(&quot;Veuillez entrer votre mot de passe.&quot;);</span>
+<span class="nc" id="L146">            motDePasse = scanner.next();</span>
+
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (verifierConnexion(adresseCourriel, motDePasse)) {</span>
+<span class="nc" id="L149">                System.out.println(&quot;Connexion réussie.&quot;);</span>
+
+                // Vérifier le type de l'utilisateur
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                if (utilisateur instanceof Resident) {</span>
+<span class="nc" id="L153">                    Resident.connecterResident((Resident) utilisateur, adresseCourriel); // Cast pour utiliser la méthode spécifique</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                } else if (utilisateur instanceof Intervenant) {</span>
+<span class="nc" id="L155">                    Intervenant.connecterIntervenant((Intervenant) utilisateur, adresseCourriel);</span>
+                }
+<span class="nc" id="L157">                afficherMenu();</span>
+<span class="nc" id="L158">                return;  // Connexion réussie</span>
+            } else {
+<span class="nc" id="L160">                tentative++;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                if (tentative &lt; 3) {</span>
+<span class="nc" id="L162">                    System.out.println(&quot;Adresse courriel ou mot de passe invalide. Veuillez réessayer.&quot;);</span>
+                }
+
+            }
+        }
+
+        // Après 3 mauvaises tentatives
+<span class="nc" id="L169">        System.out.println(&quot;Vous avez échoué à vous connecter après 3 tentatives. Veuillez réessayer plus tard. Le programme va maintenant se terminer.&quot;);</span>
+<span class="nc" id="L170">        System.exit(0);</span>
+<span class="nc" id="L171">    }</span>
+
+
+    /**
+     * Vérifie si les identifiants (adresse courriel et mot de passe) sont valides pour un résident ou un intervenant.
+     *
+     * @param email L'adresse courriel à vérifier.
+     * @param mdp Le mot de passe à vérifier.
+     * @return true si l'adresse courriel et le mot de passe correspondent à un résident ou intervenant valide, false sinon.
+     */
+    boolean verifierConnexion(String email, String mdp){
+
+        // Récupérer les listes des résidents et des intervenants
+<span class="nc" id="L184">        List&lt;Resident&gt; residents = GestionResidents.getListeResidents();</span>
+<span class="nc" id="L185">        List&lt;Intervenant&gt; intervenants = GestionIntervenants.getListeIntervenants();</span>
+
+        // Vérifier si c'est un résident
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (this instanceof Resident) {</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">            for (Resident resident : residents) {</span>
+                // Vérifier que l'email et mdp sont valides
+<span class="nc bnc" id="L191" title="All 4 branches missed.">                if (resident.getAdresseCourriel().equals(email) &amp;&amp; resident.getMotDePasse().equals(mdp)) {</span>
+<span class="nc" id="L192">                    return true;</span>
+                }
+<span class="nc" id="L194">            }</span>
+        }
+
+        // Vérifier si c'est un intervenant
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (this instanceof Intervenant) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            for (Intervenant intervenant : intervenants) {</span>
+                // Vérifier que l'email et mdp sont valides
+<span class="nc bnc" id="L201" title="All 4 branches missed.">                if (intervenant.getAdresseCourriel().equals(email) &amp;&amp; intervenant.getMotDePasse().equals(mdp)) {</span>
+<span class="nc" id="L202">                    return true;</span>
+                }
+<span class="nc" id="L204">            }</span>
+        }
+<span class="nc" id="L206">        return false;</span>
+    }
+
+    /**
+     * Afficher un menu adapté au type d'utilisateur (résident ou intervenant) après une connexion réussie.
+     * Selon le type d'utilisateur, la méthode adéquate est appelée.
+     */
+    void afficherMenu(){
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (this instanceof Resident) {</span>
+<span class="nc" id="L215">            ResidentController.afficherMenuResident();</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        } else if (this instanceof Intervenant) {</span>
+<span class="nc" id="L217">            IntervenantController.afficherMenuIntervenant();</span>
+        }
+<span class="nc" id="L219">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

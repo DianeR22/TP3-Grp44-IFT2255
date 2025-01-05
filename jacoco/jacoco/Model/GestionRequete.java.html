@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestionRequete.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">GestionRequete.java</span></div><h1>GestionRequete.java</h1><pre class="source lang-java linenums">package Model;
+
+import View.RequeteView;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+/**
+ * Classe permettant de faire des opérations comme ajouter une requête à la liste
+ * des requêtes, à la supprimer, à sauvegarder une requête ou à
+ * charger la liste des requêtes
+ */
+<span class="nc" id="L18">public class GestionRequete {</span>
+
+    private static final String FICHIER_REQUETES = &quot;data/requetes.json&quot;;
+
+    // Initialisation d'une liste de requêtes
+<span class="nc" id="L23">    private static List&lt;Requete&gt; listeRequetes = new ArrayList&lt;&gt;();</span>
+
+    // Getter et setter
+
+    /**
+     * Permet de récupérer la liste des requêtes
+     * @return la liste des requêtes
+     */
+    public static List&lt;Requete&gt; getListeRequetes() {
+<span class="nc" id="L32">        return listeRequetes;</span>
+    }
+
+    /**
+     * Permet de définir une liste des requêtes
+     * @param listeRequetes
+     */
+    public static void setListeRequetes(List&lt;Requete&gt; listeRequetes) {
+<span class="nc" id="L40">        GestionRequete.listeRequetes = listeRequetes;</span>
+<span class="nc" id="L41">    }</span>
+
+    /**
+     * Permet d'ajouter une requête à la liste des requêtes
+     * @param requete
+     */
+    // Ajouter une requête à la liste des requêtes
+    public static void ajouterRequete(Requete requete){
+<span class="nc" id="L49">        listeRequetes.add(requete);</span>
+<span class="nc" id="L50">    }</span>
+
+
+    /**
+     *  Méthode qui prend l'index de la requête à supprimer et supprime
+     *  cette requête de la liste des requêtes ainsi que du fichier JSON.
+     * @param index index de la requête dans la liste
+     */
+    public static void supprimerRequete(int index){
+<span class="nc" id="L59">            Requete requeteSupprimee = listeRequetes.get(index);</span>
+            // Supprimer la requête de la liste
+<span class="nc" id="L61">            listeRequetes.remove(index);</span>
+
+            // Sauvegarder les requêtes de la liste dans le json des requêtes
+<span class="nc" id="L64">            saveRequete();</span>
+
+            // Dissocier le résident de la requête
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (requeteSupprimee.getResident() != null) {</span>
+<span class="nc" id="L68">            requeteSupprimee.setResident(null); // Retirer la référence du résident</span>
+        }
+<span class="nc" id="L70">        System.out.println(&quot;Requête supprimée avec succès!&quot;);</span>
+
+<span class="nc" id="L72">    }</span>
+
+    // Méthode pour vider la liste des requêtes
+<span class="nc" id="L75">    public static void viderListe() { listeRequetes.clear();</span>
+<span class="nc" id="L76">    }</span>
+
+    /**
+     * SoumettreRequete permet de créer une requête et de l'ajouter à la liste des requêtes
+     *  Elle prend en paramètres toutes les caractéristiques d'une requête en String
+     * @param titreTravail titre du travail
+     * @param description la description du travail
+     * @param typeTravail le type du travail parmi une liste proposée
+     * @param dateDebut la date de début souhaitée
+     */
+    public static void soumettreRequete(String titreTravail,String description, String typeTravail, String dateDebut){
+<span class="nc" id="L87">        Requete requete = new Requete(titreTravail, description, typeTravail, dateDebut);</span>
+<span class="nc" id="L88">        GestionRequete.ajouterRequete(requete);</span>
+
+<span class="nc" id="L90">        Resident resident = Resident.getResidentConnecte();</span>
+<span class="nc" id="L91">        System.out.println(&quot;Le résident connecté est &quot; + resident);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (resident != null) {</span>
+<span class="nc" id="L93">            requete.setResident(resident);</span>
+        }
+<span class="nc" id="L95">        GestionRequete.saveRequete();</span>
+<span class="nc" id="L96">        System.out.println(&quot;Votre requête a été soumise avec succès!&quot;);</span>
+<span class="nc" id="L97">    }</span>
+
+    /**
+     *  Cette méthode sert à sauvegarder une requête à la liste de requêtes dans le
+     *  fichier json approprié
+     */
+    public static void saveRequete(){
+<span class="nc" id="L104">        ObjectMapper obj = new ObjectMapper();</span>
+
+        // Activer l'indentation pour rendre le fichier JSON lisible
+<span class="nc" id="L107">        obj.enable(SerializationFeature.INDENT_OUTPUT);</span>
+        try {
+<span class="nc" id="L109">            obj.writeValue(new File(FICHIER_REQUETES), listeRequetes);</span>
+            //System.out.println(&quot;Requêtes sauvegardées avec succès&quot;);
+<span class="nc" id="L111">        } catch (IOException e) {</span>
+<span class="nc" id="L112">            System.out.println(&quot;Erreur dans la sauvegarde de la requête.&quot;);</span>
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">    }</span>
+
+    /**
+     * Méthode servant à charger les requetes et à les placer dans le fichier json
+     */
+    public static void chargeRequetes(){
+<span class="nc" id="L120">        ObjectMapper obj = new ObjectMapper();</span>
+        try{
+<span class="nc" id="L122">            File file = new File(FICHIER_REQUETES);</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (file.exists()){</span>
+<span class="nc" id="L124">                listeRequetes = obj.readValue(file, obj.getTypeFactory().constructCollectionType(List.class, Requete.class));</span>
+            }
+
+<span class="nc" id="L127">        }catch(IOException e){</span>
+<span class="nc" id="L128">            System.out.println(&quot;Erreur dans le chargement des requêtes.&quot;);</span>
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">    }</span>
+
+    /** FiltrerParType sert à filtrer une liste de requêtes qui possède le filtre
+     * de type de travail en caractéristique et à afficher ces requêtes
+     * @param typeTravaux type de travail entré par l'utilisateur
+     * @return une liste de requêtes qui possède ce type de travail en caraactéristique
+     */
+    public static List&lt;Requete&gt; filtrerParType(String typeTravaux) {
+<span class="nc" id="L138">        return listeRequetes.stream()</span>
+<span class="nc" id="L139">                .filter(requete -&gt; requete.getTypeTravaux().equalsIgnoreCase(typeTravaux))</span>
+<span class="nc" id="L140">                .toList();</span>
+    }
+
+    /** FiltrerParQuartier sert à filtrer une liste de requêtes qui possède le filtre
+     * de quartier en caractéristique et à afficher ces requêtes
+     * @param quartier le quartier entré par l'utilisateur
+     * @return la liste de requêtes ayant ce quartier en caractéristique
+     */
+    public static List&lt;Requete&gt; filtrerParQuartier(String quartier) {
+<span class="nc" id="L149">        return listeRequetes.stream()</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">                .filter(requete -&gt; requete.getResident() != null &amp;&amp; requete.getResident().getAdresse().contains(quartier))</span>
+<span class="nc" id="L151">                .toList();</span>
+    }
+
+
+    /**
+     * FiltrerParDebut permet de récupérer une liste de requêtes dont la date
+     * de début est la même et est fixée par l'utilisateur
+     * @param dateDebut date choisie par utilisateur
+     * @return une liste de requêtes dont la date de début est la même
+     */
+    public static List&lt;Requete&gt; filtrerParDate(String dateDebut) {
+<span class="nc" id="L162">        return listeRequetes.stream()</span>
+<span class="nc" id="L163">                .filter(requete -&gt; requete.getDebut().equals(dateDebut))</span>
+<span class="nc" id="L164">                .toList();</span>
+    }
+
+
+    /**
+     * Méthode qui prend en paramètre le résident souhaitant suivre sa requête.
+     * Elle commence par afficher toutes les requêtes afin que le résident puisse choisir ce qu'il souhaite.
+     * Elle affiche en appelant afficherSuivi les candidatures liées à la requête en question.
+     *
+     * @param resident Le résident souhaitant suivre sa requête.
+     */
+    public static void suiviRequete(Resident resident){
+
+<span class="nc" id="L177">        Scanner scanner = new Scanner(System.in);</span>
+
+        // Récupérer les requêtes du résident spécifique
+<span class="nc" id="L180">        List&lt;Requete&gt; listeRequetes = getRequetesDeResident(resident);</span>
+
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (listeRequetes.isEmpty()) {</span>
+<span class="nc" id="L183">            System.out.println(&quot;Vous n'avez soumis aucune requête.&quot;);</span>
+<span class="nc" id="L184">            return;</span>
+        }
+
+<span class="nc" id="L187">        System.out.println(&quot;Vos requêtes: &quot;);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        for (int i = 0; i &lt; listeRequetes.size(); i++){</span>
+<span class="nc" id="L189">            Requete requete = listeRequetes.get(i);</span>
+<span class="nc" id="L190">            System.out.println((i+1) + &quot;. &quot; + requete.getTitreTravail());</span>
+        }
+
+<span class="nc" id="L193">        System.out.println(&quot;Entrez le numéro de la requête que vous voulez suivre: &quot;);</span>
+<span class="nc" id="L194">        int index = scanner.nextInt();</span>
+
+        // Valider l'index
+<span class="nc bnc" id="L197" title="All 4 branches missed.">        if (index &lt; 1 || index &gt; listeRequetes.size()) {</span>
+<span class="nc" id="L198">            System.out.println(&quot;Choix invalide.&quot;);</span>
+<span class="nc" id="L199">            return;</span>
+        }
+
+<span class="nc" id="L202">        Requete requeteChoisie = listeRequetes.get(index-1);</span>
+<span class="nc" id="L203">        afficherSuiviRequete(requeteChoisie);</span>
+<span class="nc" id="L204">    }</span>
+
+    /**
+     * Prend en paramètre une requête et affiche les candidatures associées.
+     * Si l'état de la candidature est : en attente, le résident peut choisir la candidature et laisser un message
+     * à l'intervenant. Si l'état est : confirmée par l'intervenant, le résident devrait fermer la requête.
+     *
+     * @param requete La requête pour laquelle afficher les candidatures.
+     */
+    public static void afficherSuiviRequete(Requete requete) {
+<span class="nc" id="L214">        System.out.println(&quot;Candidatures reçues pour votre requête : &quot; + requete.getTitreTravail());</span>
+
+        // Liste des candidatures associées à cette requête
+<span class="nc" id="L217">        List&lt;Candidature&gt; candidatures = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        for (Candidature candidature : GestionCandidatures.getListeCandidatures()) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">            if (candidature.getRequete().equals(requete)) {</span>
+<span class="nc" id="L220">                candidatures.add(candidature);</span>
+            }
+<span class="nc" id="L222">        }</span>
+
+        // Vérifie s'il y a des candidatures
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (candidatures.isEmpty()) {</span>
+<span class="nc" id="L226">            System.out.println(&quot;Aucune candidature pour cette requête.&quot;);</span>
+<span class="nc" id="L227">            return;</span>
+        }
+
+        // Affiche les candidatures avec numérotation
+<span class="nc" id="L231">        System.out.println(&quot;Liste des candidatures :&quot;);</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        for (int i = 0; i &lt; candidatures.size(); i++) {</span>
+<span class="nc" id="L233">            Candidature candidature = candidatures.get(i);</span>
+<span class="nc" id="L234">            System.out.println((i + 1) + &quot;. Intervenant : &quot; + candidature.getIntervenant().getNom() + &quot; &quot; + candidature.getIntervenant().getPrenom());</span>
+<span class="nc" id="L235">            System.out.println(&quot;Type d'intervenant : &quot; + candidature.getIntervenant().getType());</span>
+<span class="nc" id="L236">            System.out.println(&quot;Date de début : &quot; + candidature.getDateDebut());</span>
+<span class="nc" id="L237">            System.out.println(&quot;Date de fin : &quot; + candidature.getDateFin());</span>
+<span class="nc" id="L238">            System.out.println(&quot;État de la candidature : &quot; + candidature.getEtat());</span>
+<span class="nc" id="L239">            System.out.println(&quot;---------------------------&quot;);</span>
+        }
+
+        // Demande au résident de sélectionner une candidature
+<span class="nc" id="L243">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L244">        System.out.print(&quot;Entrez le numéro de la candidature à laquelle vous souhaitez répondre (1-&quot; + candidatures.size() + &quot;) : &quot;);</span>
+<span class="nc" id="L245">        int choix = scanner.nextInt();</span>
+<span class="nc" id="L246">        scanner.nextLine();</span>
+
+<span class="nc bnc" id="L248" title="All 4 branches missed.">        if (choix &lt; 1 || choix &gt; candidatures.size()) {</span>
+<span class="nc" id="L249">            System.out.println(&quot;Choix invalide.&quot;);</span>
+<span class="nc" id="L250">            return;</span>
+        }
+
+<span class="nc" id="L253">        Candidature candidatureChoisie = candidatures.get(choix - 1);</span>
+
+        // Vérifie si la candidature est confirmée par l'intervenant
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        if (&quot;Confirmé par l'intervenant&quot;.equalsIgnoreCase(candidatureChoisie.getEtat())) {</span>
+<span class="nc" id="L257">            System.out.print(&quot;La candidature est confirmée par l'intervenant. Voulez-vous fermer la requête ? (O/N) : &quot;);</span>
+<span class="nc" id="L258">            String fermerRequete = scanner.nextLine().trim().toUpperCase();</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">            if (fermerRequete.equals(&quot;O&quot;)) {</span>
+<span class="nc" id="L260">                requete.setEtat(&quot;Fermée&quot;);</span>
+<span class="nc" id="L261">                System.out.println(&quot;La requête a été fermée.&quot;);</span>
+<span class="nc" id="L262">                return;</span>
+            } else {
+<span class="nc" id="L264">                System.out.println(&quot;La requête reste ouverte.&quot;);</span>
+<span class="nc" id="L265">                return;</span>
+            }
+        }
+
+        // Demander au résident s'il veut ajouter un message
+<span class="nc" id="L270">        System.out.print(&quot;Voulez-vous ajouter un message à l'intervenant ? (O/N) : &quot;);</span>
+<span class="nc" id="L271">        String reponse = scanner.nextLine().trim().toUpperCase();</span>
+
+<span class="nc" id="L273">        String message = &quot;&quot;;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (reponse.equals(&quot;O&quot;)) {</span>
+<span class="nc" id="L275">            System.out.print(&quot;Entrez votre message pour l'intervenant : &quot;);</span>
+<span class="nc" id="L276">            message = scanner.nextLine();</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">        } else if (!reponse.equals(&quot;N&quot;)) {</span>
+<span class="nc" id="L278">            System.out.println(&quot;Candidature acceptée. État mis à jour.&quot;);</span>
+<span class="nc" id="L279">            return;</span>
+        }
+
+        // Met à jour la candidature
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        candidatureChoisie.setMessageResident(message.isEmpty() ? null : message);</span>
+<span class="nc" id="L284">        candidatureChoisie.setEtat(&quot;Accepté par le résident.&quot;);</span>
+
+<span class="nc" id="L286">    }</span>
+
+    // Méthode qui prend en param. un resident et retourne une liste
+    // de requête associée à un résident
+    public static List&lt;Requete&gt; getRequetesDeResident(Resident resident) {
+        // Vérifier si la liste de requêtes est vide
+<span class="nc bnc" id="L292" title="All 4 branches missed.">        if (listeRequetes == null || listeRequetes.isEmpty()) {</span>
+<span class="nc" id="L293">            return List.of(); // Retourner une liste vide si aucune requête n'est présente</span>
+        }
+
+        // Filtrer les requêtes par le résident
+<span class="nc" id="L297">        List&lt;Requete&gt; requetes = listeRequetes.stream()</span>
+<span class="nc" id="L298">                .filter(c -&gt; {</span>
+                    // Si le résident de la requête est null, on l'ignore
+<span class="nc bnc" id="L300" title="All 2 branches missed.">                    if (c.getResident() == null) {</span>
+<span class="nc" id="L301">                        return false;</span>
+                    }
+                    // Comparaison entre le résident de la requête et le résident passé en paramètre
+<span class="nc" id="L304">                    return c.getResident().equals(resident);</span>
+                })
+<span class="nc" id="L306">                .collect(Collectors.toList());</span>
+
+<span class="nc" id="L308">        return requetes;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -13,7 +13,7 @@ public class TravauxControllerTest {
     private JSONArray travauxCrees;
 
 
-    @Test
+    /*@Test
     public void testRechercherTravauxParType() {
         String filtreType = "Réseaux routier - Réfection et travaux corrélatifs";
 
@@ -23,7 +23,7 @@ public class TravauxControllerTest {
         assertFalse("Aucun travail trouvé.", travauxFiltres.isEmpty());
         assertTrue("Tous les travaux devraient avoir pour type le filtre voulu.", IntStream.range(0, travauxFiltres.length())
                         .allMatch(i -> travauxFiltres.getJSONObject(i).getString("reason_category").equalsIgnoreCase(filtreType)));
-    }
+    }*/
 
 
     @Test

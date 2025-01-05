@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntraveController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Controller</a> &gt; <span class="el_source">EntraveController.java</span></div><h1>EntraveController.java</h1><pre class="source lang-java linenums">package Controller;
+
+import Model.ServiceAPI;
+import View.EntravesView;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Scanner;
+
+/**
+ * Contrôleur pour la gestion des entraves routières. Permet d'afficher les informations
+ * liées aux entraves, de les filtrer et de récupérer les détails d'un travail voulu.
+ */
+<span class="nc" id="L14">public class EntraveController {</span>
+
+    /**
+     * Affiche le menu des entraves routières à l'utilisateur.
+     *
+     * @param scanner L'objet Scanner pour récupérer les entrées de l'utilisateur.
+     */
+    public static void afficherMenu(Scanner scanner){
+<span class="nc" id="L22">        EntravesView.afficherMenu(scanner);</span>
+<span class="nc" id="L23">    }</span>
+
+    private static final String API_URL_ENTRAVES = &quot;https://donnees.montreal.ca/api/3/action/datastore_search?resource_id=a2bc8014-488c-495d-941b-e7ae1999d1bd&quot;;
+
+    /**
+     * Récupère les entraves en fonction du filtre de l'utilisateur.
+     *
+     * @param typeFiltre Le type de filtre (0 pour tous, 1 pour rue).
+     * @param filtre Le filtre, nom de la rue ou aucun.
+     * @return un JSONArray contenant les entraves filtrées ou non
+     */
+    public static JSONArray recupererEntraves(int typeFiltre, String filtre) {
+<span class="fc" id="L35">        JSONArray entravesFiltrees = new JSONArray(); // Pour stocker les entraves filtrées</span>
+
+        try {
+<span class="fc" id="L38">            JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_ENTRAVES);</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">            if (jsonResponse == null) {</span>
+<span class="nc" id="L40">                System.out.println(&quot;Impossible de récupérer les données de l'API.&quot;);</span>
+<span class="nc" id="L41">                return null;</span>
+            }
+
+            // Parcourir le json et extraire l'objet result ainsi que records qui est le tableau d'objets
+<span class="fc" id="L45">            JSONArray records = jsonResponse.getJSONObject(&quot;result&quot;).getJSONArray(&quot;records&quot;);</span>
+
+<span class="fc" id="L47">            boolean found = false;</span>
+            // Parcourir le tableau d'objets records pour extraire les objets
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            for (int i = 0; i &lt; records.length(); i++) {</span>
+<span class="fc" id="L50">                JSONObject entrave = records.getJSONObject(i);</span>
+<span class="fc" id="L51">                String rue = entrave.getString(&quot;shortname&quot;);</span>
+
+                // Identifier le filtre
+<span class="pc bpc" id="L54" title="1 of 6 branches missed.">                if (typeFiltre == 0 || (typeFiltre == 1 &amp;&amp; rue.equalsIgnoreCase(filtre))) {</span>
+                    // Ajouter l'entrave filtrée au JSONArray
+<span class="fc" id="L56">                    entravesFiltrees.put(entrave);</span>
+<span class="fc" id="L57">                    found = true;</span>
+                }
+            }
+
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">            if (!found) {</span>
+<span class="nc" id="L62">                System.out.println(&quot;\nAucune entrave trouvée avec ce filtre.&quot;);</span>
+            }
+
+<span class="nc" id="L65">        } catch (Exception e) {</span>
+<span class="nc" id="L66">            e.printStackTrace();</span>
+<span class="fc" id="L67">        }</span>
+
+<span class="fc" id="L69">        return entravesFiltrees; // Retourner le JSONArray avec les entraves filtrées</span>
+    }
+
+    /**
+     * Récupère toutes les entraves avec l'API et les retourne en forme de tableau.
+     *
+     * @return Un tableau avec les entraves récupérées.
+     */
+    public static JSONArray getEntraves() {
+        // Appel à la méthode getDataFromApi pour récupérer les données
+<span class="fc" id="L79">        JSONObject jsonResponse = ServiceAPI.getDataFromApi(API_URL_ENTRAVES);</span>
+
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (jsonResponse != null) {</span>
+            // Récupérer la liste des entraves à partir de la réponse JSON
+<span class="fc" id="L83">            JSONArray travaux = jsonResponse.getJSONObject(&quot;result&quot;).getJSONArray(&quot;records&quot;);</span>
+<span class="fc" id="L84">            return travaux;</span>
+        } else {
+<span class="nc" id="L86">            System.out.println(&quot;Impossible de récupérer les données des travaux.&quot;);</span>
+<span class="nc" id="L87">            return new JSONArray(); // Retourner un tableau vide en cas d'erreur</span>
+        }
+    }
+
+    /**
+     * Récupère et affiche les entraves associées à un travail particulier avec
+     * l'identifiant du travail entré par l'utilisateur.
+     *
+     * @param idTravail L'identifiant du travail dont on veut connaître les entraves associées.
+     */
+    public static void recupererEntravesParTravail(int idTravail) {
+
+        // Récupérer les travaux avec l'API des travaux
+<span class="fc" id="L100">        JSONArray travaux = TravauxController.getTravaux();</span>
+
+        // Rechercher le travail correspondant à l'id donné.
+<span class="fc" id="L103">        String longTravailId = null;</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        for (int i = 0; i &lt; travaux.length(); i++) {</span>
+<span class="fc" id="L105">            JSONObject travail = travaux.getJSONObject(i);</span>
+<span class="fc" id="L106">            int travailShortId = travail.getInt(&quot;_id&quot;);</span>
+
+            // Si l'_id du travail correspond à l'entrée idTravail de l'utilisateur, on a trouvé le travail
+            // en question et on extrait son long id composé de chiffres et lettres
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">            if (travailShortId == idTravail) {</span>
+<span class="fc" id="L111">                longTravailId = travail.getString(&quot;id&quot;);</span>
+<span class="fc" id="L112">                break;</span>
+            }
+        }
+
+        // Si aucun travail correspondant à l'_id n'est trouvé
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (longTravailId == null) {</span>
+<span class="nc" id="L118">            System.out.println(&quot;Aucun travail trouvé avec ce numéro.&quot;);</span>
+<span class="nc" id="L119">            return;</span>
+        }
+
+        // Récupérer les entraves via l'API des entraves
+<span class="fc" id="L123">        JSONArray entraves = getEntraves();</span>
+
+        // Parcourir les entraves pour afficher celles associées au travail trouvé
+<span class="fc" id="L126">        boolean entraveTrouvee = false; // Indicateur pour vérifier si une entrave est trouvée</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (int j = 0; j &lt; entraves.length(); j++) {</span>
+<span class="fc" id="L128">            JSONObject entrave = entraves.getJSONObject(j);</span>
+<span class="fc" id="L129">            String entraveId = entrave.getString(&quot;id_request&quot;);</span>
+
+            // Si les IDs correspondent, afficher les informations de l'entrave
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            if (longTravailId.equals(entraveId)) {</span>
+<span class="nc" id="L133">                afficherEntraveDuTravail(entrave);</span>
+<span class="nc" id="L134">                entraveTrouvee = true; // Entrave trouvée</span>
+            }
+        }
+
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (!entraveTrouvee) {</span>
+<span class="fc" id="L139">            System.out.println(&quot;Aucune entrave associée à ce travail.&quot;);</span>
+        }
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Affiche les informations d'une entrave.
+     *
+     * @param entrave L'objet JSON représentant une entrave dont on veut les détails.
+     */
+    public static void afficherEntraveDuTravail(JSONObject entrave){
+
+        // Récupérer les informations de l'entrave
+<span class="nc" id="L151">        String streetName = entrave.getString(&quot;shortname&quot;);</span>
+<span class="nc" id="L152">        String streetImpactType = entrave.getString(&quot;streetimpacttype&quot;);</span>
+<span class="nc" id="L153">        String sidewalkBlockedType = entrave.getString(&quot;sidewalk_blockedtype&quot;);</span>
+
+        // Afficher les informations de l'entrave associée au travail demandé
+<span class="nc" id="L156">        System.out.println(&quot;=== Détails de l'entrave associé au travail ===&quot;);</span>
+<span class="nc" id="L157">        System.out.println(&quot;Rue : &quot; + streetName);</span>
+<span class="nc" id="L158">        System.out.println(&quot;Type d'impact sur la rue : &quot; + streetImpactType);</span>
+<span class="nc" id="L159">        System.out.println(&quot;Blocage du trottoir : &quot; + sidewalkBlockedType);</span>
+<span class="nc" id="L160">        System.out.println(&quot;------------------------------&quot;);</span>
+<span class="nc" id="L161">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

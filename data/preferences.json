@@ -33,5 +33,20 @@
             }
         ],
         "email": "bob.dupont@gmail.com"
+    },
+    {
+        "preferences": [
+            {
+                "jour": "Mardi",
+                "heureDebut": "08:00",
+                "heureFin": "17:00"
+            },
+            {
+                "jour": "Mercredi",
+                "heureDebut": "08:00",
+                "heureFin": "17:00"
+            }
+        ],
+        "email": "natrazaf2020@gmail.com"
     }
 ]

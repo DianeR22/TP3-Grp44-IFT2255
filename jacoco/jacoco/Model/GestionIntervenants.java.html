@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GestionIntervenants.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">GestionIntervenants.java</span></div><h1>GestionIntervenants.java</h1><pre class="source lang-java linenums">package Model;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * Classe qui gère les intervenants. Possible d'ajouter un intervenant à la liste,
+ * de charger un intervenant, de sauvegarder la liste des intervenants, de charger une liste
+ * d'intervenants depuis le fichier json des intervenants pour en récupérer une liste,
+ * de soumettre une candidature ou de retirer une candidature.
+ */
+<span class="nc" id="L18">public class GestionIntervenants{</span>
+
+    // Initialisation d'une liste d'intervenants
+<span class="nc" id="L21">    private static List&lt;Intervenant&gt; listeIntervenants = new ArrayList&lt;&gt;();</span>
+
+    // Fichier json des intervenants
+    private static final String FICHIER_INTERVENANTS = &quot;data/intervenants.json&quot;;
+
+    // Getter et setter
+
+    /**
+     * Récupèrer la liste des intervenants.
+     * @return la liste des intervenants
+     */
+    public static List&lt;Intervenant&gt; getListeIntervenants() {
+<span class="nc" id="L33">        return listeIntervenants;</span>
+    }
+
+    /**
+     * Définit la liste des intervenants
+     * @param listeIntervenants
+     */
+    public static void setListeIntervenants(List&lt;Intervenant&gt; listeIntervenants) {
+<span class="nc" id="L41">        GestionIntervenants.listeIntervenants = listeIntervenants;</span>
+<span class="nc" id="L42">    }</span>
+
+    // Méthode pour ajouter un intervenant à la liste des intervenants et à le sauvegarder dans le fichier json
+
+    /**
+     * Ajoute un intervenant à la liste des intervenants
+     * @param intervenant
+     */
+    public static void ajouterIntervenant(Intervenant intervenant) {
+<span class="nc" id="L51">        listeIntervenants.add(intervenant);</span>
+<span class="nc" id="L52">        saveIntervenant();</span>
+<span class="nc" id="L53">    }</span>
+
+    // Cette méthode sert à charger les intervenants à la liste d'intervenants du
+    // fichier json approprié
+
+    /**
+     * Procède au chargement des intervenants présents dans le fichier json, donc inscrits.
+     */
+    public static void chargeIntervenants(){
+<span class="nc" id="L62">        ObjectMapper obj = new ObjectMapper();</span>
+        try{
+<span class="nc" id="L64">            File file = new File(FICHIER_INTERVENANTS);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (file.exists()){</span>
+<span class="nc" id="L66">                listeIntervenants = obj.readValue(file, obj.getTypeFactory().constructCollectionType(List.class, Intervenant.class));</span>
+            }
+<span class="nc" id="L68">        } catch(IOException e){</span>
+<span class="nc" id="L69">            System.out.println(&quot;Erreur dans le chargement des intervenants.&quot; + e.getMessage());</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">    }</span>
+
+    // Méthode servant à sauvegarder un intervenant et à le placer dans le fichier json
+
+    /**
+     * Sauvegarde d'un intervenant en sauvegardant la liste des intervenants dans le fichier
+     * json.
+     */
+    public static void saveIntervenant(){
+<span class="nc" id="L80">        ObjectMapper obj = new ObjectMapper();</span>
+        try {
+<span class="nc" id="L82">            obj.writeValue(new File(FICHIER_INTERVENANTS), listeIntervenants);</span>
+        
+<span class="nc" id="L84">        } catch (IOException e) {</span>
+<span class="nc" id="L85">            System.out.println(&quot;Erreur dans la sauvegarde.&quot;);</span>
+<span class="nc" id="L86">        }</span>
+<span class="nc" id="L87">    }</span>
+
+    // Méthode pour charger les résidents depuis le fichier JSON
+
+    /**
+     * Permet de charger les intervenants depuis le fichier json pour en extraire
+     * une liste
+     * @return une liste des intervenants
+     */
+    public static List&lt;Intervenant&gt; chargerIntervenantsDepuisFichier() {
+        // Spécifiez le chemin de votre fichier JSON
+<span class="nc" id="L98">        File fichier = new File(&quot;data/intervenants.json&quot;);</span>
+
+        // Créez un ObjectMapper pour mapper le JSON à des objets Java
+<span class="nc" id="L101">        ObjectMapper objectMapper = new ObjectMapper();</span>
+
+        try {
+            // Lire le fichier JSON et mapper son contenu à une liste d'objets Intervenant
+<span class="nc" id="L105">            List&lt;Intervenant&gt; intervenants = objectMapper.readValue(fichier, objectMapper.getTypeFactory().constructCollectionType(List.class, Intervenant.class));</span>
+<span class="nc" id="L106">            return intervenants;</span>
+<span class="nc" id="L107">        } catch (IOException e) {</span>
+<span class="nc" id="L108">            e.printStackTrace();</span>
+<span class="nc" id="L109">            return null;  // En cas d'erreur, retourner null</span>
+        }
+    }
+
+    /** Méthode qui permet à l'intervenant de soumettre une candidature en entrant
+    // les informations essentielles. Elle ajoute la candidature à la liste des
+    // candidatures et au fichier json correspondant.
+    */
+    public static void soumettreCandidature() {
+<span class="nc" id="L118">        Scanner scanner = new Scanner(System.in);</span>
+
+<span class="nc" id="L120">        System.out.println(&quot;Voici la liste des requêtes de travail: &quot;);</span>
+<span class="nc" id="L121">        List&lt;Requete&gt; listeRequetes = GestionRequete.getListeRequetes();</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (listeRequetes.isEmpty()) {</span>
+<span class="nc" id="L124">            System.out.println(&quot;Aucune requête disponible pour le moment.&quot;);</span>
+<span class="nc" id="L125">            return;</span>
+        }
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (int i = 0; i &lt; listeRequetes.size(); i++) {</span>
+<span class="nc" id="L129">            System.out.println((i + 1) + &quot;. &quot; + listeRequetes.get(i).getTitreTravail());</span>
+        }
+
+<span class="nc" id="L132">        System.out.println(&quot;Entrer le numéro de la requête que vous souhaitez:&quot;);</span>
+<span class="nc" id="L133">        int index = scanner.nextInt();</span>
+<span class="nc" id="L134">        scanner.nextLine();</span>
+
+<span class="nc bnc" id="L136" title="All 4 branches missed.">        if (index &lt; 1 || index &gt; listeRequetes.size()) {</span>
+<span class="nc" id="L137">            System.out.println(&quot;Choix invalide. Retour au menu principal.&quot;);</span>
+<span class="nc" id="L138">            return;</span>
+        }
+
+<span class="nc" id="L141">        int tentatives = 0;</span>
+<span class="nc" id="L142">        final int MAX_TENTATIVES = 3;</span>
+<span class="nc" id="L143">        boolean datesValides = false;</span>
+<span class="nc" id="L144">        String dateDebut = null;</span>
+<span class="nc" id="L145">        String dateFin = null;</span>
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        while (tentatives &lt; MAX_TENTATIVES) {</span>
+            try {
+<span class="nc" id="L149">                System.out.print(&quot;Entrez la date de début (format : YYYY-MM-DD) : &quot;);</span>
+<span class="nc" id="L150">                dateDebut = scanner.nextLine().trim();</span>
+
+<span class="nc" id="L152">                System.out.print(&quot;Entrez la date de fin (format : YYYY-MM-DD) : &quot;);</span>
+<span class="nc" id="L153">                dateFin = scanner.nextLine().trim();</span>
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                if (GestionCandidatures.validerDates(dateDebut, dateFin)) {</span>
+<span class="nc" id="L156">                    datesValides = true;</span>
+<span class="nc" id="L157">                    break;</span>
+                }
+<span class="nc" id="L159">            } catch (Exception e) {</span>
+                // Aucun message d'erreur supplémentaire ici
+<span class="nc" id="L161">            }</span>
+
+<span class="nc" id="L163">            tentatives++;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (tentatives &lt; MAX_TENTATIVES) {</span>
+<span class="nc" id="L165">                System.out.println(&quot;Veuillez réessayer. Tentative &quot; + tentatives + &quot; sur &quot; + MAX_TENTATIVES + &quot;.&quot;);</span>
+            }
+        }
+
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (!datesValides) {</span>
+<span class="nc" id="L170">            System.out.println(&quot;Tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="nc" id="L171">            return;</span>
+        }
+
+<span class="nc" id="L174">        Intervenant intervenant = Intervenant.getIntervenantConnecte();</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (intervenant == null) {</span>
+<span class="nc" id="L176">            System.out.println(&quot;Erreur : Aucun intervenant connecté.&quot;);</span>
+<span class="nc" id="L177">            return;</span>
+        }
+
+<span class="nc" id="L180">        Requete requeteChoisie = listeRequetes.get(index - 1);</span>
+<span class="nc" id="L181">        Candidature candidature = new Candidature(dateDebut, dateFin, requeteChoisie, intervenant);</span>
+<span class="nc" id="L182">        GestionCandidatures.ajouterCandidature(candidature);</span>
+<span class="nc" id="L183">    }</span>
+
+    /** Méthode permettant de supprimer une candidature. Elle affiche les candidatures
+    // d'un intervenant et retire celle que l'intervenant choisit. Les candidatures
+     restantes sont finalement chargées dans le json.
+     */
+    public static void supprimerCandidature() {
+
+<span class="nc" id="L191">        Scanner scanner = new Scanner(System.in);</span>
+
+        // Récupérer l'intervenant connecté
+<span class="nc" id="L194">        Intervenant intervenant = Intervenant.getIntervenantConnecte();</span>
+
+        // Récupérer les candidatures soumises de l'intervenant
+<span class="nc" id="L197">        List&lt;Candidature&gt; listeCandidatures = GestionCandidatures.getCandidaturesDeIntervenant(intervenant);</span>
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">        if (listeCandidatures.isEmpty()) {</span>
+<span class="nc" id="L200">            System.out.println(&quot;Vous n'avez soumis aucune candidature pour le moment.&quot;);</span>
+<span class="nc" id="L201">            return;</span>
+        }
+
+<span class="nc" id="L204">        System.out.println(&quot;Voici la liste des candidatures que vous avez soumise: &quot;);</span>
+
+        // Afficher les candidatures de l'intervenant numérotées
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        for (int i = 0; i &lt; listeCandidatures.size(); i++){</span>
+<span class="nc" id="L208">            Candidature candidature = listeCandidatures.get(i);</span>
+<span class="nc" id="L209">            System.out.println((i+1) + &quot;. &quot; + candidature.getRequete().getTitreTravail() + &quot;| Date de début: &quot;</span>
+<span class="nc" id="L210">            + candidature.getDateDebut() + &quot; | Date de fin: &quot; + candidature.getDateFin());</span>
+        }
+
+<span class="nc" id="L213">        System.out.println(&quot;Entrez le numéro de la candidature que vous souhaitez supprimer: &quot;);</span>
+<span class="nc" id="L214">        int index = scanner.nextInt();</span>
+
+        // Valider l'index
+<span class="nc bnc" id="L217" title="All 4 branches missed.">        if (index &lt; 1 || index &gt; listeCandidatures.size()) {</span>
+<span class="nc" id="L218">            System.out.println(&quot;Choix invalide.&quot;);</span>
+<span class="nc" id="L219">            return;</span>
+        }
+
+        // Récupérer et supprimer la candidature choisie
+<span class="nc" id="L223">        Candidature candidatureChoisie = listeCandidatures.get(index-1);</span>
+<span class="nc" id="L224">        GestionCandidatures.supprimerCandidature(candidatureChoisie);</span>
+
+<span class="nc" id="L226">        System.out.println(&quot;Votre candidature pour le travail \&quot;&quot; + candidatureChoisie.getRequete().getTitreTravail() +</span>
+                &quot;\&quot; a été retirée avec succès.&quot;);
+
+        // Charger la liste des candidatures actuelle après suppression
+<span class="nc" id="L230">        GestionCandidatures.saveCandidature();</span>
+<span class="nc" id="L231">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TravauxView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">View</a> &gt; <span class="el_source">TravauxView.java</span></div><h1>TravauxView.java</h1><pre class="source lang-java linenums">package View;
+
+import Controller.ResidentController;
+import Controller.TravauxController;
+import Model.GestionProjets;
+import Model.Projet;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+/**
+ * La classe TravauxView gère l'affichage du menu de recherche des travaux
+ * et permet à l'utilisateur résident de filtrer les travaux.
+ */
+<span class="nc" id="L19">public class TravauxView {</span>
+
+    // Mapping des catégories de travaux (API) -&gt; exemple
+    // Clé = ce que l'utilisateur va taper (&quot;Travaux routiers&quot;),
+    // Valeur = ce qu'on envoie à l'API (&quot;Réseaux routier - Réfection et travaux corrélatifs&quot;)
+<span class="nc" id="L24">    private static final Map&lt;String, String&gt; reasonCategoryMap = Map.ofEntries(</span>
+<span class="nc" id="L25">            Map.entry(&quot;Travaux de construction&quot;, &quot;Construction/rénovation sans excavation&quot;),</span>
+<span class="nc" id="L26">            Map.entry(&quot;Travaux résidentiels&quot;, &quot;Trottoirs - Construction&quot;),</span>
+<span class="nc" id="L27">            Map.entry(&quot;Travaux souterrains&quot;, &quot;Construction/rénovation avec excavation&quot;),</span>
+<span class="nc" id="L28">            Map.entry(&quot;Travaux de gaz ou électricité&quot;, &quot;S-3 Infrastructure souterraine majeure - Réseaux de gaz&quot;),</span>
+<span class="nc" id="L29">            Map.entry(&quot;Travaux routiers&quot;, &quot;Réseaux routier - Réfection et travaux corrélatifs&quot;),</span>
+<span class="nc" id="L30">            Map.entry(&quot;Travaux de signalisation et éclairage&quot;, &quot;Feux de signalisation - Ajout/réparation&quot;),</span>
+<span class="nc" id="L31">            Map.entry(&quot;Entretien urbain&quot;, &quot;Égouts et aqueducs - Inspection et nettoyage&quot;),</span>
+<span class="nc" id="L32">            Map.entry(&quot;Autres travaux&quot;, &quot;Autre&quot;)</span>
+    );
+
+    /**
+     * Affiche le menu principal pour la recherche des travaux.
+     * Permet à l'utilisateur de choisir entre plusieurs options de filtrage.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
+    public static void afficherMenu(Scanner scanner) {
+
+        while (true) {
+<span class="nc" id="L44">            System.out.println(&quot;---- Menu de la recherche/consultation des travaux en cours ----&quot;);</span>
+<span class="nc" id="L45">            System.out.println(&quot;1. Filtrer par quartier&quot;);</span>
+<span class="nc" id="L46">            System.out.println(&quot;2. Filtrer par type de travaux&quot;);</span>
+<span class="nc" id="L47">            System.out.println(&quot;3. Afficher tous les travaux&quot;);</span>
+<span class="nc" id="L48">            System.out.println(&quot;4. Quitter&quot;);</span>
+<span class="nc" id="L49">            System.out.println(&quot;Entrez une option entre 1 et 4.&quot;);</span>
+
+<span class="nc" id="L51">            String choix = scanner.nextLine();</span>
+
+<span class="nc bnc" id="L53" title="All 5 branches missed.">            switch (choix) {</span>
+                case &quot;1&quot;:
+<span class="nc" id="L55">                    afficherTravauxParQuartier(scanner);</span>
+<span class="nc" id="L56">                    retour(scanner);</span>
+<span class="nc" id="L57">                    break;</span>
+
+                case &quot;2&quot;:
+<span class="nc" id="L60">                    afficherTravauxParType(scanner);</span>
+<span class="nc" id="L61">                    retour(scanner);</span>
+<span class="nc" id="L62">                    break;</span>
+
+                case &quot;3&quot;:
+<span class="nc" id="L65">                    afficherTousLesTravaux();</span>
+<span class="nc" id="L66">                    retour(scanner);</span>
+<span class="nc" id="L67">                    break;</span>
+
+                case &quot;4&quot;:
+<span class="nc" id="L70">                    System.out.println(&quot;Au revoir !&quot;);</span>
+<span class="nc" id="L71">                    ResidentController.afficherMenuResident();</span>
+<span class="nc" id="L72">                    return;</span>
+
+                default:
+<span class="nc" id="L75">                    System.out.println(&quot;Option invalide.&quot;);</span>
+            }
+<span class="nc" id="L77">        }</span>
+    }
+
+    /**
+     * Affiche la liste des types de travaux disponibles (clés du mapping).
+     * Cette méthode sert de guide pour l'utilisateur.
+     */
+    public static void afficherTypesDeTravaux() {
+<span class="nc" id="L85">        System.out.println(&quot;Exemples de types de travaux disponibles :&quot;);</span>
+<span class="nc" id="L86">        reasonCategoryMap.keySet().forEach(type -&gt; System.out.println(&quot;- &quot; + type));</span>
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * Exemple : filtrer par quartier.
+     * On réutilise notre méthode unifiée 'afficherTravauxAvecFiltre' (codeFiltre=1).
+     */
+    private static void afficherTravauxParQuartier(Scanner scanner) {
+<span class="nc" id="L94">        System.out.println(&quot;Veuillez entrer le quartier souhaité: &quot;);</span>
+<span class="nc" id="L95">        String filtreQuartier = scanner.nextLine();</span>
+
+        // On passe 1 pour dire &quot;filtre par quartier&quot;
+<span class="nc" id="L98">        afficherTravauxAvecFiltre(1, filtreQuartier);</span>
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * Exemple : filtrer par type,
+     * avec gestion double entre &quot;type local&quot; et &quot;type API&quot;.
+     */
+    private static void afficherTravauxParType(Scanner scanner) {
+        // On affiche d'abord les types de travaux possibles
+<span class="nc" id="L107">        afficherTypesDeTravaux();</span>
+<span class="nc" id="L108">        System.out.println(&quot;Veuillez entrer le type souhaité (par ex. 'Travaux routiers'): &quot;);</span>
+<span class="nc" id="L109">        String choixTypeUtilisateur = scanner.nextLine();</span>
+        // ex. &quot;Travaux routiers&quot;
+
+        // Vérification si ce type existe dans la map
+<span class="nc" id="L113">        String reasonCategory = reasonCategoryMap.get(choixTypeUtilisateur);</span>
+        // ex. &quot;Réseaux routier - Réfection et travaux corrélatifs&quot;
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (reasonCategory == null) {</span>
+<span class="nc" id="L117">            System.out.println(&quot;Le type de travaux n'est pas valide ou n'est pas répertorié dans le mapping.&quot;);</span>
+        } else {
+            // On affiche l'API filtré par la &quot;reasonCategory&quot;
+            // + les projets locaux filtrés par le type &quot;local&quot; (choixTypeUtilisateur)
+<span class="nc" id="L121">            afficherTravauxParTypeDoubleFiltre(choixTypeUtilisateur, reasonCategory);</span>
+        }
+<span class="nc" id="L123">    }</span>
+
+    /**
+     * Affiche tous les travaux (API + projets prévus/en cours),
+     * donc pas de filtre (codeFiltre=0).
+     */
+    private static void afficherTousLesTravaux() {
+<span class="nc" id="L130">        afficherTravauxAvecFiltre(0, null);</span>
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Méthode principale (version codeFiltre unique)
+     * qui gère l'affichage des travaux (API + locaux) avec un filtre unique.
+     *
+     * @param codeFiltre    0 =&gt; pas de filtre (tous), 1 =&gt; par quartier, 2 =&gt; par type
+     * @param valeurFiltre  la valeur à filtrer (ex: nom du quartier ou &quot;reason_category&quot; pour l'API).
+     *                      Peut être null si codeFiltre=0 (tous).
+     */
+    private static void afficherTravauxAvecFiltre(int codeFiltre, String valeurFiltre) {
+        // 1) Récupérer les travaux de l'API
+<span class="nc" id="L143">        JSONArray travauxAPI = TravauxController.recupererTravaux(codeFiltre, valeurFiltre);</span>
+
+        // 2) Récupérer et filtrer les projets locaux
+<span class="nc" id="L146">        List&lt;Projet&gt; projetsFiltres = filtrerProjetsLocaux(codeFiltre, valeurFiltre);</span>
+
+        // 3) Afficher
+<span class="nc" id="L149">        System.out.println(&quot;\n===== TRAVAUX DE L'API =====&quot;);</span>
+<span class="nc" id="L150">        afficherTravauxAPI(travauxAPI);</span>
+
+<span class="nc" id="L152">        System.out.println(&quot;\n===== PROJETS LOCAUX =====&quot;);</span>
+<span class="nc" id="L153">        afficherProjetsLocaux(projetsFiltres);</span>
+<span class="nc" id="L154">    }</span>
+
+    /**
+     * Méthode spécialisée pour la recherche par type,
+     * quand on a un &quot;typeLocal&quot; différent du &quot;typeAPI&quot;.
+     *
+     * @param typeLocal ex: &quot;Travaux routiers&quot; (ce que vous stockez dans p.getTypeTravaux())
+     * @param typeAPI   ex: &quot;Réseaux routier - Réfection et travaux corrélatifs&quot; (ce que l'API attend)
+     */
+    private static void afficherTravauxParTypeDoubleFiltre(String typeLocal, String typeAPI) {
+        // -- (1) Récupérer les travaux de l'API avec la valeur typeAPI
+<span class="nc" id="L165">        JSONArray travauxAPI = TravauxController.recupererTravaux(2, typeAPI);</span>
+
+        // -- (2) Récupérer et filtrer les projets locaux avec le typeLocal
+<span class="nc" id="L168">        List&lt;Projet&gt; projetsFiltres = filtrerProjetsParTypeLocal(typeLocal);</span>
+
+        // -- (3) Afficher
+<span class="nc" id="L171">        System.out.println(&quot;\n===== TRAVAUX DE L'API =====&quot;);</span>
+<span class="nc" id="L172">        afficherTravauxAPI(travauxAPI);</span>
+
+<span class="nc" id="L174">        System.out.println(&quot;\n===== PROJETS LOCAUX =====&quot;);</span>
+<span class="nc" id="L175">        afficherProjetsLocaux(projetsFiltres);</span>
+<span class="nc" id="L176">    }</span>
+
+    /* *******************************************************************************************
+     *  Méthodes de filtrage de projets
+     * ******************************************************************************************* */
+
+    /**
+     * Filtre unifié : par quartier ou par type (ou pas de filtre),
+     * en fonction de codeFiltre.
+     * On ne garde que ceux dont le statut est &quot;Prévu&quot; ou &quot;En cours&quot;.
+     */
+    private static List&lt;Projet&gt; filtrerProjetsLocaux(int codeFiltre, String valeurFiltre) {
+<span class="nc" id="L188">        List&lt;Projet&gt; tousLesProjets = GestionProjets.chargerProjets();</span>
+<span class="nc" id="L189">        List&lt;Projet&gt; resultat = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        for (Projet p : tousLesProjets) {</span>
+            // Vérifier le statut
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            if (p.getStatut() != null &amp;&amp; (</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">                    p.getStatut().equalsIgnoreCase(&quot;Prévu&quot;)</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                            || p.getStatut().equalsIgnoreCase(&quot;En cours&quot;))) {</span>
+
+<span class="nc bnc" id="L197" title="All 4 branches missed.">                switch (codeFiltre) {</span>
+                    case 0: // pas de filtre =&gt; on prend tout
+<span class="nc" id="L199">                        resultat.add(p);</span>
+<span class="nc" id="L200">                        break;</span>
+
+                    case 1: // filtre par quartier
+<span class="nc bnc" id="L203" title="All 2 branches missed.">                        if (p.getQuartiersAffectes() != null) {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                            for (String q : p.getQuartiersAffectes()) {</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                                if (q.equalsIgnoreCase(valeurFiltre)) {</span>
+<span class="nc" id="L206">                                    resultat.add(p);</span>
+<span class="nc" id="L207">                                    break; // on arrête dès qu'on trouve un match</span>
+                                }
+<span class="nc" id="L209">                            }</span>
+                        }
+                        break;
+
+                    case 2: // filtre par type, on compare direct à valeurFiltre
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                        if (p.getTypeTravaux() != null</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                                &amp;&amp; p.getTypeTravaux().equalsIgnoreCase(valeurFiltre)) {</span>
+<span class="nc" id="L216">                            resultat.add(p);</span>
+                        }
+                        break;
+
+                    default:
+                        // Si un nouveau codeFiltre arrive un jour
+                        break;
+                }
+            }
+<span class="nc" id="L225">        }</span>
+<span class="nc" id="L226">        return resultat;</span>
+    }
+
+    /**
+     * Filtre uniquement par type local (ex: &quot;Travaux routiers&quot;) + statut &quot;Prévu&quot; ou &quot;En cours&quot;.
+     * On ne compare pas à la longue chaîne (e.g. &quot;Réseaux routier - Réfection et travaux corrélatifs&quot;),
+     * donc c'est plus flexible.
+     */
+    private static List&lt;Projet&gt; filtrerProjetsParTypeLocal(String typeRecherche) {
+<span class="nc" id="L235">        List&lt;Projet&gt; tousLesProjets = GestionProjets.chargerProjets();</span>
+<span class="nc" id="L236">        List&lt;Projet&gt; resultat = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        for (Projet p : tousLesProjets) {</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if (p.getStatut() != null</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                    &amp;&amp; (p.getStatut().equalsIgnoreCase(&quot;Prévu&quot;)</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                    || p.getStatut().equalsIgnoreCase(&quot;En cours&quot;))) {</span>
+
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                if (p.getTypeTravaux() != null</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                        &amp;&amp; p.getTypeTravaux().equalsIgnoreCase(typeRecherche)) {</span>
+<span class="nc" id="L245">                    resultat.add(p);</span>
+                }
+            }
+<span class="nc" id="L248">        }</span>
+<span class="nc" id="L249">        return resultat;</span>
+    }
+
+    /* *******************************************************************************************
+     *  Méthodes d'affichage : Travaux de l'API + Projets
+     * ******************************************************************************************* */
+
+    /**
+     * Affiche les travaux de l'API à partir du JSONArray fourni.
+     *
+     * @param travaux Le JSONArray contenant les travaux à afficher
+     */
+    public static void afficherTravauxAPI(JSONArray travaux) {
+<span class="nc bnc" id="L262" title="All 4 branches missed.">        if (travaux == null || travaux.length() == 0) {</span>
+<span class="nc" id="L263">            System.out.println(&quot;Aucun travail de l'API à afficher.&quot;);</span>
+<span class="nc" id="L264">            return;</span>
+        }
+
+<span class="nc bnc" id="L267" title="All 2 branches missed.">        for (int i = 0; i &lt; travaux.length(); i++) {</span>
+<span class="nc" id="L268">            JSONObject travail = travaux.getJSONObject(i);</span>
+
+<span class="nc" id="L270">            int id = travail.optInt(&quot;_id&quot;, -1);</span>
+<span class="nc" id="L271">            String quartier = travail.optString(&quot;boroughid&quot;, &quot;&quot;);</span>
+<span class="nc" id="L272">            String type = travail.optString(&quot;reason_category&quot;, &quot;&quot;);</span>
+<span class="nc" id="L273">            String currentStatus = travail.optString(&quot;currentstatus&quot;, &quot;&quot;);</span>
+<span class="nc" id="L274">            String organizationName = travail.optString(&quot;organizationname&quot;, &quot;&quot;);</span>
+<span class="nc" id="L275">            String submitterCategory = travail.optString(&quot;submittercategory&quot;, &quot;&quot;);</span>
+
+<span class="nc" id="L277">            System.out.println(&quot;\n***********************************&quot;);</span>
+<span class="nc" id="L278">            System.out.println(&quot;Travail ID : &quot; + id);</span>
+<span class="nc" id="L279">            System.out.println(&quot;Quartier : &quot; + quartier);</span>
+<span class="nc" id="L280">            System.out.println(&quot;Statut actuel : &quot; + currentStatus);</span>
+<span class="nc" id="L281">            System.out.println(&quot;Motif (reason_category) : &quot; + type);</span>
+<span class="nc" id="L282">            System.out.println(&quot;Nom de l'intervenant : &quot; + organizationName);</span>
+<span class="nc" id="L283">            System.out.println(&quot;Catégorie de l'intervenant : &quot; + submitterCategory);</span>
+<span class="nc" id="L284">            System.out.println(&quot;*************************************&quot;);</span>
+        }
+<span class="nc" id="L286">    }</span>
+
+    /**
+     * Affiche une liste de projets locaux.
+     *
+     * @param projets liste de projets
+     */
+    public static void afficherProjetsLocaux(List&lt;Projet&gt; projets) {
+<span class="nc bnc" id="L294" title="All 4 branches missed.">        if (projets == null || projets.isEmpty()) {</span>
+<span class="nc" id="L295">            System.out.println(&quot;Aucun projet local à afficher.&quot;);</span>
+<span class="nc" id="L296">            return;</span>
+        }
+
+<span class="nc bnc" id="L299" title="All 2 branches missed.">        for (Projet projet : projets) {</span>
+<span class="nc" id="L300">            System.out.println(&quot;\n================================&quot;);</span>
+<span class="nc" id="L301">            System.out.println(&quot;Titre : &quot; + projet.getTitre());</span>
+<span class="nc" id="L302">            System.out.println(&quot;Description : &quot; + projet.getDescription());</span>
+<span class="nc" id="L303">            System.out.println(&quot;Type de travaux : &quot; + projet.getTypeTravaux());</span>
+<span class="nc" id="L304">            System.out.println(&quot;Quartiers affectés : &quot; + projet.getQuartiersAffectes());</span>
+<span class="nc" id="L305">            System.out.println(&quot;Rues affectées : &quot; + projet.getRuesAffectees());</span>
+<span class="nc" id="L306">            System.out.println(&quot;Codes postaux : &quot; + projet.getCodesPostauxAffectes());</span>
+<span class="nc" id="L307">            System.out.println(&quot;Date début : &quot; + projet.getDateDebut());</span>
+<span class="nc" id="L308">            System.out.println(&quot;Date fin : &quot; + projet.getDateFin());</span>
+<span class="nc" id="L309">            System.out.println(&quot;Heure début : &quot; + projet.getHeureDebut());</span>
+<span class="nc" id="L310">            System.out.println(&quot;Heure fin : &quot; + projet.getHeureFin());</span>
+<span class="nc" id="L311">            System.out.println(&quot;Statut : &quot; + projet.getStatut());</span>
+<span class="nc" id="L312">            System.out.println(&quot;================================&quot;);</span>
+<span class="nc" id="L313">        }</span>
+<span class="nc" id="L314">    }</span>
+
+    /**
+     * Permet à l'utilisateur de revenir en arrière au menu des travaux
+     * ou de retourner au menu des résidents.
+     *
+     * @param scanner Scanner utilisé pour récupérer l'entrée de l'utilisateur.
+     */
+    private static void retour(Scanner scanner) {
+<span class="nc" id="L323">        System.out.println(&quot;\nVoulez-vous revenir au menu des travaux (1) ou retourner au menu des résidents (2)?&quot;);</span>
+<span class="nc" id="L324">        String reponse = scanner.nextLine();</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">        if (reponse.equalsIgnoreCase(&quot;2&quot;)) {</span>
+<span class="nc" id="L326">            System.out.println(&quot;Retour au menu des résidents!&quot;);</span>
+<span class="nc" id="L327">            ResidentController.afficherMenuResident();</span>
+        }
+        // Si c’est &quot;1&quot; ou autre, on ne fait rien,
+        // la boucle du menu principal reprendra son cours.
+<span class="nc" id="L331">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

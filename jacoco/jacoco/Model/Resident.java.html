@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Resident.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Resident.java</span></div><h1>Resident.java</h1><pre class="source lang-java linenums">package Model;
+
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * La classe Resident représente un type d'utilisateur avec des informations
+ * comme la date de naissance, l'adresse, le mot de passe et permet la
+ * gestion de l'inscription, de la connexion et de toutes les informations
+ * associées à un résident dans le système.
+ *
+ * Cette classe hérite de la classe Utilisateur.
+ */
+public class Resident extends Utilisateur {
+    // Attributs spécifiques au résident
+    private String dateNaissance;
+    private String telephone;
+    private String adresse;   // Adresse complète
+    private String rue;       // ex &quot;1234 Sainte-Catherine&quot;
+    private String quartier;  // ex &quot;Ville-Marie&quot;
+    private String codePostal;
+
+    private Scanner scanner;
+    private Resident resident;
+    private static Resident residentConnecte;
+
+    /**
+     * Constructeur de la classe Resident permettant d'instancier un résident avec ses attributs
+     * et ceux hérités par la classe Utilisateur.
+     *
+     * @param nom Le nom du résident.
+     * @param prenom Le prénom du résident.
+     * @param adresseCourriel L'adresse courriel du résident.
+     * @param motDePasse Le mot de passe du résident.
+     * @param dateNaissance La date de naissance du résident.
+     * @param telephone Le numéro de téléphone du résident.
+     * @param adresse L'adresse du résident.
+     */
+    public Resident(String nom, String prenom, String adresseCourriel, String motDePasse, String dateNaissance,
+                    String telephone, String adresse, String codePostal) {
+<span class="fc" id="L41">        super(nom, prenom, motDePasse, adresseCourriel);</span>
+<span class="fc" id="L42">        this.dateNaissance = dateNaissance;</span>
+<span class="fc" id="L43">        this.telephone = telephone;</span>
+<span class="fc" id="L44">        setAdresse(adresse);</span>
+<span class="fc" id="L45">        this.codePostal = codePostal;</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Vérifie si deux objets Resident sont égaux en comparant les adresse courriel.
+     *
+     * @param obj L'objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // Vérifie si ces objets sont identiques
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L58">            return true;</span>
+        }
+        // Vérifie si ces objets appartiennent à la même classe
+<span class="pc bpc" id="L61" title="2 of 4 branches missed.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="nc" id="L62">            return false;</span>
+        }
+        // Vérifie si ces objets ont la même adresse courriel
+<span class="fc" id="L65">        Resident resident = (Resident) obj;</span>
+<span class="pc bpc" id="L66" title="2 of 4 branches missed.">        return this.adresseCourriel != null &amp;&amp; this.adresseCourriel.equals(resident.adresseCourriel);</span>
+    }
+
+    /**
+     * Retourne le code de hachage de l'adresse courriel pour garantir une
+     * cohérence avec la méthode equals
+     *
+     * @return Le code de hachage de l'adresse courriel.
+     */
+    @Override
+    public int hashCode() {
+        // Retourne le code de hachage de l'adresse, 0 si null
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        return adresseCourriel != null ? adresseCourriel.hashCode() : 0;</span>
+    }
+
+    /**
+     * Constructeur sans argument, nécessaire pour certaines initialisations.
+     */
+    public Resident() {
+<span class="fc" id="L85">        super();</span>
+<span class="fc" id="L86">    }</span>
+
+    // Getter et setter
+    /**
+     * Retourne la date de naissance du résident.
+     *
+     * @return La date de naissance du résident.
+     */
+    public String getDateNaissance() {
+<span class="fc" id="L95">        return dateNaissance;</span>
+    }
+
+    /**
+     * Définit la date de naissance du résident.
+     *
+     * @param dateNaissance La date de naissance à attribuer au résident.
+     */
+    public void setDateNaissance(String dateNaissance) {
+<span class="fc" id="L104">        this.dateNaissance = dateNaissance;</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Retourne le telephone du résident.
+     *
+     * @return Le telephone du résident.
+     */
+    public String getTelephone() {
+<span class="fc" id="L113">        return telephone;</span>
+    }
+
+    /**
+     * Définit le telephone du résident.
+     *
+     * @param telephone Le telephone à attribuer au résident.
+     */
+    public void setTelephone(String telephone) {
+<span class="fc" id="L122">        this.telephone = telephone;</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Getter/Setter de l'adresse COMPLETE (ex. &quot;1234 Sainte-Catherine, Ville-Marie&quot;).
+     *
+     * Dans le setter, on effectue aussi un petit parsing pour remplir rue/quartier.
+     */
+    public String getAdresse() {
+<span class="fc" id="L131">        return adresse;</span>
+    }
+
+    public void setAdresse(String adresse) {
+<span class="fc" id="L135">        this.adresse = adresse;</span>
+        // Tenter de parser (si le format n'est pas bon, rue/quartier seront vides ou null)
+<span class="fc" id="L137">        parseAdresse(adresse);</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Retourne uniquement la rue (ex. &quot;1234 Sainte-Catherine&quot;), parsée depuis l'adresse complète.
+     */
+    public String getRue() {
+<span class="fc" id="L144">        return rue;</span>
+    }
+    /**
+     * Retourne uniquement le quartier (ex. &quot;Ville-Marie&quot;).
+     */
+    public String getQuartier() {
+<span class="fc" id="L150">        return quartier;</span>
+    }
+
+    /**
+     * parseAdresse : prend la forme &quot;1234 Sainte-Catherine, Ville-Marie&quot; et split.
+     */
+    private void parseAdresse(String adresseComplete) {
+<span class="pc bpc" id="L157" title="2 of 4 branches missed.">        if (adresseComplete == null || !adresseComplete.contains(&quot;,&quot;)) {</span>
+<span class="nc" id="L158">            this.rue = null;</span>
+<span class="nc" id="L159">            this.quartier = null;</span>
+<span class="nc" id="L160">            return;</span>
+        }
+        // On cherche la première virgule
+<span class="fc" id="L163">        String[] parts = adresseComplete.split(&quot;\\s*,\\s*&quot;, 2);</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (parts.length == 2) {</span>
+<span class="fc" id="L165">            this.rue = parts[0];        // ex. &quot;1234 Sainte-Catherine&quot;</span>
+<span class="fc" id="L166">            this.quartier = parts[1];   // ex. &quot;Ville-Marie&quot;</span>
+        } else {
+            // Format inattendu =&gt; on peut laisser rue/quartier vides
+<span class="nc" id="L169">            this.rue = null;</span>
+<span class="nc" id="L170">            this.quartier = null;</span>
+        }
+<span class="fc" id="L172">    }</span>
+
+    public String getCodePostal() {
+<span class="fc" id="L175">        return codePostal;</span>
+    }
+
+    public void setCodePostal(String codePostal) {
+<span class="fc" id="L179">        this.codePostal = codePostal;</span>
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Définit un scanner du résident.
+     *
+     * @param scanner Le scanner à attribuer au résident.
+     */
+    public void setScanner(Scanner scanner) {
+<span class="nc" id="L188">        this.scanner = scanner;</span>
+<span class="nc" id="L189">    }</span>
+
+    /**
+     * Retourne le résident.
+     *
+     * @return Le résident.
+     */
+    public Resident getResident() {
+<span class="fc" id="L197">        return resident;</span>
+    }
+
+    /**
+     * Définit le résident.
+     *
+     * @param resident Le résident à attribuer au résident.
+     */
+    public void setResident(Resident resident) {
+<span class="fc" id="L206">        this.resident = resident;</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Retourne le résident connecté.
+     *
+     * @return Le résident connecté.
+     */
+    public static Resident getResidentConnecte() {
+<span class="nc" id="L215">        return residentConnecte;</span>
+    }
+
+    /**
+     * Définit le résident connecté.
+     *
+     * @param residentConnecte le résident connecté à attribuer.
+     */
+    public void setResidentConnecte(Resident residentConnecte) {
+<span class="nc" id="L224">        Resident.residentConnecte = residentConnecte;</span>
+<span class="nc" id="L225">    }</span>
+
+    /**
+     * Permet de connecter un résident en comparant l'adresse courriel fournie avec les résidents inscrits.
+     * Elle permet trouver le résident connecté et d'avoir une variable residentConnecte
+     * utile pour associer une requête à un résident par exemple.
+     * @param utilisateur L'utilisateur qui se connecte.
+     * @param email L'adresse courriel du résident.
+     * @return Le résident connecté, ou null si aucun résident avec cette adresse n'est trouvé.
+     */
+    public static Resident connecterResident(Utilisateur utilisateur, String email) {
+        // Prendre la liste des résidents depuis le fichier JSON
+<span class="nc" id="L237">        List&lt;Resident&gt; residents = GestionResidents.chargerResidentsDepuisFichier();</span>
+
+        // Chercher le résident avec l'email donné
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        for (Resident resident : residents) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (resident.getAdresseCourriel().equals(email)) {</span>
+<span class="nc" id="L242">                residentConnecte = resident;</span>
+<span class="nc" id="L243">                return resident;  // Résident trouvé</span>
+            }
+<span class="nc" id="L245">        }</span>
+<span class="nc" id="L246">        return null;</span>
+    }
+
+    public static void deconnecterResident() {
+<span class="nc" id="L250">        residentConnecte = null; // Déconnecte le résident</span>
+<span class="nc" id="L251">    }</span>
+
+
+   /** Effectue l'inscription d'un résident, en collectant toutes les informations nécessaires
+    * et en validant les entrées.
+    * Après l'inscription, il est proposé au résident de se connecter.
+    *
+    * @param utilisateur L'utilisateur souhaitant s'inscrire.
+    */
+    @Override
+    public void inscription(Utilisateur utilisateur) {
+<span class="nc" id="L262">        Scanner scanner = new Scanner(System.in);</span>
+
+<span class="nc" id="L264">        nom = obtenirNom(&quot;Nom&quot;);</span>
+<span class="nc" id="L265">        prenom = obtenirNom(&quot;Prénom&quot;);</span>
+
+        // La date de naissance est entrée par le résident. Son format est vérifiée.
+        // L'âge du résident est vérifiée et doit être minimum de 16 ans.
+<span class="nc" id="L269">        dateNaissance = obtenirDateNaissance();</span>
+
+        // Le téléphone du résident est entré optionnellement par le résident et est validé
+<span class="nc" id="L272">        telephone = obtenirTelephone();</span>
+
+        // L'adresse courriel est entrée par le résident et est validée
+<span class="nc" id="L275">        adresseCourriel = obtenirEmail();</span>
+
+        // Le mot de passe est entrée par l'utilisateur. Il doit contenir un minimum
+        // de 8 caractères, une majuscule, un chiffre et un caractère spécial.
+<span class="nc" id="L279">        motDePasse = obtenirMotDePasse();</span>
+
+        // On obtient l'adresse &quot;1234 Sainte-Catherine, Ville-Marie&quot; et on la valide
+        // via Valider.validerAdresseResident(...).
+<span class="nc" id="L283">        adresse = obtenirAdresseComplete();</span>
+
+        // L'utilisateur entre un code postal et ce code est vérifié.
+<span class="nc" id="L286">        codePostal = obtenirCodePostal();</span>
+
+        // Ajouter le résident à la liste et sauvegarder
+<span class="nc" id="L289">        GestionResidents.ajouterResident(this);</span>
+
+<span class="nc" id="L291">        System.out.println(&quot;Vous êtes inscrit!&quot;);</span>
+<span class="nc" id="L292">        afficherInformations();</span>
+<span class="nc" id="L293">        Preference preferences = new Preference(adresseCourriel);</span>
+        // Demander au résident s'il souhaite se connecter
+<span class="nc" id="L295">        demanderConnexion(scanner, utilisateur);</span>
+
+<span class="nc" id="L297">    }</span>
+
+    // Méthodes privées pour obtenir et valider les informations personnelles du résident
+
+    /**
+     * Demande à l'utilisateur de saisir son nom ou prénom.
+     *
+     * @param type Le type d'information demandé (&quot;nom&quot; ou &quot;prénom&quot;).
+     * @return La valeur saisie par l'utilisateur.
+     */
+    private String obtenirNom(String type) {
+<span class="nc" id="L308">        Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L309">        System.out.println(&quot;Veuillez entrer votre &quot; + type + &quot;.&quot;);</span>
+<span class="nc" id="L310">        return scanner.nextLine();</span>
+    }
+
+    /**
+     * Demande à l'utilisateur de saisir sa date de naissance et la valide.
+     *
+     * Cette méthode s'assure que la date de naissance est au format valide (JJ/MM/AAAA)
+     * et que l'utilisateur a au moins 16 ans. Elle redemande l'entrée en cas d'erreur.
+     *
+     * @return La date de naissance valide saisie par l'utilisateur.
+     */
+    private String obtenirDateNaissance() {
+<span class="nc" id="L322">        Scanner scanner = new Scanner(System.in);</span>
+        while(true) {
+<span class="nc" id="L324">            System.out.println(&quot;Veuillez entrer votre date de naissance (JJ/MM/AAAA).&quot;);</span>
+<span class="nc" id="L325">            String dateNaissance = scanner.nextLine();</span>
+
+            // Vérifie si la date est valide
+<span class="nc bnc" id="L328" title="All 2 branches missed.">            if (!Valider.validerDate(dateNaissance)) {</span>
+<span class="nc" id="L329">                System.out.println(&quot;Date de naissance invalide. Veuillez entrer la date au format JJ/MM/AAAA.&quot;);</span>
+            }
+            // Vérifie si l'âge est valide
+<span class="nc bnc" id="L332" title="All 2 branches missed.">            else if (!Valider.validerAge(dateNaissance)) {</span>
+<span class="nc" id="L333">                System.out.println(&quot;Vous ne pouvez pas vous inscrire, car vous avez moins de 16 ans.&quot;);</span>
+            }
+            // Si la date est valide et l'âge est suffisant, retourner la date
+            else {
+<span class="nc" id="L337">                return dateNaissance;</span>
+            }
+<span class="nc" id="L339">        }</span>
+    }
+
+    /**
+     * Demande à l'utilisateur de saisir son numéro de téléphone et le valide.
+     *
+     * L'utilisateur peut entrer &quot;passer&quot; pour ignorer cette étape.
+     * La méthode vérifie que le numéro est valide ou qu'il a choisi de passer.
+     *
+     * @return Le numéro de téléphone valide ou &quot;passer&quot;.
+     */
+    private String obtenirTelephone() {
+<span class="nc" id="L351">        Scanner scanner = new Scanner(System.in);</span>
+        while(true) {
+<span class="nc" id="L353">            System.out.println(&quot;Veuillez entrer votre numéro de téléphone (ou \&quot;passer\&quot;).&quot;);</span>
+<span class="nc" id="L354">            String telephone = scanner.nextLine();</span>
+<span class="nc bnc" id="L355" title="All 4 branches missed.">            if (telephone.equalsIgnoreCase(&quot;passer&quot;) || Valider.validerTel(telephone)) {</span>
+<span class="nc" id="L356">                return telephone;</span>
+            } else {
+<span class="nc" id="L358">                System.out.println(&quot;Numéro de téléphone invalide.&quot;);</span>
+            }
+<span class="nc" id="L360">        }</span>
+    }
+    /**
+     * Demande à l'utilisateur de saisir son adresse courriel et la valide.
+     *
+     * Cette méthode vérifie que l'adresse courriel est au format correct.
+     * En cas d'erreur, elle redemande une nouvelle saisie.
+     *
+     * @return L'adresse courriel valide saisie par l'utilisateur.
+     */
+    private String obtenirEmail() {
+<span class="nc" id="L371">        Scanner scanner = new Scanner(System.in);</span>
+        while(true) {
+<span class="nc" id="L373">            System.out.println(&quot;Veuillez entrer votre adresse courriel.&quot;);</span>
+<span class="nc" id="L374">            String adresseCourriel = scanner.nextLine();</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">            if (Valider.validerEmail(adresseCourriel)) {</span>
+<span class="nc" id="L376">                return adresseCourriel;</span>
+            } else {
+<span class="nc" id="L378">                System.out.println(&quot;Adresse courriel invalide.&quot;);</span>
+            }
+<span class="nc" id="L380">        }</span>
+    }
+
+    /**
+     * Demande à l'utilisateur de saisir un mot de passe et le valide.
+     *
+     * Le mot de passe doit respecter les règles suivantes :
+     * &lt;ul&gt;
+     *   &lt;li&gt;Entre 8 et 20 caractères.&lt;/li&gt;
+     *   &lt;li&gt;Contient au moins un chiffre.&lt;/li&gt;
+     *   &lt;li&gt;Contient au moins une lettre majuscule.&lt;/li&gt;
+     *   &lt;li&gt;Contient au moins un caractère spécial.&lt;/li&gt;
+     * &lt;/ul&gt;
+     * En cas d'erreur, la méthode redemande une saisie valide.
+     *
+     * @return Le mot de passe valide saisi par l'utilisateur.
+     */
+    private String obtenirMotDePasse() {
+<span class="nc" id="L398">        Scanner scanner = new Scanner(System.in);</span>
+        while(true) {
+<span class="nc" id="L400">            System.out.println(&quot;Veuillez entrer votre mot de passe. Celui-ci doit contenir au minimum 8 caractères &quot; +</span>
+                    &quot;et maximum 20. Il doit contenir au moins un chiffre, une majuscule et un caractère spécial&quot;);
+<span class="nc" id="L402">            String motDePasse = scanner.nextLine();</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">            if (Valider.validerMDP(motDePasse)) {</span>
+<span class="nc" id="L404">                return motDePasse;</span>
+            } else {
+<span class="nc" id="L406">                System.out.println(&quot;Mot de passe invalide.&quot;);</span>
+            }
+<span class="nc" id="L408">        }</span>
+    }
+
+    /**
+     * Demande à l'utilisateur de saisir un code postal et le valide.
+     *
+     * Le code postal doit respecter le format &quot;A1B 2C3&quot;. En cas d'erreur,
+     * la méthode redemande une saisie valide.
+     *
+     * @return Le code postal valide saisi par l'utilisateur.
+     */
+    private String obtenirCodePostal() {
+<span class="nc" id="L420">        Scanner scanner = new Scanner(System.in);</span>
+        while(true) {
+<span class="nc" id="L422">            System.out.println(&quot;Veuillez entrer votre code postal.&quot;);</span>
+<span class="nc" id="L423">            String code = scanner.nextLine();</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">            if (Valider.validerCodePostal(code)) {</span>
+<span class="nc" id="L425">                return motDePasse;</span>
+            } else {
+<span class="nc" id="L427">                System.out.println(&quot;Code postal invalide. Il doit être de la forme A1B 2C3.&quot;);</span>
+            }
+<span class="nc" id="L429">        }</span>
+    }
+
+    /**
+     * Demande une adresse complète du type &quot;1234 Sainte-Catherine, Ville-Marie&quot;.
+     * Valide avec Valider.validerAdresseResident(...).
+     */
+    private String obtenirAdresseComplete() {
+<span class="nc" id="L437">        Scanner scanner = new Scanner(System.in);</span>
+        while(true) {
+<span class="nc" id="L439">            System.out.println(&quot;Veuillez entrer votre adresse sous la forme :\n  \&quot;Numéro Rue, Quartier\&quot;&quot;);</span>
+<span class="nc" id="L440">            String saisie = scanner.nextLine();</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">            if (Valider.validerAdresseResident(saisie)) {</span>
+<span class="nc" id="L442">                return saisie;</span>
+            } else {
+<span class="nc" id="L444">                System.out.println(&quot;Adresse invalide. Ex. '1234 Sainte-Catherine, Ville-Marie'&quot;);</span>
+            }
+<span class="nc" id="L446">        }</span>
+    }
+
+    /**
+     * Affiche les informations personnelles recueillies auprès de l'utilisateur.
+     *
+     * Cette méthode affiche les informations telles que le nom, le prénom,
+     * la date de naissance, l'adresse courriel, le numéro de téléphone et l'adresse.
+     */
+    private void afficherInformations() {
+<span class="nc" id="L456">        System.out.println(&quot;\nInformations recueillies:&quot;);</span>
+<span class="nc" id="L457">        System.out.println(&quot;Nom: &quot; + nom);</span>
+<span class="nc" id="L458">        System.out.println(&quot;Prénom: &quot; + prenom);</span>
+<span class="nc" id="L459">        System.out.println(&quot;Date de naissance : &quot; + dateNaissance);</span>
+<span class="nc" id="L460">        System.out.println(&quot;Adresse e-mail : &quot; + adresseCourriel);</span>
+<span class="nc" id="L461">        System.out.println(&quot;Numéro de téléphone: &quot; + telephone);</span>
+<span class="nc" id="L462">        System.out.println(&quot;Votre adresse: &quot; + adresse);</span>
+<span class="nc" id="L463">    }</span>
+
+    /**
+     * Demande à l'utilisateur s'il souhaite se connecter après avoir fourni ses informations.
+     *
+     * Si l'utilisateur répond &quot;Oui&quot;, la méthode appelle la fonction de connexion.
+     * Sinon, elle termine l'application.
+     *
+     * @param scanner     L'objet {@link Scanner} utilisé pour lire la réponse de l'utilisateur.
+     * @param utilisateur L'objet {@link Utilisateur} représentant l'utilisateur à connecter.
+     */
+    private void demanderConnexion(Scanner scanner, Utilisateur utilisateur) {
+<span class="nc" id="L475">        System.out.println(&quot;\nMerci pour vos informations! Souhaitez-vous vous connecter? (Oui/Non)&quot;);</span>
+<span class="nc" id="L476">        String reponse = scanner.next();</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        if (reponse.equalsIgnoreCase(&quot;Oui&quot;)) {</span>
+<span class="nc" id="L478">            super.connexion(utilisateur);</span>
+        } else {
+<span class="nc" id="L480">            System.out.println(&quot;Au revoir !&quot;);</span>
+<span class="nc" id="L481">            System.exit(0);</span>
+        }
+<span class="nc" id="L483">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

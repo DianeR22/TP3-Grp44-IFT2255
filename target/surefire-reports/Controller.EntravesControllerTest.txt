@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: Controller.EntravesControllerTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 49.539 s - in Controller.EntravesControllerTest

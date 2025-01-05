@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RequeteController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Controller</a> &gt; <span class="el_source">RequeteController.java</span></div><h1>RequeteController.java</h1><pre class="source lang-java linenums">package Controller;
+
+import Model.GestionRequete;
+import Model.Requete;
+import Model.Resident;
+import View.RequeteView;
+
+/**
+ * Contrôleur pour la gestion des requêtes. Permet d'obtenir les informations
+ * des requêtes en demandant ces informatinos dans RequeteView,
+ * de soumettre une requête et d'afficher toutes les requêtes.
+ */
+<span class="nc" id="L13">public class RequeteController {</span>
+
+    /**
+     * Appelle la méthode obtenirInformationsRequete de la vue Requete pour
+     * collecter les informations à la nouvelle d'une requête.
+     */
+    public static void obtenirInformationsRequete(){
+<span class="nc" id="L20">        RequeteView.obtenirInformationsRequete();</span>
+<span class="nc" id="L21">    }</span>
+
+    /**
+     * Appelle la méthode soumettreRequete de la classe modèle GestionRequete
+     * pour ajouter une nouvelle requête à la liste des requêtes et au json des requêtes.
+     *
+     * @param titreTravail Le titre du travail.
+     * @param description Une description du travail.
+     * @param typeTravail Le type de travail demandé.
+     * @param dateDebut La date de début du travail.
+     */
+    public static void soumettreRequete(String titreTravail, String description, String typeTravail, String dateDebut){
+<span class="nc" id="L33">        GestionRequete.soumettreRequete(titreTravail, description, typeTravail, dateDebut);</span>
+<span class="nc" id="L34">    }</span>
+
+    /**
+     * Appelle la méthode afficherRequetes de la vue Requete pour afficher la liste
+     * de toutes les requêtes.
+     */
+    public static void afficherRequetes() {
+<span class="nc" id="L41">        RequeteView.afficherRequetes();</span>
+<span class="nc" id="L42">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

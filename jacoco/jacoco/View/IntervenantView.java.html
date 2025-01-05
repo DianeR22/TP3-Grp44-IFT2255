@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntervenantView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">View</a> &gt; <span class="el_source">IntervenantView.java</span></div><h1>IntervenantView.java</h1><pre class="source lang-java linenums">package View;
+
+import Controller.ConnexionController;
+import Controller.IntervenantController;
+
+import java.util.Scanner;
+
+/**
+ * La classe {@code IntervenantView} gère l'affichage du menu et les interactions avec l'utilisateur
+ * lorsqu'il est connecté en tant qu'intervenant.
+ */
+<span class="nc" id="L12">public class IntervenantView {</span>
+
+    /**
+     * Affiche le menu principal pour l'intervenant et gère les choix de l'utilisateur.
+     * L'intervenant peut modifier son profil, consulter les requêtes de travail, soumettre
+     * un projet, mettre à jour un chantier ou retourner au menu principal.
+     */
+    public static void afficherMenuIntervenant() {
+
+        while (true) {
+<span class="nc" id="L22">            System.out.println(&quot;Vous êtes connecté!&quot;);</span>
+
+<span class="nc" id="L24">            System.out.println(&quot;\nMenu Intervenant :&quot;);</span>
+<span class="nc" id="L25">            System.out.println(&quot;1. Modifier son profil&quot;);</span>
+<span class="nc" id="L26">            System.out.println(&quot;2. Consulter la liste des requêtes de travail&quot;);</span>
+<span class="nc" id="L27">            System.out.println(&quot;3. Soumettre un nouveau projet de travail&quot;);</span>
+<span class="nc" id="L28">            System.out.println(&quot;4. Mettre à jour les informations d'un chantier&quot;);</span>
+<span class="nc" id="L29">            System.out.println(&quot;5. Retourner au menu principal&quot;);</span>
+
+<span class="nc" id="L31">            Scanner scanner = new Scanner(System.in);</span>
+<span class="nc" id="L32">            String input = scanner.nextLine();</span>
+
+            // Traitement de l'option choisie
+<span class="nc bnc" id="L35" title="All 6 branches missed.">            switch (input) {</span>
+                case &quot;1&quot;:
+                    // Appeler la méthode pour modifier le profil
+<span class="nc" id="L38">                    System.out.println(&quot;Vous êtes sur la section : Modifier son profil! Cette option n'est pas encore implémentée!&quot;);</span>
+<span class="nc" id="L39">                    retour(scanner);</span>
+<span class="nc" id="L40">                    break;</span>
+                case &quot;2&quot;:
+                    // Option pour consulter la liste des requêtes de travail
+<span class="nc" id="L43">                    IntervenantController.afficherMenuRequete();</span>
+<span class="nc" id="L44">                    retour(scanner);</span>
+<span class="nc" id="L45">                    break;</span>
+                case &quot;3&quot;:
+                    // Option pour soumettre un nouveau projet
+<span class="nc" id="L48">                    System.out.println(&quot;Vous êtes sur la section : Soumettre un nouveau projet de travail !&quot;);</span>
+<span class="nc" id="L49">                    IntervenantController.soumettreProjet();</span>
+<span class="nc" id="L50">                    retour(scanner);</span>
+<span class="nc" id="L51">                    break;</span>
+                case &quot;4&quot;:
+<span class="nc" id="L53">                    System.out.println(&quot;Vous êtes sur la section : Mettre à jour les informations d'un chantier! Cette option n'est pas encore implémentée!&quot;);</span>
+<span class="nc" id="L54">                    retour(scanner);</span>
+<span class="nc" id="L55">                    break;</span>
+                case &quot;5&quot;:
+<span class="nc" id="L57">                    ConnexionController.afficherMenuPrincipal();</span>
+<span class="nc" id="L58">                    break;</span>
+                default:
+                    // Si l'option est invalide
+<span class="nc" id="L61">                    System.out.println(&quot;Option invalide. Veuillez essayer à nouveau.&quot;);</span>
+            }
+<span class="nc" id="L63">        }</span>
+    }
+
+    /**
+     * Permet à l'utilisateur de revenir en arrière au menu des intervenants ou de retourner au menu principal.
+     *
+     * @param scanner Le scanner utilisé pour lire la réponse de l'utilisateur
+     */
+    private static void retour(Scanner scanner) {
+<span class="nc" id="L72">        System.out.println(&quot;Voulez-vous revenir au menu des intervenants (1) ou retourner au menu principal (2)? Veuillez répondre par 1 ou par 2.&quot;);</span>
+<span class="nc" id="L73">        String reponse = scanner.nextLine();</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (reponse.equalsIgnoreCase(&quot;1&quot;)) {</span>
+            // Retour au menu des intervenants
+        } else {
+<span class="nc" id="L77">            System.out.println(&quot;Retour au menu principal!&quot;);</span>
+<span class="nc" id="L78">            ConnexionController.afficherMenuPrincipal();</span>
+        }
+<span class="nc" id="L80">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Valider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Valider.java</span></div><h1>Valider.java</h1><pre class="source lang-java linenums">package Model;
+
+import java.text.Normalizer;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+
+/**
+ * La classe Valider permet de procéder à une vérification de l'information rentrée
+ * par un utilisateur.
+ */
+<span class="nc" id="L18">public class Valider {</span>
+
+<span class="fc" id="L20">    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;);</span>
+<span class="fc" id="L21">    private static final Pattern PHONE_PATTERN = Pattern.compile(&quot;^\\d{3}[-. ]?\\d{3}[-. ]?\\d{4}$&quot;);</span>
+<span class="fc" id="L22">    private static final Pattern EMAIL_PATTERN = Pattern.compile(&quot;^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$&quot;);</span>
+<span class="fc" id="L23">    private static final Pattern PASSWORD = Pattern.compile(</span>
+            &quot;^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])&quot; +
+                    &quot;(?=.*[@#$%^&amp;+=?~!*()_\\-\\{\\}|\\[\\]\\\\:\&quot;/'])&quot; +
+                    &quot;(?=\\S+$).{8,20}$&quot;
+    );
+<span class="fc" id="L28">    private static final Pattern CODE_PATTERN = Pattern.compile(&quot;[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$&quot;);</span>
+<span class="fc" id="L29">    private static final Pattern IDENTIFIANT = Pattern.compile(&quot;\\d{8}&quot;);</span>
+
+    // On considère un format &quot;1234 Sainte-Catherine, Ville-Marie&quot;
+    // (chiffres + espace + nom de rue,virgule,quartier).
+<span class="fc" id="L33">    private static final Pattern ADRESSE_RESIDENT_PATTERN = Pattern.compile(&quot;^\\d+\\s+[^,]+,\\s*[^,]+$&quot;);</span>
+
+<span class="fc" id="L35">    private static final String[] JOURS_DE_LA_SEMAINE = {</span>
+            &quot;Lundi&quot;, &quot;Mardi&quot;, &quot;Mercredi&quot;, &quot;Jeudi&quot;, &quot;Vendredi&quot;, &quot;Samedi&quot;, &quot;Dimanche&quot;
+    };
+
+    /**
+     * Valide le numéro de téléphone entré. Il peut y avoir des tirets ou des espaces.
+     */
+    public static boolean validerTel(String numTel) {
+<span class="fc" id="L43">        return PHONE_PATTERN.matcher(numTel).matches();</span>
+    }
+
+    /**
+     * Valide si la date est correcte (format JJ/MM/AAAA).
+     */
+    public static boolean validerDate(String date) {
+        try {
+<span class="fc" id="L51">            LocalDate.parse(date, DATE_FORMATTER);</span>
+<span class="fc" id="L52">            return true;</span>
+<span class="fc" id="L53">        } catch (DateTimeParseException e) {</span>
+<span class="fc" id="L54">            return false;</span>
+        }
+    }
+
+    /**
+     * Valide si la personne a au moins 16 ans, en fonction de la date de naissance (JJ/MM/AAAA).
+     */
+    public static boolean validerAge(String DateDeNaissance){
+<span class="nc" id="L62">        LocalDate anneeNaissance = LocalDate.parse(DateDeNaissance, DATE_FORMATTER);</span>
+<span class="nc" id="L63">        LocalDate currentDate = LocalDate.now();</span>
+<span class="nc" id="L64">        int age = Period.between(anneeNaissance, currentDate).getYears();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        return age &gt;= 16;</span>
+    }
+
+    /**
+     * Valide l'adresse email au format local-part@domain.
+     */
+    public static boolean validerEmail(String adresseCourriel) {
+<span class="nc" id="L72">        return EMAIL_PATTERN.matcher(adresseCourriel).matches();</span>
+    }
+
+    /**
+     * Valide le mot de passe (8-20 caractères, majuscule, chiffre, caractère spécial).
+     */
+    public static boolean validerMDP(String motDePasse) {
+<span class="nc" id="L79">        return PASSWORD.matcher(motDePasse).matches();</span>
+    }
+
+    /**
+     * Valide l'identifiant de la ville (8 chiffres).
+     */
+    public static boolean validerIdentifiantVille(String identifiant) {
+<span class="nc" id="L86">        return IDENTIFIANT.matcher(identifiant).matches();</span>
+    }
+
+    /**
+     * Valide le code postal canadien (ex. H2Y 1N9).
+     */
+    public static boolean validerCodePostal(String code){
+<span class="fc" id="L93">        return CODE_PATTERN.matcher(code).matches();</span>
+    }
+
+    /**
+     * Valide l'adresse du résident. Exemple attendu : &quot;1234 Sainte-Catherine, Ville-Marie&quot;
+     * (chiffres + rue + quartier).
+     */
+    public static boolean validerAdresseResident(String adresse) {
+<span class="fc" id="L101">        return ADRESSE_RESIDENT_PATTERN.matcher(adresse).matches();</span>
+    }
+
+    /**
+     * Valide si le type de travail entré par l'utilisateur est dans l'énumération TypeTravail.
+     */
+    public static boolean validerTypeTravail(String typeTravailChoisi) {
+<span class="fc" id="L108">        String typeTravailArrange = typeTravailChoisi.trim().replaceAll(&quot;\\s+&quot;, &quot; &quot;);</span>
+<span class="fc" id="L109">        String typeTravailArrangeSansAccents = Normalizer.normalize(typeTravailArrange, Normalizer.Form.NFD)</span>
+<span class="fc" id="L110">                .replaceAll(&quot;[^\\p{ASCII}]&quot;, &quot;&quot;);</span>
+
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (TypeTravail travail : TypeTravail.values()) {</span>
+<span class="fc" id="L113">            String travailNom = travail.name().replaceAll(&quot;_&quot;, &quot; &quot;).toLowerCase();</span>
+<span class="fc" id="L114">            String travailNomSansAccents = Normalizer</span>
+<span class="fc" id="L115">                    .normalize(travailNom, Normalizer.Form.NFD)</span>
+<span class="fc" id="L116">                    .replaceAll(&quot;[^\\p{ASCII}]&quot;, &quot;&quot;);</span>
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (travailNomSansAccents.equalsIgnoreCase(typeTravailArrangeSansAccents)) {</span>
+<span class="fc" id="L119">                return true;</span>
+            }
+        }
+<span class="fc" id="L122">        return false;</span>
+    }
+
+    /**
+     * Énumération TypeTravail (exemples).
+     */
+<span class="fc" id="L128">    public enum TypeTravail {</span>
+<span class="fc" id="L129">        TRAVAUX_ROUTIERS(&quot;Travaux routiers&quot;),</span>
+<span class="fc" id="L130">        TRAVAUX_DE_GAZ_OU_ELECTRICITE(&quot;Travaux de gaz ou électricité&quot;),</span>
+<span class="fc" id="L131">        CONSTRUCTION_OU_RENOVATION(&quot;Construction ou rénovation&quot;),</span>
+<span class="fc" id="L132">        ENTRETIEN_PAYSAGER(&quot;Entretien paysager&quot;),</span>
+<span class="fc" id="L133">        TRAVAUX_LIES_AUX_TRANSPORTS_EN_COMMUNS(&quot;Travaux liés aux transports en commun&quot;),</span>
+<span class="fc" id="L134">        TRAVAUX_DE_SIGNALISATION_ET_ECLAIRAGE(&quot;Travaux de signalisation et éclairage&quot;),</span>
+<span class="fc" id="L135">        TRAVAUX_SOUTERRAINS(&quot;Travaux souterrains&quot;),</span>
+<span class="fc" id="L136">        TRAVAUX_RESIDENTIELS(&quot;Travaux résidentiels&quot;),</span>
+<span class="fc" id="L137">        ENTRETIEN_URBAIN(&quot;Entretien urbain&quot;),</span>
+<span class="fc" id="L138">        ENTRETIEN_DES_RESEAUX_DE_TELECOMMUNICATION(&quot;Entretien des réseaux de télécommunication&quot;);</span>
+
+        private final String description;
+<span class="fc" id="L141">        TypeTravail(String description) {</span>
+<span class="fc" id="L142">            this.description = description;</span>
+<span class="fc" id="L143">        }</span>
+        public String getDescription() {
+<span class="fc" id="L145">            return description;</span>
+        }
+    }
+
+    /**
+     * Retourne la liste des descriptions possibles pour guider l'utilisateur.
+     */
+    public static List&lt;String&gt; getTypesTravauxValides() {
+<span class="nc" id="L153">        List&lt;String&gt; typesTravaux = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for (TypeTravail type : TypeTravail.values()) {</span>
+<span class="nc" id="L155">            typesTravaux.add(type.getDescription());</span>
+        }
+<span class="nc" id="L157">        return typesTravaux;</span>
+    }
+
+    /**
+     * Vérifie si deux plages horaires se chevauchent.
+     *
+     * @param debutProjet Heure de début du projet.
+     * @param finProjet Heure de fin du projet.
+     * @param debutPref Heure de début de la préférence.
+     * @param finPref Heure de fin de la préférence.
+     * @return true si les plages horaires se chevauchent, false sinon.
+     */
+    private static boolean isHoraireConflit(LocalTime debutProjet, LocalTime finProjet,
+                                            LocalTime debutPref, LocalTime finPref) {
+<span class="nc bnc" id="L171" title="All 4 branches missed.">        return (debutProjet.isBefore(finPref) &amp;&amp; finProjet.isAfter(debutPref));</span>
+    }
+
+    /**
+     * Valide si le jour est un jour valide de la semaine.
+     *
+     * @param jour Le jour à valider.
+     * @return true si le jour est valide, false sinon.
+     */
+    public static boolean validerJour(String jour) {
+<span class="nc" id="L181">        return Arrays.stream(JOURS_DE_LA_SEMAINE).anyMatch(j -&gt; j.equalsIgnoreCase(jour));</span>
+    }
+
+    /**
+     * Vérifie si une heure donnée se trouve dans une plage horaire spécifique.
+     *
+     * @param heure         L'heure à valider.
+     * @param debutJournee  L'heure de début de la plage horaire.
+     * @param finJournee    L'heure de fin de la plage horaire.
+     * @return {@code true} si l'heure est comprise entre {@code debutJournee} et {@code finJournee} (inclus),
+     *         sinon {@code false}.
+     */
+    public static boolean validerDansPlage(LocalTime heure, LocalTime debutJournee, LocalTime finJournee) {
+<span class="nc bnc" id="L194" title="All 4 branches missed.">        return !heure.isBefore(debutJournee) &amp;&amp; !heure.isAfter(finJournee);</span>
+    }
+
+    /**
+     * Vérifie si une heure donnée se trouve dans la plage horaire standard de la journée.
+     *
+     * La plage horaire est définie entre 08:00 et 17:00.
+     *
+     * @param heure L'heure à valider.
+     * @return {@code true} si l'heure est comprise entre 08:00 et 17:00 (inclus),
+     *         sinon {@code false}.
+     */
+    public static boolean validerHeureDansPlage(LocalTime heure) {
+<span class="nc" id="L207">        LocalTime debutJournee = LocalTime.of(8, 0);</span>
+<span class="nc" id="L208">        LocalTime finJournee = LocalTime.of(17, 0);</span>
+<span class="nc" id="L209">        return validerDansPlage(heure, debutJournee, finJournee);</span>
+    }
+    /**
+     * Vérifie si une plage horaire définie par une heure de début et une heure de fin
+     * est valide et respecte les contraintes de la journée.
+     *
+     * Les contraintes sont les suivantes :
+     * &lt;ul&gt;
+     *   &lt;li&gt;Les heures doivent être comprises entre 08:00 et 17:00 (inclus).&lt;/li&gt;
+     *   &lt;li&gt;L'heure de fin doit être strictement postérieure à l'heure de début.&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param heureDebut L'heure de début de la plage.
+     * @param heureFin   L'heure de fin de la plage.
+     * @return {@code true} si la plage horaire est valide, sinon {@code false}.
+     */
+    public static boolean validerPlageHoraire(LocalTime heureDebut, LocalTime heureFin) {
+<span class="nc" id="L226">        LocalTime debutJournee = LocalTime.of(8, 0);</span>
+<span class="nc" id="L227">        LocalTime finJournee = LocalTime.of(17, 0);</span>
+        // Validate both start and end times individually and ensure start &lt; end
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        return validerDansPlage(heureDebut, debutJournee, finJournee) &amp;&amp;</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">                validerDansPlage(heureFin, debutJournee, finJournee) &amp;&amp;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">                heureFin.isAfter(heureDebut);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntervenantController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Controller</a> &gt; <span class="el_source">IntervenantController.java</span></div><h1>IntervenantController.java</h1><pre class="source lang-java linenums">package Controller;
+
+import Model.GestionCandidatures;
+import Model.GestionIntervenants;
+import Model.GestionProjets;
+import Model.GestionResidents;
+import Model.Intervenant;
+import Model.Preference;
+import Model.Projet;
+import Model.Resident;
+import Model.Valider;
+import View.IntervenantView;
+import View.RequeteView;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * Contrôleur pour la gestion des fonctionnalités liées aux intervenants.
+ *
+ * &lt;p&gt;Cette classe gère les interactions avec les intervenants, y compris :
+ * &lt;ul&gt;
+ *   &lt;li&gt;La soumission et la suppression de candidature&lt;/li&gt;
+ *   &lt;li&gt;Le suivi des candidatures&lt;/li&gt;
+ *   &lt;li&gt;La soumission de projets&lt;/li&gt;
+ *   &lt;li&gt;La détection de conflits avec les préférences des résidents&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+<span class="nc" id="L32">public class IntervenantController {</span>
+
+    /**
+     * Affiche le menu principal des intervenants.
+     *
+     * &lt;p&gt;Cette méthode redirige vers la vue associée aux intervenants
+     * pour leur permettre d'interagir avec les fonctionnalités de l'application.
+     *
+     * @see IntervenantView#afficherMenuIntervenant()
+     */
+    public static void afficherMenuIntervenant() {
+<span class="nc" id="L43">        IntervenantView.afficherMenuIntervenant();</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * Affiche le menu de gestion des requêtes pour les intervenants.
+     *
+     * &lt;p&gt;Cette méthode redirige vers la vue des requêtes, où les intervenants peuvent
+     * consulter, répondre ou gérer les requêtes soumises.
+     *
+     * @see RequeteView#afficherMenuRequete()
+     */
+    public static void afficherMenuRequete() {
+<span class="nc" id="L55">        RequeteView.afficherMenuRequete();</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Permet à un intervenant de soumettre sa candidature.
+     *
+     * &lt;p&gt;Cette méthode utilise la classe {@link GestionIntervenants} pour
+     * gérer le processus de soumission de candidature.
+     *
+     * @see GestionIntervenants#soumettreCandidature()
+     */
+    public static void soumettreCandidature() {
+<span class="nc" id="L67">        GestionIntervenants.soumettreCandidature();</span>
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * Permet à un intervenant de supprimer sa candidature existante.
+     *
+     * &lt;p&gt;Cette méthode utilise la classe {@link GestionIntervenants} pour
+     * gérer le processus de suppression de candidature.
+     *
+     * @see GestionIntervenants#supprimerCandidature()
+     */
+    public static void supprimerCandidature() {
+<span class="nc" id="L79">        GestionIntervenants.supprimerCandidature();</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Permet à un intervenant de suivre la candidature d'un résident.
+     *
+     * &lt;p&gt;Cette méthode utilise la classe {@link GestionCandidatures} pour
+     * gérer le processus de suivi de la candidature.
+     *
+     * @param intervenant L'intervenant qui souhaite suivre une candidature.
+     * @see GestionCandidatures#suiviCandidature(Intervenant)
+     */
+    public static void suivreCandidature(Intervenant intervenant) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (intervenant != null) {</span>
+<span class="nc" id="L93">            GestionCandidatures.suiviCandidature(intervenant);</span>
+        } else {
+<span class="nc" id="L95">            System.out.println(&quot;Intervenant est nul. Impossible de suivre la candidature.&quot;);</span>
+        }
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Permet à un intervenant de soumettre un projet, en tenant compte :
+     * &lt;ul&gt;
+     *   &lt;li&gt;de la validation du format de la date (YYYY-MM-DD)&lt;/li&gt;
+     *   &lt;li&gt;de la validation du format de l'heure (HH:mm)&lt;/li&gt;
+     *   &lt;li&gt;de la plage horaire [08:00, 17:00]&lt;/li&gt;
+     *   &lt;li&gt;et du fait que l'heure de fin doit être strictement supérieure à l'heure de début&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * &lt;p&gt;Après avoir récupéré toutes les informations, la méthode détecte
+     * d'éventuels conflits avec les préférences de résidents.
+     * En cas de conflits, l'intervenant a le choix de modifier les horaires.
+     */
+    public static void soumettreProjet() {
+<span class="fc" id="L113">        Scanner scanner = new Scanner(System.in);</span>
+
+<span class="fc" id="L115">        System.out.println(&quot;Titre du projet :&quot;);</span>
+<span class="fc" id="L116">        String titre = scanner.nextLine().trim();</span>
+
+<span class="fc" id="L118">        System.out.println(&quot;Description du projet :&quot;);</span>
+<span class="fc" id="L119">        String description = scanner.nextLine().trim();</span>
+
+        // (Exemple) Validation du type de travaux (3 tentatives).
+<span class="fc" id="L122">        String typeTravaux = null;</span>
+<span class="fc" id="L123">        int attemptsType = 0;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        while (attemptsType &lt; 3) {</span>
+<span class="fc" id="L125">            System.out.println(&quot;Type de travaux (choisissez parmi les catégories valides) :&quot;);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            for (Valider.TypeTravail type : Valider.TypeTravail.values()) {</span>
+<span class="fc" id="L127">                System.out.println(&quot;- &quot; + type.getDescription());</span>
+            }
+<span class="fc" id="L129">            String input = scanner.nextLine().trim();</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">            if (Valider.validerTypeTravail(input)) {</span>
+<span class="fc" id="L131">                typeTravaux = input;</span>
+<span class="fc" id="L132">                break;</span>
+            } else {
+<span class="fc" id="L134">                attemptsType++;</span>
+<span class="fc" id="L135">                System.out.println(&quot;Type de travaux invalide. Veuillez réessayer.&quot;);</span>
+            }
+<span class="fc" id="L137">        }</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (typeTravaux == null) {</span>
+<span class="fc" id="L139">            System.out.println(&quot;3 tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="fc" id="L140">            return;</span>
+        }
+
+        // Demande des quartiers, rues et codes postaux
+<span class="fc" id="L144">        System.out.println(&quot;Quartiers affectés (séparés par des virgules) :&quot;);</span>
+<span class="fc" id="L145">        String quartiersInput = scanner.nextLine().trim();</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        List&lt;String&gt; quartiers = quartiersInput.isEmpty()</span>
+<span class="fc" id="L147">                ? new ArrayList&lt;&gt;()</span>
+<span class="pc" id="L148">                : new ArrayList&lt;&gt;(List.of(quartiersInput.split(&quot;\\s*,\\s*&quot;)));</span>
+
+<span class="fc" id="L150">        System.out.println(&quot;Rues affectées (séparées par des virgules) :&quot;);</span>
+<span class="fc" id="L151">        String ruesInput = scanner.nextLine().trim();</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        List&lt;String&gt; rues = ruesInput.isEmpty()</span>
+<span class="fc" id="L153">                ? new ArrayList&lt;&gt;()</span>
+<span class="pc" id="L154">                : new ArrayList&lt;&gt;(List.of(ruesInput.split(&quot;\\s*,\\s*&quot;)));</span>
+
+<span class="fc" id="L156">        List&lt;String&gt; codesPostaux = retryCodesPostaux(scanner);</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        if (codesPostaux == null) {</span>
+<span class="fc" id="L158">            return;</span>
+        }
+
+        // 1) Récupération de la date de début
+<span class="fc" id="L162">        LocalDate dateDebut = retryDate(&quot;Date de début (YYYY-MM-DD) :&quot;, scanner);</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (dateDebut == null) {</span>
+            // échec ou retour menu
+<span class="nc" id="L165">            return;</span>
+        }
+
+        // 2) Récupération de la date de fin (doit être postérieure à dateDebut)
+<span class="fc" id="L169">        LocalDate dateFin = retryDateFinApresDateDebut(dateDebut, &quot;Date de fin (YYYY-MM-DD) :&quot;, scanner);</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        if (dateFin == null) {</span>
+<span class="fc" id="L171">            return;</span>
+        }
+
+        // 3) Récupération de l’heure de début (08:00 - 17:00)
+<span class="nc" id="L175">        LocalTime heureDebut = retryTimeDansPlage(&quot;Heure de début (HH:mm) :&quot;, scanner,</span>
+<span class="nc" id="L176">                LocalTime.of(8, 0),  // min = 08:00</span>
+<span class="nc" id="L177">                LocalTime.of(17, 0)  // max = 17:00</span>
+        );
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (heureDebut == null) {</span>
+<span class="nc" id="L180">            return;</span>
+        }
+
+        // 4) Récupération de l’heure de fin (08:00 - 17:00, et &gt; heureDebut)
+<span class="nc" id="L184">        LocalTime heureFin = retryTimeFinApresHeureDebut(heureDebut,</span>
+                &quot;Heure de fin (HH:mm) :&quot;,
+                scanner,
+<span class="nc" id="L187">                LocalTime.of(8, 0),   // min = 08:00</span>
+<span class="nc" id="L188">                LocalTime.of(17, 0)   // max = 17:00</span>
+        );
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (heureFin == null) {</span>
+<span class="nc" id="L191">            return;</span>
+        }
+
+        // 5) Détection d’éventuels conflits + création du projet
+<span class="nc" id="L195">        List&lt;Preference.PreferenceEntry&gt; preferencesConflits = trouverConflitsResidents(rues, quartiers, codesPostaux);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (!preferencesConflits.isEmpty()) {</span>
+<span class="nc" id="L197">            System.out.println(&quot;\nConflits trouvés avec les préférences des résidents :&quot;);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            for (Preference.PreferenceEntry pref : preferencesConflits) {</span>
+<span class="nc" id="L199">                System.out.println(&quot;- Jour : &quot; + pref.getJour()</span>
+<span class="nc" id="L200">                        + &quot;, Heure début : &quot; + pref.getHeureDebut()</span>
+<span class="nc" id="L201">                        + &quot;, Heure fin : &quot; + pref.getHeureFin());</span>
+<span class="nc" id="L202">            }</span>
+<span class="nc" id="L203">            System.out.println(&quot;Voulez-vous modifier les horaires du projet pour éviter les conflits ? (Oui/Non)&quot;);</span>
+            while (true) {
+<span class="nc" id="L205">                String reponse = scanner.nextLine().trim();</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                if (reponse.equalsIgnoreCase(&quot;Oui&quot;)) {</span>
+                    // On réitère la saisie pour heureDebut / heureFin
+<span class="nc" id="L208">                    heureDebut = retryTimeDansPlage(&quot;Nouvelle heure de début (HH:mm) :&quot;, scanner,</span>
+<span class="nc" id="L209">                            LocalTime.of(8, 0), LocalTime.of(17, 0));</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                    if (heureDebut == null) return;</span>
+
+<span class="nc" id="L212">                    heureFin = retryTimeFinApresHeureDebut(heureDebut, &quot;Nouvelle heure de fin (HH:mm) :&quot;,</span>
+<span class="nc" id="L213">                            scanner, LocalTime.of(8, 0), LocalTime.of(17, 0));</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                    if (heureFin == null) return;</span>
+
+                    break;
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                } else if (reponse.equalsIgnoreCase(&quot;Non&quot;)) {</span>
+<span class="nc" id="L218">                    System.out.println(&quot;Les horaires du projet resteront inchangés.&quot;);</span>
+<span class="nc" id="L219">                    break;</span>
+                } else {
+<span class="nc" id="L221">                    System.out.println(&quot;Veuillez répondre par 'Oui' ou 'Non'.&quot;);</span>
+                }
+<span class="nc" id="L223">            }</span>
+        }
+
+<span class="nc" id="L226">        Projet projet = new Projet(titre, description, typeTravaux,</span>
+                quartiers, rues, codesPostaux,
+                dateDebut, dateFin, heureDebut, heureFin);
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (projet != null) {</span>
+<span class="nc" id="L231">            GestionProjets.sauvegarderProjet(projet);</span>
+<span class="nc" id="L232">            System.out.println(&quot;Projet soumis avec succès !&quot;);</span>
+            // NotificationController.ajouterNotificationProjetSoumis(titre);
+        } else {
+<span class="nc" id="L235">            System.out.println(&quot;Erreur lors de la création du projet. Veuillez vérifier les informations fournies.&quot;);</span>
+        }
+<span class="nc" id="L237">    }</span>
+
+    // ---------------------------------------------------------------------
+    // MÉTHODES DE &quot;RETRY&quot; POUR LES DATES
+    // ---------------------------------------------------------------------
+
+    /**
+     * Tente de récupérer une date au format &lt;b&gt;YYYY-MM-DD&lt;/b&gt; en 3 essais.
+     *
+     * &lt;p&gt;Si les 3 tentatives échouent (mauvais format), on affiche un message
+     * et on propose à l’utilisateur de revenir à un menu.
+     *
+     * @param prompt  Le message à afficher pour inviter l'utilisateur à saisir une date.
+     * @param scanner Le {@link Scanner} pour la saisie utilisateur.
+     * @return Un objet {@link LocalDate} parsé avec succès, ou {@code null}
+     *         si l'utilisateur a échoué 3 fois ou a choisi de retourner au menu.
+     */
+    private static LocalDate retryDate(String prompt, Scanner scanner) {
+<span class="fc" id="L255">        int attempts = 0;</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">        while (attempts &lt; 3) {</span>
+<span class="fc" id="L257">            System.out.println(prompt);</span>
+            try {
+<span class="fc" id="L259">                String input = scanner.nextLine().trim();</span>
+<span class="fc" id="L260">                return LocalDate.parse(input);</span>
+<span class="nc" id="L261">            } catch (Exception e) {</span>
+<span class="nc" id="L262">                attempts++;</span>
+<span class="nc" id="L263">                System.out.println(&quot;Format invalide. Veuillez respecter le format YYYY-MM-DD.&quot;);</span>
+<span class="nc" id="L264">            }</span>
+        }
+<span class="nc" id="L266">        System.out.println(&quot;3 tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="nc" id="L267">        return null;</span>
+    }
+
+    /**
+     * Tente de récupérer une date de fin &lt;b&gt;(YYYY-MM-DD)&lt;/b&gt; en 3 essais,
+     * en s'assurant qu'elle soit strictement postérieure à {@code dateDebut}.
+     *
+     * &lt;p&gt;Si le format est invalide ou si la date de fin n'est pas &gt; dateDebut,
+     * on incrémente le compteur de tentatives et on réessaye jusqu'à 3 fois.
+     *
+     * @param dateDebut La date de début déjà validée.
+     * @param prompt    Le message à afficher pour inviter l'utilisateur à saisir une date de fin.
+     * @param scanner   Le {@link Scanner} pour la saisie utilisateur.
+     * @return Un objet {@link LocalDate} si la saisie a réussi, ou {@code null}
+     *         après 3 échecs ou retour menu.
+     */
+    private static LocalDate retryDateFinApresDateDebut(LocalDate dateDebut, String prompt, Scanner scanner) {
+<span class="fc" id="L284">        int attempts = 0;</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        while (attempts &lt; 3) {</span>
+<span class="fc" id="L286">            System.out.println(prompt);</span>
+            try {
+<span class="fc" id="L288">                String input = scanner.nextLine().trim();</span>
+<span class="fc" id="L289">                LocalDate candidate = LocalDate.parse(input);</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">                if (candidate.isAfter(dateDebut)) {</span>
+<span class="nc" id="L291">                    return candidate;</span>
+                } else {
+<span class="fc" id="L293">                    attempts++;</span>
+<span class="fc" id="L294">                    System.out.println(&quot;La date de fin doit être après la date de début. Réessayez.&quot;);</span>
+                }
+<span class="fc" id="L296">            } catch (Exception e) {</span>
+<span class="fc" id="L297">                attempts++;</span>
+<span class="fc" id="L298">                System.out.println(&quot;Format invalide. Veuillez respecter le format YYYY-MM-DD.&quot;);</span>
+<span class="fc" id="L299">            }</span>
+        }
+<span class="fc" id="L301">        System.out.println(&quot;3 tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="fc" id="L302">        return null;</span>
+    }
+
+    // ---------------------------------------------------------------------
+    // MÉTHODES DE &quot;RETRY&quot; POUR LES HEURES
+    // ---------------------------------------------------------------------
+
+    /**
+     * Tente de récupérer une heure au format &lt;b&gt;HH:mm&lt;/b&gt;, en 3 essais,
+     * tout en vérifiant que l'heure se situe dans l'intervalle
+     * [{@code minTime}, {@code maxTime}] inclus.
+     *
+     * &lt;p&gt;Si l'heure est hors plage ou en cas de format invalide, on incrémente
+     * le compteur de tentatives. Après 3 échecs, on redirige l'utilisateur
+     * vers un menu et renvoie {@code null}.
+     *
+     * @param prompt   Le message d'invite (ex. : &quot;Heure de début (HH:mm) :&quot;)
+     * @param scanner  Le {@link Scanner} pour la saisie utilisateur.
+     * @param minTime  L'heure minimale autorisée.
+     * @param maxTime  L'heure maximale autorisée.
+     * @return Un objet {@link LocalTime} si valide, sinon {@code null} après 3 échecs.
+     */
+    private static LocalTime retryTimeDansPlage(String prompt,
+                                                Scanner scanner,
+                                                LocalTime minTime,
+                                                LocalTime maxTime) {
+<span class="nc" id="L328">        int attempts = 0;</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        while (attempts &lt; 3) {</span>
+<span class="nc" id="L330">            System.out.println(prompt);</span>
+            try {
+<span class="nc" id="L332">                String input = scanner.nextLine().trim();</span>
+<span class="nc" id="L333">                LocalTime candidate = LocalTime.parse(input);</span>
+
+                // Vérification de la plage
+<span class="nc bnc" id="L336" title="All 4 branches missed.">                if (candidate.isBefore(minTime) || candidate.isAfter(maxTime)) {</span>
+<span class="nc" id="L337">                    attempts++;</span>
+<span class="nc" id="L338">                    System.out.println(&quot;L'heure doit être comprise entre &quot;</span>
+                            + minTime + &quot; et &quot; + maxTime + &quot;.&quot;);
+                } else {
+<span class="nc" id="L341">                    return candidate;</span>
+                }
+<span class="nc" id="L343">            } catch (Exception e) {</span>
+<span class="nc" id="L344">                attempts++;</span>
+<span class="nc" id="L345">                System.out.println(&quot;Format invalide. Veuillez respecter le format HH:mm (ex: 08:30).&quot;);</span>
+<span class="nc" id="L346">            }</span>
+        }
+<span class="nc" id="L348">        System.out.println(&quot;3 tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="nc" id="L349">        return null;</span>
+    }
+
+    /**
+     * Tente de récupérer l'heure de fin en s'assurant qu'elle se situe
+     * dans l'intervalle [{@code minTime}, {@code maxTime}] &lt;b&gt;et&lt;/b&gt;
+     * qu'elle soit strictement supérieure à {@code heureDebut}.
+     *
+     * &lt;p&gt;Après 3 échecs (format invalide, hors plage, ou pas &gt; heureDebut),
+     * l'utilisateur est redirigé vers un menu et la méthode renvoie {@code null}.
+     *
+     * @param heureDebut L'heure de début déjà validée.
+     * @param prompt     Le message d'invite pour l'heure de fin.
+     * @param scanner    Le {@link Scanner} pour la saisie utilisateur.
+     * @param minTime    L'heure minimale autorisée (ex. 08:00).
+     * @param maxTime    L'heure maximale autorisée (ex. 17:00).
+     * @return Un objet {@link LocalTime} si valide, sinon {@code null} après 3 échecs.
+     */
+    private static LocalTime retryTimeFinApresHeureDebut(LocalTime heureDebut,
+                                                         String prompt,
+                                                         Scanner scanner,
+                                                         LocalTime minTime,
+                                                         LocalTime maxTime) {
+<span class="nc" id="L372">        int attempts = 0;</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">        while (attempts &lt; 3) {</span>
+<span class="nc" id="L374">            System.out.println(prompt);</span>
+            try {
+<span class="nc" id="L376">                String input = scanner.nextLine().trim();</span>
+<span class="nc" id="L377">                LocalTime candidate = LocalTime.parse(input);</span>
+
+                // 1) Vérifier la plage 08:00 - 17:00
+<span class="nc bnc" id="L380" title="All 4 branches missed.">                if (candidate.isBefore(minTime) || candidate.isAfter(maxTime)) {</span>
+<span class="nc" id="L381">                    attempts++;</span>
+<span class="nc" id="L382">                    System.out.println(&quot;L'heure doit être comprise entre &quot;</span>
+                            + minTime + &quot; et &quot; + maxTime + &quot;.&quot;);
+<span class="nc" id="L384">                    continue;</span>
+                }
+
+                // 2) Vérifier heureFin &gt; heureDebut
+<span class="nc bnc" id="L388" title="All 2 branches missed.">                if (!candidate.isAfter(heureDebut)) {</span>
+<span class="nc" id="L389">                    attempts++;</span>
+<span class="nc" id="L390">                    System.out.println(&quot;L'heure de fin doit être postérieure à l'heure de début. Veuillez réessayer.&quot;);</span>
+<span class="nc" id="L391">                    continue;</span>
+                }
+
+                // Si tout va bien, on renvoie candidate
+<span class="nc" id="L395">                return candidate;</span>
+
+<span class="nc" id="L397">            } catch (Exception e) {</span>
+<span class="nc" id="L398">                attempts++;</span>
+<span class="nc" id="L399">                System.out.println(&quot;Format invalide. Veuillez respecter le format HH:mm (ex: 08:30).&quot;);</span>
+<span class="nc" id="L400">            }</span>
+        }
+<span class="nc" id="L402">        System.out.println(&quot;3 tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="nc" id="L403">        return null;</span>
+    }
+
+    /**
+     * Permet de saisir et valider des codes postaux en 3 tentatives maximum.
+     *
+     * &lt;p&gt;L'utilisateur entre plusieurs codes postaux séparés par des virgules (ex: &quot;H2Y 1N9,H3B 2S1&quot;).
+     * Chaque code est alors vérifié via {@link Valider#validerCodePostal(String)}.
+     *
+     * @param scanner Le {@link Scanner} pour la saisie utilisateur.
+     * @return Une {@code List&lt;String&gt;} contenant tous les codes validés,
+     *         ou {@code null} après 3 échecs (puis redirection vers un menu).
+     */
+    private static List&lt;String&gt; retryCodesPostaux(Scanner scanner) {
+<span class="fc" id="L417">        int attempts = 0;</span>
+<span class="pc bpc" id="L418" title="1 of 2 branches missed.">        while (attempts &lt; 3) {</span>
+<span class="fc" id="L419">            System.out.println(&quot;Codes postaux affectés (séparés par des virgules) :&quot;);</span>
+<span class="fc" id="L420">            String codesPostauxInput = scanner.nextLine().trim();</span>
+
+            // Si l'utilisateur laisse vide, on peut retourner une liste vide
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">            if (codesPostauxInput.isEmpty()) {</span>
+<span class="nc" id="L424">                return new ArrayList&lt;&gt;();</span>
+            }
+
+            // On sépare par virgule
+<span class="fc" id="L428">            String[] splitted = codesPostauxInput.split(&quot;\\s*,\\s*&quot;);</span>
+<span class="fc" id="L429">            boolean allValid = true;</span>
+
+            // Vérification un par un
+<span class="fc bfc" id="L432" title="All 2 branches covered.">            for (String code : splitted) {</span>
+<span class="fc bfc" id="L433" title="All 2 branches covered.">                if (!Valider.validerCodePostal(code)) {</span>
+<span class="fc" id="L434">                    attempts++;</span>
+<span class="fc" id="L435">                    allValid = false;</span>
+<span class="fc" id="L436">                    System.out.println(&quot;Format invalide pour le code postal : &quot; + code);</span>
+<span class="fc" id="L437">                    System.out.println(&quot;Veuillez respecter le format ex: H2Y 1N9.&quot;);</span>
+<span class="fc" id="L438">                    break; // On sort de la boucle pour retaper la liste</span>
+                }
+            }
+
+            // Si tout est valide, on renvoie la liste
+<span class="fc bfc" id="L443" title="All 2 branches covered.">            if (allValid) {</span>
+<span class="fc" id="L444">                return new ArrayList&lt;&gt;(List.of(splitted));</span>
+            }
+
+            // Si on n'a pas tout validé, on redemande tant que attempts &lt; 3
+<span class="fc bfc" id="L448" title="All 2 branches covered.">            if (attempts &gt;= 3) {</span>
+<span class="fc" id="L449">                break;</span>
+            }
+<span class="fc" id="L451">        }</span>
+
+        // 3 échecs ou plus
+<span class="fc" id="L454">        System.out.println(&quot;3 tentatives échouées. Veuillez réessayer plus tard.&quot;);</span>
+<span class="fc" id="L455">        return null;</span>
+    }
+
+    /**
+     * Détecte les conflits avec les préférences des résidents pour un projet donné.
+     *
+     * &lt;p&gt;Cette méthode examine la liste des résidents (rue, quartier, code postal)
+     * et compare avec ceux spécifiés pour le projet afin de trouver
+     * ceux potentiellement affectés. Elle retourne la liste de préférences
+     * (jours/heures) associées à ces résidents.
+     *
+     * @param ruesProjet         Liste des rues affectées par le projet.
+     * @param quartiersProjet    Liste des quartiers affectés par le projet.
+     * @param codesPostauxProjet Liste des codes postaux affectés par le projet.
+     * @return Une liste de {@link Preference.PreferenceEntry} représentant
+     *         les conflits potentiels avec les horaires/jours préférés de résidents.
+     */
+    public static List&lt;Preference.PreferenceEntry&gt; trouverConflitsResidents(
+            List&lt;String&gt; ruesProjet,
+            List&lt;String&gt; quartiersProjet,
+            List&lt;String&gt; codesPostauxProjet
+    ) {
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        if (ruesProjet == null) ruesProjet = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">        if (quartiersProjet == null) quartiersProjet = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">        if (codesPostauxProjet == null) codesPostauxProjet = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L481">        List&lt;Preference.PreferenceEntry&gt; conflits = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L482">        List&lt;Resident&gt; residents = GestionResidents.chargerResidentsDepuisFichier();</span>
+
+<span class="nc bnc" id="L484" title="All 2 branches missed.">        for (Resident resident : residents) {</span>
+<span class="nc" id="L485">            String rueResident = resident.getRue();</span>
+<span class="nc" id="L486">            String quartierResident = resident.getQuartier();</span>
+<span class="nc" id="L487">            String codePostalResident = resident.getCodePostal();</span>
+
+            // Vérifie si ce résident est concerné (rue, quartier ou code postal)
+<span class="nc bnc" id="L490" title="All 4 branches missed.">            boolean memeRue = (rueResident != null &amp;&amp; ruesProjet.contains(rueResident));</span>
+<span class="nc bnc" id="L491" title="All 4 branches missed.">            boolean memeQuartier = (quartierResident != null &amp;&amp; quartiersProjet.contains(quartierResident));</span>
+<span class="nc bnc" id="L492" title="All 4 branches missed.">            boolean memeCodePostal = (codePostalResident != null &amp;&amp; codesPostauxProjet.contains(codePostalResident));</span>
+
+<span class="nc bnc" id="L494" title="All 6 branches missed.">            if (memeRue || memeQuartier || memeCodePostal) {</span>
+                // Charger la préférence de ce résident
+<span class="nc" id="L496">                Preference preference = new Preference(resident.getAdresseCourriel());</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">                if (preference.getPreferences() != null) {</span>
+<span class="nc" id="L498">                    conflits.addAll(preference.getPreferences());</span>
+                }
+            }
+<span class="nc" id="L501">        }</span>
+<span class="nc" id="L502">        return conflits;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

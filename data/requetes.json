@@ -98,4 +98,24 @@
     "codePostal" : "H1N 1A1",
     "resident" : null
   }
-}]
+}, {
+  "titreTravail" : "Souris cassée",
+  "description" : "Pleaseee",
+  "typeTravaux" : "CONSTRUCTION OU RÉNOVATION",
+  "debut" : "10/12/2025",
+  "etat" : "Ouverte",
+  "intervenant" : null,
+  "resident" : {
+    "nom" : "Nathan",
+    "prenom" : "Razafindrakotolol",
+    "motDePasse" : "J2s3jAsd?",
+    "adresseCourriel" : "natrazaf2020@gmail.com",
+    "dateNaissance" : "07/09/2004",
+    "telephone" : "passer",
+    "adresse" : "11262 Jean-Meunier, Montréal-Nord",
+    "rue" : null,
+    "quartier" : null,
+    "codePostal" : "J2s3jAsd?",
+    "resident" : null
+  }
+} ]

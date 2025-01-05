@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Connexion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">Model</a> &gt; <span class="el_source">Connexion.java</span></div><h1>Connexion.java</h1><pre class="source lang-java linenums">package Model;
+
+import java.util.Scanner;
+
+/**
+ * Classe Connexion permettant de gérer les choix des utilisateurs
+ * pour la connexion ou l'inscription dans le système.
+ */
+<span class="nc" id="L9">public class Connexion {</span>
+
+    /**
+     * Traite le choix de l'utilisateur en fonction de l'option choisie.
+     * Cette méthode prend en paramètre le choix et des instances initiales
+     * d'un résident et d'un intervenant afin de pouvoir appeler les méthodes appropriées.
+     *
+     * @param choix      L'option sélectionnée par l'utilisateur.
+     * @param resident   Instance du résident.
+     * @param intervenant Instance de l'intervenant.
+     */
+    public static void traiterChoix(String choix, Resident resident, Intervenant intervenant) {
+
+
+        // Utilisation d'un bloc switch pour appeler les fonctions appropriées selon l'option
+        // choisie par l'utilisateur
+<span class="nc bnc" id="L25" title="All 5 branches missed.">        switch (choix) {</span>
+            case &quot;1&quot;:
+<span class="nc" id="L27">                resident.connexion(resident);</span>
+<span class="nc" id="L28">                break;</span>
+            case &quot;2&quot;:
+<span class="nc" id="L30">                intervenant.connexion(intervenant);</span>
+<span class="nc" id="L31">                break;</span>
+            case &quot;3&quot;:
+<span class="nc" id="L33">                demanderTypeInscription(resident, intervenant);</span>
+<span class="nc" id="L34">                break;</span>
+            case &quot;4&quot;:
+<span class="nc" id="L36">                System.out.println(&quot;Au revoir !&quot;);</span>
+<span class="nc" id="L37">                System.exit(0); // Fin du programme</span>
+<span class="nc" id="L38">                break;</span>
+            default:
+<span class="nc" id="L40">                System.out.println(&quot;Option invalide. Veuillez entrer une option entre 1 et 4.&quot;);</span>
+                break;
+        }
+<span class="nc" id="L43">    }</span>
+
+    /**
+    * Demande à l'utilisateur le type d'inscription dont il est question, soit un intervenant
+    * ou un résident.
+    *
+    * @param resident  Instance du résident.
+    * @param intervenant  Instance de l'intervenant.
+     */
+    public static void demanderTypeInscription(Resident resident, Intervenant intervenant) {
+<span class="nc" id="L53">        Scanner scanner = new Scanner(System.in);</span>
+
+<span class="nc" id="L55">        System.out.println(&quot;Souhaitez-vous vous inscrire en tant que résident ou intervenant ? (Entrez R ou I)&quot;);</span>
+        while (true) {
+<span class="nc" id="L57">            String input = scanner.nextLine();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (input.equalsIgnoreCase(&quot;R&quot;)) {</span>
+<span class="nc" id="L59">                resident.inscription(resident);</span>
+<span class="nc" id="L60">                break;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            } else if (input.equalsIgnoreCase(&quot;I&quot;)) {</span>
+<span class="nc" id="L62">                intervenant.inscription(intervenant);</span>
+<span class="nc" id="L63">                break;</span>
+            } else {
+<span class="nc" id="L65">                System.out.println(&quot;Option invalide. Veuillez réessayer en entrant l'option R ou I.&quot;);</span>
+            }
+<span class="nc" id="L67">        }</span>
+<span class="nc" id="L68">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

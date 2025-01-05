@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntravesView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Implementation</a> &gt; <a href="index.source.html" class="el_package">View</a> &gt; <span class="el_source">EntravesView.java</span></div><h1>EntravesView.java</h1><pre class="source lang-java linenums">package View;
+
+import Controller.ConnexionController;
+import Controller.EntraveController;
+import Controller.ResidentController;
+import Controller.TravauxController;
+import Model.ServiceAPI;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.Scanner;
+
+/**
+ * La classe {@code EntravesView} gère l'affichage du menu pour consulter les entraves routières.
+ * Permet de montrer les entraves par travail, par rue, ou toutes les entraves en
+ * cours.
+ */
+<span class="nc" id="L18">public class EntravesView {</span>
+
+    /**
+     * Affiche le menu principal des entraves routières et gère les choix de l'utilisateur.
+     *
+     * @param scanner Le scanner utilisé pour lire le choix
+     */
+    public static void afficherMenu(Scanner scanner) {
+        while(true) {
+            // Menu principal pour consulter les travaux
+<span class="nc" id="L28">            System.out.println(&quot;---- Menu des entraves routières causées par les travaux en cours ----&quot;);</span>
+<span class="nc" id="L29">            System.out.println(&quot;1. Entraves associées à un travail particulier&quot;);</span>
+<span class="nc" id="L30">            System.out.println(&quot;2. Entraves associées à une rue&quot;);</span>
+<span class="nc" id="L31">            System.out.println(&quot;3. Afficher toutes les entraves&quot;);</span>
+<span class="nc" id="L32">            System.out.println(&quot;4. Quitter le menu des entraves routières&quot;);</span>
+<span class="nc" id="L33">            System.out.println(&quot;Entrez une option entre 1 et 4.&quot;);</span>
+
+<span class="nc" id="L35">            String choix = scanner.nextLine();</span>
+
+<span class="nc bnc" id="L37" title="All 5 branches missed.">            switch (choix) {</span>
+                case &quot;1&quot;:
+<span class="nc" id="L39">                    afficherEntraveParTravail(scanner);</span>
+<span class="nc" id="L40">                    retour(scanner);</span>
+<span class="nc" id="L41">                    break;</span>
+                case &quot;2&quot;:
+<span class="nc" id="L43">                    afficherEntraveParRue(scanner);</span>
+<span class="nc" id="L44">                    retour(scanner);</span>
+<span class="nc" id="L45">                    break;</span>
+                case &quot;3&quot;:
+<span class="nc" id="L47">                    afficherToutesLesEntraves(scanner);</span>
+<span class="nc" id="L48">                    retour(scanner);</span>
+<span class="nc" id="L49">                    break;</span>
+                case &quot;4&quot;:
+<span class="nc" id="L51">                    System.out.println(&quot;Au revoir !&quot;);</span>
+<span class="nc" id="L52">                    ResidentController.afficherMenuResident();</span>
+<span class="nc" id="L53">                    break;</span>
+                default:
+<span class="nc" id="L55">                    System.out.println(&quot;Option invalide.&quot;);</span>
+            }
+<span class="nc" id="L57">        }</span>
+    }
+
+    /**
+     * Affiche toutes les entraves routières en appelant la méthode {@code recupererEntraves}
+     * qui appelle une API pour afficher les données.
+     *
+     * @param scanner Le scanner utilisé pour lire les choix de l'utilisateur
+     */
+    public static void afficherToutesLesEntraves(Scanner scanner){
+<span class="nc" id="L67">        System.out.println(&quot;Voici la liste de toutes les entraves associées aux travaux en cours: &quot;);</span>
+<span class="nc" id="L68">        JSONArray entravesNonFiltrees = EntraveController.recupererEntraves(0, null);</span>
+<span class="nc" id="L69">        afficherEntraves(entravesNonFiltrees);</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * Affiche les entraves associées à un travail particulier. Elle affiche d'abord tous les travaux,
+     * puis permet à l'utilisateur de choisir un travail pour afficher les entraves.
+     *
+     * @param scanner Le scanner utilisé pour lire les choix de l'utilisateur
+     */
+    public static void afficherEntraveParTravail(Scanner scanner){
+<span class="nc" id="L79">        System.out.println(&quot;Voici tous les travaux en cours: &quot;);</span>
+        // Afficher tous les travaux sans filtre
+<span class="nc" id="L81">        TravauxController.recupererTravaux(0, null);</span>
+<span class="nc" id="L82">        System.out.println(&quot;Veuillez entrer le numéro du travail souhaité: &quot;);</span>
+<span class="nc" id="L83">        int idTravail = scanner.nextInt();</span>
+<span class="nc" id="L84">        EntraveController.recupererEntravesParTravail(idTravail);</span>
+<span class="nc" id="L85">    }</span>
+
+    /**
+     * Affiche les entraves associées à une rue entrée par l'utilisateur. Elle appelle la méthode
+     * {@code recupererEntraves} qui utilise une API pour afficher les données.
+     *
+     * @param scanner Le scanner utilisé pour lire les choix de l'utilisateur
+     */
+    public static void afficherEntraveParRue(Scanner scanner){
+<span class="nc" id="L94">        System.out.println(&quot;Veuillez entrer la rue souhaitée:&quot;);</span>
+<span class="nc" id="L95">        String filtre = scanner.nextLine();</span>
+<span class="nc" id="L96">        JSONArray entravesFiltrees = EntraveController.recupererEntraves(1, filtre);</span>
+<span class="nc" id="L97">        afficherEntraves(entravesFiltrees);</span>
+<span class="nc" id="L98">    }</span>
+
+    /**
+     * Méthode qui affiche à l'utilisateur les entraves filtrées ou pas
+     * @param entraves un JSONArray des entraves filtrées ou non
+     */
+    public static void afficherEntraves(JSONArray entraves) {
+<span class="nc bnc" id="L105" title="All 4 branches missed.">        if (entraves == null || entraves.length() == 0) {</span>
+<span class="nc" id="L106">            System.out.println(&quot;Aucune entrave à afficher.&quot;);</span>
+<span class="nc" id="L107">            return;</span>
+        }
+
+        // Parcourir du JSONArray et afficher des informations de toutes les entraves
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        for (int i = 0; i &lt; entraves.length(); i++) {</span>
+<span class="nc" id="L112">            JSONObject entrave = entraves.getJSONObject(i);</span>
+<span class="nc" id="L113">            String rue = entrave.getString(&quot;shortname&quot;);</span>
+<span class="nc" id="L114">            String impactType = entrave.getString(&quot;streetimpacttype&quot;);</span>
+
+<span class="nc" id="L116">            System.out.println(&quot;\nEntrave #&quot; + (i + 1));</span>
+<span class="nc" id="L117">            System.out.println(&quot;**********************************&quot;);</span>
+<span class="nc" id="L118">            System.out.println(&quot;Rue : &quot; + rue);</span>
+<span class="nc" id="L119">            System.out.println(&quot;Type d'impact sur la rue : &quot; + impactType);</span>
+<span class="nc" id="L120">            System.out.println(&quot;**********************************&quot;);</span>
+        }
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * Permet de revenir en arrière selon l'utilisateur. L'utilisateur peut revenir au
+     * menu des entraves ou retourner au menu des résidents.
+     *
+     * @param scanner Le scanner utilisé pour lire la réponse de l'utilisateur
+     */
+    private static void retour(Scanner scanner){
+<span class="nc" id="L131">        System.out.println(&quot;Voulez-vous revenir au menu des entraves routières en cours (1) ou retourner au menu des résidents (2)? Veuillez répondre par 1 ou par 2.&quot;);</span>
+<span class="nc" id="L132">        String reponse = scanner.nextLine();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (reponse.equalsIgnoreCase(&quot;1&quot;)) {</span>
+            //
+        } else{
+<span class="nc" id="L136">            System.out.println(&quot;Retour au menu des résidents!&quot;);</span>
+<span class="nc" id="L137">            ResidentController.afficherMenuResident();</span>
+        }
+<span class="nc" id="L139">    }</span>
+}
+
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
